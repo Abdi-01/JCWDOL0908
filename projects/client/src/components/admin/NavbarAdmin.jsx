@@ -16,6 +16,11 @@ function NavbarAdmin() {
       navlink: "/admin/dashboard/user-management",
     },
     {
+      class: "uil uil-estate",
+      text: "warehouse-mgt",
+      navlink: "/admin/dashboard/warehouse-management",
+    },
+    {
       class: "uil uil-suitcase",
       text: "product-mgt",
       navlink: "/admin/dashboard/product-management",
@@ -54,7 +59,7 @@ function NavbarAdmin() {
         <div className="relative">
           <h1
             className="invisible md:visible md:text-lg text-slate-800 tracking-tighter
-      md:py-10 scale-y-110 font-bold lg:text-2xl"
+      md:pt-10 md:pb-8 scale-y-110 font-bold lg:text-2xl"
           >
             WarehouseKu
           </h1>
@@ -63,8 +68,7 @@ function NavbarAdmin() {
       md:grid-rows-6 md:grid-cols-1 md:gap-8 md:text-2xl py-8 lg:text-3xl"
           >
             <NavbarRenderIcon listNav={listNav} />
-            <li className="md:invisible"></li>
-            <li className="text-center hover:text-black hover:cursor-pointer" onClick={logoutBtnHandler}>
+            <li className="text-center text-red-600 hover:text-red-900 hover:cursor-pointer" onClick={logoutBtnHandler}>
               <i className="uil uil-signout"></i>
               <h2 className=" text-sm md:text-lg">logout</h2>
             </li>

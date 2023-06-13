@@ -11,6 +11,7 @@ import ProductReport from "./pages/ProductReport";
 import AdminLogin from "./pages/AdminLogin";
 import { useSelector, useDispatch } from "react-redux";
 import { keepAdminLoggedIn } from "./feature/admin/AdminLogInSlice";
+import WarehouseMgt from "./pages/WarehouseMgt";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -39,6 +40,7 @@ function App() {
               <>
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 <Route path="/admin/dashboard/user-management" element={<UserManagement />} />
+                <Route path="/admin/dashboard/warehouse-management" element={<WarehouseMgt />} />
                 <Route path="/admin/dashboard/product-management" element={<ProductManagement />} />
                 <Route path="/admin/dashboard/order" element={<ProductOrder />} />
                 <Route path="/admin/dashboard/report" element={<ProductReport />} />
