@@ -1,8 +1,4 @@
 const db = require("../model");
-const { createToken } = require("../helper/CreateToken");
-const User = db.User;
-const Warehouse = db.Warehouse;
-const Admin = db.AdminRole;
 const { AdminUserMgtService, AdminWarehouseService } = require("../service");
 const { AdminDataValidation } = require("../validation");
 
@@ -63,35 +59,6 @@ const getAllUser = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
-
-const getMyUser = async (req, res, next) => {
-  const user = await User.findOne({
-    where: {
-      username: req.params.name,
-    },
-    include: {
-      model: Admin,
-      include: {
-        model: Warehouse,
-      },
-    },
-  });
-  const { id_user, username, is_admin, id_role, admin_role } = user;
-
-  const payload = {
-    id_user,
-    username,
-    is_admin,
-    id_role,
-    role: admin_role.role_admin,
-  };
-
-  const token = createToken(payload);
-
-  return res.status(200).send({
-    token,
-  });
 };
 
 const getAllWarehouseCity = async (req, res, next) => {
@@ -192,7 +159,6 @@ const createNewAdmin = async (req, res, next) => {
 
 module.exports = {
   getAllAdminUser,
-  getMyUser,
   getAllUser,
   getSingleUser,
   getSingleWarehouseAdmin,
