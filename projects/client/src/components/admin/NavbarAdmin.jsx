@@ -65,7 +65,7 @@ function NavbarAdmin() {
           </h1>
           <ul
             className="grid grid-cols-3 gap-4 text-lg text-slate-700 md:grid 
-      md:grid-rows-6 md:grid-cols-1 md:gap-8 md:text-2xl py-8 lg:text-3xl"
+      md:grid-rows-6 md:grid-cols-1 md:gap-6 lg:gap-8 md:text-2xl py-8 lg:text-3xl"
           >
             <NavbarRenderIcon listNav={listNav} />
             <li className="text-center text-red-600 hover:text-red-900 hover:cursor-pointer" onClick={logoutBtnHandler}>

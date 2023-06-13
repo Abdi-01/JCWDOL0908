@@ -35,7 +35,7 @@ function DeleteAdminModal(props) {
             <RenderSingleAdminToDelete singleData={singleData} />
           </div>
           <h3 className="text-center">
-            Are you sure to <i className="font-bold">delete</i> this data?
+            Are you sure want to <i className="font-bold">delete</i> this data?
           </h3>
           <button
             className="bg-red-800 mx-auto text-white px-2 py-1 w-1/2"
