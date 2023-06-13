@@ -48,6 +48,8 @@ const getWarehousesData = async () => {
   return warehouses;
 };
 
+const deleteWarehouseById = async (id) => {};
+
 const getWarehousesLogic = async () => {
   try {
     const warehouses = await getWarehousesData();
@@ -63,9 +65,12 @@ const getWarehousesLogic = async () => {
   }
 };
 
+const deleteWarehouseLogic = async (id) => {};
+
 module.exports = {
   getSingleWarehouseAdmin,
   getAllWarehouseCity,
   getSpecificWarehouseByIdCity,
   getWarehousesLogic,
+  deleteWarehouseLogic,
 };

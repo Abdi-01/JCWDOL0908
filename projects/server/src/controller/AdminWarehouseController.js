@@ -7,4 +7,6 @@ const getAllWarehouse = async (req, res, next) => {
   return res.status(200).send({ isSuccess: true, message: "success fetched data", result });
 };
 
-module.exports = { getAllWarehouse };
+const deleteWarehouse = async (req, res, next) => {};
+
+module.exports = { getAllWarehouse, deleteWarehouse };
