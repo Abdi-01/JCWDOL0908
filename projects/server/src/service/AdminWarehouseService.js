@@ -1,5 +1,5 @@
 const db = require("../model");
-const { User, Address, City, AdminRole, Warehouse, sequelize } = db;
+const { User, Province, City, AdminRole, Warehouse, sequelize } = db;
 const { Op } = require("sequelize");
 const { QueryTypes } = require("sequelize");
 
@@ -40,8 +40,32 @@ const getSpecificWarehouseByIdCity = async (id_city) => {
   return warehouses;
 };
 
+const getWarehousesData = async () => {
+  const warehouses = await Warehouse.findAll({
+    where: { is_deleted: 0 },
+    include: { model: City, include: { model: Province } },
+  });
+  return warehouses;
+};
+
+const getWarehousesLogic = async () => {
+  try {
+    const warehouses = await getWarehousesData();
+    const result = warehouses.map((warehouse, index) => {
+      const { city } = warehouse.dataValues;
+      const { id_city, type_city, province } = city;
+      const { id_province } = province;
+      return { ...warehouse.dataValues, id_city, city: city.city, type_city, province: province.province, id_province };
+    });
+    return { error: null, result };
+  } catch (error) {
+    return { error, result: null };
+  }
+};
+
 module.exports = {
   getSingleWarehouseAdmin,
   getAllWarehouseCity,
   getSpecificWarehouseByIdCity,
+  getWarehousesLogic,
 };
