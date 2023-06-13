@@ -10,7 +10,7 @@ function WarehouseMgt() {
 
   useEffect(() => {
     (async () => {
-      const result = await getWarehouses();
+      const result = await getWarehouses(pageNum);
       setWarehouses([...result]);
     })();
   }, []);
