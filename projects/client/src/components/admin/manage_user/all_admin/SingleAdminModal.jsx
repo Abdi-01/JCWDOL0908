@@ -35,7 +35,7 @@ function SingleAdminModal(props) {
   }, []);
 
   const editSchema = Yup.object().shape({
-    username: Yup.string().required("must not blank"),
+    username: Yup.string().required("must not blank").min(5, "username must be at least 5 chars length"),
     email: Yup.string().required("must not blank").email("invalid email format"),
     password: Yup.string()
       .min(6, "password is too short - at least 6 chars minimum")
