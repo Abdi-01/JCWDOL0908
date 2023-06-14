@@ -4,7 +4,7 @@ import RenderWarehouse from "./RenderWarehouse";
 import DeleteModal from "./delete_data/DeleteModal";
 
 function Body(props) {
-  const { pageNum, warehouses, setWarehouses } = props;
+  const { pageNum, warehouses, setWarehouses, setTotalPage, totalPageWarehouse } = props;
   const [isDelBtnClicked, setIsDelBtnClicked] = useState(false);
   const [warehouseData, setWarehouseData] = useState({});
 
@@ -16,6 +16,7 @@ function Body(props) {
           setIsDelBtnClicked={setIsDelBtnClicked}
           setWarehouses={setWarehouses}
           pageNum={pageNum}
+          setTotalPage={setTotalPage}
         />
       ) : null}
       <div className="row-span-6 grid grid-rows-8">
@@ -39,7 +40,7 @@ function Body(props) {
             setWarehouseData={setWarehouseData}
           />
         </div>
-        <Pagination pageNum={pageNum} />
+        <Pagination pageNum={pageNum} totalPageWarehouse={totalPageWarehouse} />
       </div>
     </>
   );

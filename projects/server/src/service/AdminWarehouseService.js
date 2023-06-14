@@ -40,10 +40,22 @@ const getSpecificWarehouseByIdCity = async (id_city) => {
   return warehouses;
 };
 
-const getWarehousesData = async () => {
+const getWarehousesDataCount = async () => {
+  const warehouseCount = await Warehouse.findAll({
+    where: {
+      is_deleted: 0,
+    },
+    attributes: [[sequelize.fn("COUNT", sequelize.col("id_warehouse")), "warehouse_count"]],
+  });
+  return warehouseCount;
+};
+
+const getWarehousesData = async (offset, limit, page) => {
   const warehouses = await Warehouse.findAll({
     where: { is_deleted: 0 },
     include: { model: City, include: { model: Province } },
+    offset: parseInt(offset) * (parseInt(page) - 1),
+    limit: parseInt(limit),
   });
   return warehouses;
 };
@@ -53,18 +65,22 @@ const deleteWarehouseById = async (id_warehouse, transaction) => {
   return deleteWarehouse;
 };
 
-const getWarehousesLogic = async () => {
+const getWarehousesLogic = async (offset, limit, page) => {
   try {
-    const warehouses = await getWarehousesData();
+    let warehousesCount = await getWarehousesDataCount();
+    const warehouses = await getWarehousesData(offset, limit, page);
+    warehousesCount = warehousesCount[0].dataValues.warehouse_count;
+    const totalPage = Math.ceil(warehousesCount / limit);
     const result = warehouses.map((warehouse, index) => {
       const { city } = warehouse.dataValues;
       const { id_city, type_city, province } = city;
       const { id_province } = province;
       return { ...warehouse.dataValues, id_city, city: city.city, type_city, province: province.province, id_province };
     });
-    return { error: null, result };
+    const data = { result, totalPage };
+    return { error: null, data };
   } catch (error) {
-    return { error, result: null };
+    return { error, data: null };
   }
 };
 

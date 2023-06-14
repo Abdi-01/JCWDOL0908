@@ -3,13 +3,15 @@ import RenderDetailData from "./DetailData";
 import { deleteWarehouse, getWarehouses } from "../../../../feature/admin/AdminWarehouseSlice";
 
 function DeleteModal(props) {
-  const { setIsDelBtnClicked, warehouseData, setWarehouses, pageNum } = props;
+  const { setIsDelBtnClicked, warehouseData, setWarehouses, pageNum, setTotalPage } = props;
 
   const delBtnHandler = async (id_warehouse) => {
     const deleteData = await deleteWarehouse(id_warehouse);
     alert(deleteData.message);
-    const result = await getWarehouses(pageNum);
-    setWarehouses(result);
+    const data = await getWarehouses(pageNum);
+    const { result, totalPage } = data;
+    setTotalPage(totalPage);
+    setWarehouses([...result]);
     setIsDelBtnClicked(false);
   };
 
