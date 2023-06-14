@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RenderSingleAdminToDelete from "./RenderSingleAdminToDelete";
-import { deleteUserData, getAllAdmin } from "../../../../feature/admin/AdminSlice";
+import { deleteUserData, getAllAdmin } from "../../../../../feature/admin/AdminSlice";
 
 function DeleteAdminModal(props) {
   const { setDeleteClicked, page } = props;
@@ -15,32 +15,20 @@ function DeleteAdminModal(props) {
   };
 
   return (
-    <div
-      className="fixed maxvh maxvw bg-white z-30 top-0 left-0 modal-container
-        flex items-center justify-center"
-    >
-      <div
-        className="px-4 w-5/6 bg-slate-50 relative md:translate-x-24 md:w-1/2
-      lg:w-1/3 py-4"
-      >
-        <button
-          onClick={() => props.setDeleteClicked(false)}
-          className="text-red-700 absolute top-0 right-1 font-bold text-xl"
-        >
+    <div className="modal-background">
+      <div className="modal-container">
+        <button onClick={() => props.setDeleteClicked(false)} className="close-btn-modal">
           <i className="uil uil-times-circle"></i>
         </button>
-        <div className="grid grid-rows-8 gap-2">
-          <h1 className="font-bold text-lg">Detail Admin</h1>
-          <div className="row-span-5 text-sm lg:text-base">
+        <div className="delete-modal-header-container">
+          <h1 className="delete-modal-header-text">Detail Admin</h1>
+          <div className="delete-modal-body-container">
             <RenderSingleAdminToDelete singleData={singleData} />
           </div>
           <h3 className="text-center">
             Are you sure want to <i className="font-bold">delete</i> this data?
           </h3>
-          <button
-            className="bg-red-800 mx-auto text-white px-2 py-1 w-1/2"
-            onClick={() => delButtonHandler(singleData.id_user)}
-          >
+          <button className="delete-modal-confirmation-btn" onClick={() => delButtonHandler(singleData.id_user)}>
             Delete
           </button>
         </div>
