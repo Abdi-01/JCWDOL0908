@@ -48,7 +48,10 @@ const getWarehousesData = async () => {
   return warehouses;
 };
 
-const deleteWarehouseById = async (id) => {};
+const deleteWarehouseById = async (id_warehouse, transaction) => {
+  const deleteWarehouse = await Warehouse.update({ is_deleted: 1 }, { where: { id_warehouse }, transaction });
+  return deleteWarehouse;
+};
 
 const getWarehousesLogic = async () => {
   try {
@@ -65,7 +68,23 @@ const getWarehousesLogic = async () => {
   }
 };
 
-const deleteWarehouseLogic = async (id) => {};
+const deleteWarehouseLogic = async (id_warehouse) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const response = await deleteWarehouseById(id_warehouse, transaction);
+    let result = response[0];
+    if (!result) {
+      result = "not found";
+    } else {
+      result = "success";
+    }
+    await transaction.commit();
+    return { error: null, result };
+  } catch (error) {
+    transaction.rollback();
+    return { error, result: null };
+  }
+};
 
 module.exports = {
   getSingleWarehouseAdmin,

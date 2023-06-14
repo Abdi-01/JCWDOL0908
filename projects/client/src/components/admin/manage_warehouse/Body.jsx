@@ -4,13 +4,20 @@ import RenderWarehouse from "./RenderWarehouse";
 import DeleteModal from "./delete_data/DeleteModal";
 
 function Body(props) {
-  const { pageNum, warehouses } = props;
+  const { pageNum, warehouses, setWarehouses } = props;
   const [isDelBtnClicked, setIsDelBtnClicked] = useState(false);
   const [warehouseData, setWarehouseData] = useState({});
 
   return (
     <>
-      {isDelBtnClicked ? <DeleteModal warehouseData={warehouseData} setIsDelBtnClicked={setIsDelBtnClicked} /> : null}
+      {isDelBtnClicked ? (
+        <DeleteModal
+          warehouseData={warehouseData}
+          setIsDelBtnClicked={setIsDelBtnClicked}
+          setWarehouses={setWarehouses}
+          pageNum={pageNum}
+        />
+      ) : null}
       <div className="row-span-6 grid grid-rows-8">
         <div className="row-span-1 flex text-center items-center">
           <h1 className="text-lg font-semibold lg:text-xl">Warehouse List</h1>

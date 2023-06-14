@@ -1,8 +1,6 @@
 const db = require("../model");
-const { User, Address, City, AdminRole, Warehouse, sequelize } = db;
+const { User, AdminRole, Warehouse } = db;
 const { Op } = require("sequelize");
-const { QueryTypes } = require("sequelize");
-const { AdminUserMgtService } = require("../service");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../helper/CreateToken");
 

@@ -1,9 +1,18 @@
 import React from "react";
 import RenderDetailData from "./DetailData";
+import { deleteWarehouse, getWarehouses } from "../../../../feature/admin/AdminWarehouseSlice";
 
 function DeleteModal(props) {
-  const { setIsDelBtnClicked, warehouseData } = props;
-  console.log(warehouseData);
+  const { setIsDelBtnClicked, warehouseData, setWarehouses, pageNum } = props;
+
+  const delBtnHandler = async (id_warehouse) => {
+    const deleteData = await deleteWarehouse(id_warehouse);
+    alert(deleteData.message);
+    const result = await getWarehouses(pageNum);
+    setWarehouses(result);
+    setIsDelBtnClicked(false);
+  };
+
   return (
     <div
       className="fixed maxvh maxvw bg-white z-30 top-0 left-0 modal-container
@@ -27,7 +36,12 @@ function DeleteModal(props) {
           <h3 className="text-center">
             Are you sure want to <i className="font-bold">delete</i> this data?
           </h3>
-          <button className="bg-red-800 mx-auto text-white px-2 py-1 w-1/2">Delete</button>
+          <button
+            className="bg-red-800 mx-auto text-white px-2 py-1 w-1/2"
+            onClick={() => delBtnHandler(warehouseData.id_warehouse)}
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>
