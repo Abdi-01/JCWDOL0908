@@ -6,5 +6,8 @@ const { isSuperAdmin } = require("../middleware/IsSuperAdmin");
 
 router.get("/", tokenDecoder, isSuperAdmin, AdminWarehouseController.getAllWarehouse);
 router.patch("/delete/:id_warehouse", tokenDecoder, isSuperAdmin, AdminWarehouseController.deleteWarehouse);
+router.get("/provinces", AdminWarehouseController.getProvinces);
+router.get("/provinces/cities", AdminWarehouseController.getCitiesByProvinceId);
+router.post("/new", tokenDecoder, isSuperAdmin, AdminWarehouseController.createWarehouse);
 
 module.exports = router;

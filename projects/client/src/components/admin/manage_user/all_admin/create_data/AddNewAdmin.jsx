@@ -15,8 +15,8 @@ function AddNewAdmin(props) {
   const [warehouses, setWarehouses] = useState([]);
 
   // get warehouse list after select city
-  const getDataWarehouse = async (input) => {
-    const data = await getWarehouses(input);
+  const getDataWarehouse = async (cityInput) => {
+    const data = await getWarehouses(cityInput);
     setWarehouses([...data]);
   };
 

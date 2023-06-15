@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LayoutAdmin from "../components/LayoutAdmin";
-import Header from "../components/admin/manage_warehouse/Header";
+import HeaderWarehouseMgt from "../components/admin/manage_warehouse/HeaderWarehouseMgt";
 import Body from "../components/admin/manage_warehouse/Body";
 import { getWarehouses } from "../feature/admin/AdminWarehouseSlice";
 
@@ -21,7 +21,7 @@ function WarehouseMgt() {
   return (
     <LayoutAdmin>
       <div className="grid grid-rows-8 maxvh pt-2 pb-6 px-8 gap-4">
-        <Header />
+        <HeaderWarehouseMgt pageNum={pageNum} setWarehouses={setWarehouses} />
         <Body
           pageNum={pageNum}
           warehouses={warehouses}

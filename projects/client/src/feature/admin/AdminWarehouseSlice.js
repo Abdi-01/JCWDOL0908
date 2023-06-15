@@ -29,3 +29,31 @@ export const deleteWarehouse = async (id_warehouse) => {
     return error.response.data;
   }
 };
+
+export const getProvinces = async () => {
+  try {
+    const response = await axiosInstance.get("/provinces");
+    return response.data.result;
+  } catch (error) {
+    alert(error.response.data.result.message);
+  }
+};
+
+export const getCitiesByProvinces = async (id_province) => {
+  try {
+    const response = await axiosInstance.get(`/provinces/cities?id_province=${id_province}`);
+    return response.data.result;
+  } catch (error) {
+    alert(error.response.data.result.message);
+  }
+};
+
+export const createNewWarehouse = async (data) => {
+  const TOKEN = localStorage.getItem("admin_token");
+  try {
+    const response = await axiosInstance.post("new", { ...data }, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    return response;
+  } catch (error) {
+    alert(error.response.data.message);
+  }
+};
