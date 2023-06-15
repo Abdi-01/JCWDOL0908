@@ -9,5 +9,6 @@ router.patch("/delete/:id_warehouse", tokenDecoder, isSuperAdmin, AdminWarehouse
 router.get("/provinces", AdminWarehouseController.getProvinces);
 router.get("/provinces/cities", AdminWarehouseController.getCitiesByProvinceId);
 router.post("/new", tokenDecoder, isSuperAdmin, AdminWarehouseController.createWarehouse);
+router.patch("/", tokenDecoder, isSuperAdmin, AdminWarehouseController.editWarehouse);
 
 module.exports = router;

@@ -15,7 +15,6 @@ import RenderCity from "./RenderCity";
 function AddDataModal(props) {
   const { setIsCreateBtnClicked, pageNum, setWarehouses } = props;
   const addressRegex = /^[A-Za-z\s]+$/;
-  const numberRegex = /^[0-9]+$/;
   const [provinceList, setProvinceList] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState();
   const [cityList, setCityList] = useState([]);
@@ -30,7 +29,7 @@ function AddDataModal(props) {
   useEffect(() => {
     (async () => {
       if (selectedProvince) {
-        const cities = await getCitiesByProvinces(selectedProvince);
+        const cities = await getCitiesByProvinces(selectedProvince.split(":::")[0]);
         setCityList([...cities]);
       }
     })();
@@ -39,7 +38,6 @@ function AddDataModal(props) {
   const createWarehouseSchema = Yup.object().shape({
     warehouse_name: Yup.string().required("must not blank"),
     address: Yup.string().required("must not blank").matches(addressRegex, "alphabet only"),
-    number: Yup.string().matches(numberRegex, "number only"),
     id_province: Yup.string("required").required("required"),
     id_city: Yup.string("required").required("required"),
   });
@@ -49,7 +47,7 @@ function AddDataModal(props) {
     const [idProvince, province] = id_province.split(":::");
     let [idCity, city] = id_city.split(":::");
     idCity = parseInt(idCity);
-    const address = `${values.address} ${values.number}, ${city}, ${province}`;
+    const address = `${values.address}, ${city}, ${province}`;
     const data = { address, id_province: idProvince, id_city: idCity, warehouse_name };
     const response = await createNewWarehouse(data);
     const fetching = await getWarehouses(pageNum);
@@ -70,7 +68,6 @@ function AddDataModal(props) {
             initialValues={{
               warehouse_name: "",
               address: "",
-              number: "",
               id_province: "",
               id_city: "",
             }}
@@ -95,7 +92,6 @@ function AddDataModal(props) {
                     id="address"
                     placeholder="example: Jalan Dokter Setiabudi"
                   />
-                  <CustomForm label="number" name="number" type="text" id="number" placeholder="example: 229" />
                   <CustomSelect onChange={formikProps.handleChange} label="province" name="id_province">
                     <option value="">Select Province</option>
                     <RenderProvince provinceList={provinceList} />
@@ -104,6 +100,7 @@ function AddDataModal(props) {
                     <option value="">Select City</option>
                     <RenderCity cityList={cityList} />
                   </CustomSelect>
+                  <div className="invisible"></div>
                   <div className="invisible"></div>
                   <div className="invisible"></div>
                   <div className=" row-span-1">

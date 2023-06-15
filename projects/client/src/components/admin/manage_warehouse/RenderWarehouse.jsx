@@ -1,11 +1,16 @@
 import React from "react";
 
 function RenderWarehouse(props) {
-  const { warehouses, setIsDelBtnClicked, setWarehouseData } = props;
+  const { warehouses, setIsDelBtnClicked, setWarehouseData, setIsEditBtnClicked } = props;
 
   const deleteBtnClicked = (index) => {
     setWarehouseData({ ...warehouses[index] });
     setIsDelBtnClicked(true);
+  };
+
+  const editBtnClicked = (index) => {
+    setWarehouseData({ ...warehouses[index] });
+    setIsEditBtnClicked(true);
   };
 
   const cutString = (string) => {
@@ -26,7 +31,10 @@ function RenderWarehouse(props) {
         </p>
         <p className="col-span-2 lg:col-span-1 text-center">{cutString(warehouse.province)}</p>
         <div className="col-span-1 grid grid-cols-2 h-full lg:grid-cols-4">
-          <button className="col-span-1 bg-slate-300 text-slate-800 h-full lg:col-start-3">
+          <button
+            className="col-span-1 bg-slate-300 text-slate-800 h-full lg:col-start-3"
+            onClick={() => editBtnClicked(index)}
+          >
             <i className="uil uil-pen"></i>
           </button>
           <button

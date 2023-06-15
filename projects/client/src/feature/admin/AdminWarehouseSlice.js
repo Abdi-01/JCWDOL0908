@@ -57,3 +57,13 @@ export const createNewWarehouse = async (data) => {
     alert(error.response.data.message);
   }
 };
+
+export const editWarehouse = async (data) => {
+  const TOKEN = localStorage.getItem("admin_token");
+  try {
+    const response = await axiosInstance.patch("/", { ...data }, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    return response;
+  } catch (error) {
+    alert(error.response.data.message);
+  }
+};

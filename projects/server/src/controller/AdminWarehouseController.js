@@ -69,4 +69,38 @@ const createWarehouse = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllWarehouse, deleteWarehouse, getProvinces, getCitiesByProvinceId, createWarehouse };
+const editWarehouse = async (req, res, next) => {
+  let { id_warehouse, warehouse_name, address, id_city, id_province } = req.body;
+  try {
+    // data validation
+    var { error, value } = AdminDataValidation.CreateWarehouse.validate({ warehouse_name, address, id_city });
+    if (error) throw error;
+
+    // start create warehouse logic
+    const response = await AdminWarehouseService.editWarehouseLogic(
+      id_warehouse,
+      warehouse_name,
+      address,
+      id_city,
+      id_province,
+    );
+    var { result, error } = response;
+
+    // check whether error exists
+    if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
+    if (error) res.status(500).send({ isSuccess: false, message: "internal server error", error });
+
+    return res.status(202).send({ isSuccess: true, message: "success edit data", result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  getAllWarehouse,
+  deleteWarehouse,
+  getProvinces,
+  getCitiesByProvinceId,
+  createWarehouse,
+  editWarehouse,
+};
