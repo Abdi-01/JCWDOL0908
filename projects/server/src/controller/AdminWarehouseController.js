@@ -2,50 +2,66 @@ const { AdminWarehouseService } = require("../service");
 const { AdminDataValidation } = require("../validation");
 
 const getAllWarehouse = async (req, res, next) => {
-  const { offset, limit, page } = req.query;
-  const warehouses = await AdminWarehouseService.getWarehousesLogic(offset, limit, page);
-  const { error, data } = warehouses;
+  try {
+    const { offset, limit, page } = req.query;
+    const warehouses = await AdminWarehouseService.getWarehousesLogic(offset, limit, page);
+    const { error, data } = warehouses;
 
-  // check whether error exists
-  if (!data) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
+    // check whether error exists
+    if (!data) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
 
-  return res.status(200).send({ isSuccess: true, message: "success fetched data", data });
+    return res.status(200).send({ isSuccess: true, message: "success fetched data", data });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const deleteWarehouse = async (req, res, next) => {
-  const { id_warehouse } = req.params;
-  const response = await AdminWarehouseService.deleteWarehouseLogic(id_warehouse);
-  const { error, result } = response;
+  try {
+    const { id_warehouse } = req.params;
+    const response = await AdminWarehouseService.deleteWarehouseLogic(id_warehouse);
+    const { error, result } = response;
 
-  // check whether error exists
-  if (error) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
-  if (result === "not found") return res.status(404).send({ isSuccess: false, message: "warehouse not found" });
+    // check whether error exists
+    if (error) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
+    if (result === "not found") return res.status(404).send({ isSuccess: false, message: "warehouse not found" });
 
-  // check whether success
-  if (result === "success") return res.status(202).send({ isSuccess: true, message: "warehouse deleted" });
+    // check whether success
+    if (result === "success") return res.status(202).send({ isSuccess: true, message: "warehouse deleted" });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getProvinces = async (req, res, next) => {
-  const provinces = await AdminWarehouseService.getProvinces();
-  const { error, result } = provinces;
+  try {
+    const provinces = await AdminWarehouseService.getProvinces();
+    const { error, result } = provinces;
 
-  // check whether error exists
-  if (!result) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
+    // check whether error exists
+    if (!result) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
 
-  return res.status(200).send({ isSuccess: true, message: "success fetched data", result });
+    return res.status(200).send({ isSuccess: true, message: "success fetched data", result });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getCitiesByProvinceId = async (req, res, next) => {
-  const { id_province } = req.query;
+  try {
+    const { id_province } = req.query;
 
-  const cities = await AdminWarehouseService.getCitiesByProvinceId(id_province);
-  const { error, result } = cities;
+    const cities = await AdminWarehouseService.getCitiesByProvinceId(id_province);
+    const { error, result } = cities;
 
-  // check whether error exists
-  if (!result) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
-  if (!result.length) return res.status(404).send({ isSuccess: false, message: "not found" });
+    // check whether error exists
+    if (!result) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
+    if (!result.length) return res.status(404).send({ isSuccess: false, message: "not found" });
 
-  return res.status(200).send({ isSuccess: true, message: "success fetched data", result });
+    return res.status(200).send({ isSuccess: true, message: "success fetched data", result });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const createWarehouse = async (req, res, next) => {

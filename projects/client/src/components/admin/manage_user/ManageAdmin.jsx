@@ -84,10 +84,7 @@ function ManageAdmin(props) {
             <i className="uil uil-plus"></i> New Admin
           </button>
         </div>
-        <div
-          className="items-center row-span-1 py-2 grid grid-cols-7 text-slate-800
-          text-lg lg:grid-cols-11 lg:font-bold"
-        >
+        <div className="pagination-container">
           <Pagination minusPageNum={minusPageNum} page={page} addPageNum={addPageNum} allAdmin={allAdmin} />
         </div>
       </div>

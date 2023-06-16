@@ -5,7 +5,7 @@ import DeleteModal from "./delete_data/DeleteModal";
 import EditModal from "./edit_data/EditModal";
 
 function Body(props) {
-  const { pageNum, warehouses, setWarehouses, setTotalPage, totalPageWarehouse } = props;
+  const { pageNum, warehouses, setWarehouses, setTotalPage, setPageNum, totalPageWarehouse } = props;
   const [isDelBtnClicked, setIsDelBtnClicked] = useState(false);
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
   const [warehouseData, setWarehouseData] = useState({});
@@ -51,7 +51,9 @@ function Body(props) {
             setWarehouseData={setWarehouseData}
           />
         </div>
-        <Pagination pageNum={pageNum} totalPageWarehouse={totalPageWarehouse} />
+        <div className="pagination-container">
+          <Pagination pageNum={pageNum} totalPageWarehouse={totalPageWarehouse} setPageNum={setPageNum} />
+        </div>
       </div>
     </>
   );

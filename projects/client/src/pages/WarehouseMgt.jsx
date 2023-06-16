@@ -16,7 +16,7 @@ function WarehouseMgt() {
       setTotalPage(totalPage);
       setWarehouses([...result]);
     })();
-  }, []);
+  }, [pageNum]);
 
   return (
     <LayoutAdmin>
@@ -27,6 +27,7 @@ function WarehouseMgt() {
           warehouses={warehouses}
           setWarehouses={setWarehouses}
           setTotalPage={setTotalPage}
+          setPageNum={setPageNum}
           totalPageWarehouse={totalPageWarehouse}
         />
       </div>
