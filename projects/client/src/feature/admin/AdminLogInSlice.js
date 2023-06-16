@@ -28,7 +28,7 @@ export function loggingInAdmin(username, password) {
     try {
       const response = await axios.post(`${API_ADMIN_LOGIN}`, { username, password });
       await dispatch(setLoggedInAdminData({ ...response.data.result, isLoggedIn: true }));
-      await localStorage.setItem("admin_token", response.data.token);
+      localStorage.setItem("admin_token", response.data.token);
       return response.data.isSuccess;
     } catch (error) {
       alert(error.response.data.message);
@@ -41,7 +41,7 @@ export function keepAdminLoggedIn() {
     try {
       const response = await axiosInstance.post("/keep-logged");
       await dispatch(setLoggedInAdminData({ ...response.data.result, isLoggedIn: true }));
-      await localStorage.setItem("admin_token", response.data.token);
+      localStorage.setItem("admin_token", response.data.token);
     } catch (error) {
       alert(error.response.data.message);
     }

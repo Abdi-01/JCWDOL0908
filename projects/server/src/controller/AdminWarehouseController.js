@@ -8,10 +8,11 @@ const getAllWarehouse = async (req, res, next) => {
     const { error, data } = warehouses;
 
     // check whether error exists
-    if (!data) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
+    if (error) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
 
     return res.status(200).send({ isSuccess: true, message: "success fetched data", data });
   } catch (error) {
+    // unknown error
     next(error);
   }
 };
@@ -23,12 +24,12 @@ const deleteWarehouse = async (req, res, next) => {
     const { error, result } = response;
 
     // check whether error exists
+    if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
     if (error) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
-    if (result === "not found") return res.status(404).send({ isSuccess: false, message: "warehouse not found" });
 
-    // check whether success
-    if (result === "success") return res.status(202).send({ isSuccess: true, message: "warehouse deleted" });
+    return res.status(202).send({ isSuccess: true, message: "warehouse deleted" });
   } catch (error) {
+    // unknown error
     next(error);
   }
 };
@@ -39,10 +40,11 @@ const getProvinces = async (req, res, next) => {
     const { error, result } = provinces;
 
     // check whether error exists
-    if (!result) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
+    if (error) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
 
     return res.status(200).send({ isSuccess: true, message: "success fetched data", result });
   } catch (error) {
+    // unknown error
     next(error);
   }
 };
@@ -60,6 +62,7 @@ const getCitiesByProvinceId = async (req, res, next) => {
 
     return res.status(200).send({ isSuccess: true, message: "success fetched data", result });
   } catch (error) {
+    // unknown error
     next(error);
   }
 };
@@ -108,6 +111,7 @@ const editWarehouse = async (req, res, next) => {
 
     return res.status(202).send({ isSuccess: true, message: "success edit data", result });
   } catch (error) {
+    // unknown error
     next(error);
   }
 };

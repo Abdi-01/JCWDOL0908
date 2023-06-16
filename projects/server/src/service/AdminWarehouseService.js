@@ -163,12 +163,9 @@ const deleteWarehouseLogic = async (id_warehouse) => {
     let result = response[0];
 
     // check whether data changed exist
-    if (!result) {
-      result = "not found";
-    } else {
-      result = "success";
-    }
+    if (!result) throw { errMsg: "warehouse not found", statusCode: 404 };
 
+    result = "success";
     await transaction.commit();
     return { error: null, result };
   } catch (error) {
