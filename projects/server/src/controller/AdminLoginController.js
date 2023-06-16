@@ -7,7 +7,6 @@ const loginAdmin = async (req, res, next) => {
   try {
     const response = await AdminLoginService.loginAdmin(username, password);
     const { error, result } = response;
-    console.log(response);
     // check whether error exists
     if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
     if (error) res.status(500).send({ isSuccess: false, message: "internal server error", error });

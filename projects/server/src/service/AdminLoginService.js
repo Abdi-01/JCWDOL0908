@@ -65,7 +65,7 @@ const loginAdmin = async (username, password, transaction) => {
         warehouse_name,
         id_city,
       };
-      tokenPayload = { id_user, username, is_admin, id_role, role_admin };
+      tokenPayload = { id_user, is_admin, id_role, role_admin };
     }
 
     // create Token
@@ -108,7 +108,7 @@ const keepLogin = async (id_user) => {
         warehouse_name,
         id_city,
       };
-      tokenPayload = { id_user, username, is_admin, id_role, role_admin };
+      tokenPayload = { id_user, is_admin, id_role, role_admin };
     }
 
     // create Token
