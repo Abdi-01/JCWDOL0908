@@ -2,15 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import CustomForm from "../../manage_user/CustomForm";
-import {
-  editWarehouse,
-  getCitiesByProvinces,
-  getProvinces,
-  getWarehouses,
-} from "../../../../feature/admin/AdminWarehouseSlice";
 import RenderProvince from "../add_data/RenderProvince";
 import RenderCity from "../add_data/RenderCity";
 import CustomSelect from "../../manage_user/CustomSelect";
+import { editWarehouse, getCitiesByProvinces, getProvinces, getWarehouses } from "../../../../feature/admin_warehouse";
 
 function EditModal(props) {
   const { setIsEditBtnClicked, warehouseData, setWarehouses, pageNum } = props;

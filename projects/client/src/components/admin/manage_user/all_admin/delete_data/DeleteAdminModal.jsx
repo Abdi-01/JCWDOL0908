@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RenderSingleAdminToDelete from "./RenderSingleAdminToDelete";
-import { deleteUserData, getAllAdmin } from "../../../../../feature/admin/AdminSlice";
+import { deleteUserData, getAllAdmin } from "../../../../../feature/admin";
 
 function DeleteAdminModal(props) {
   const { setDeleteClicked, page } = props;

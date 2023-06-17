@@ -3,14 +3,14 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import CustomForm from "../../manage_user/CustomForm";
 import CustomSelect from "../../manage_user/CustomSelect";
+import RenderProvince from "./RenderProvince";
+import RenderCity from "./RenderCity";
 import {
   createNewWarehouse,
   getCitiesByProvinces,
   getProvinces,
   getWarehouses,
-} from "../../../../feature/admin/AdminWarehouseSlice";
-import RenderProvince from "./RenderProvince";
-import RenderCity from "./RenderCity";
+} from "../../../../feature/admin_warehouse";
 
 function AddDataModal(props) {
   const { setIsCreateBtnClicked, pageNum, setWarehouses } = props;

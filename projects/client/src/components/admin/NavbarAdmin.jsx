@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NavbarRenderIcon from "./navbar/NavbarRenderIcon";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLoggedInAdminDataBack } from "../../feature/admin/AdminLogInSlice";
+import { setLoggedInAdminDataBack } from "../../feature/admin_auth/slice/AdminLogInSlice";
 
 function NavbarAdmin() {
   const [toggleNav, setToggleNav] = useState(false);

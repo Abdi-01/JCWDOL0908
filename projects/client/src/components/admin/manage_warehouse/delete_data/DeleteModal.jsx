@@ -1,6 +1,6 @@
 import React from "react";
 import RenderDetailData from "./DetailData";
-import { deleteWarehouse, getWarehouses } from "../../../../feature/admin/AdminWarehouseSlice";
+import { deleteWarehouse, getWarehouses } from "../../../../feature/admin_warehouse";
 
 function DeleteModal(props) {
   const { setIsDelBtnClicked, warehouseData, setWarehouses, pageNum, setTotalPage } = props;

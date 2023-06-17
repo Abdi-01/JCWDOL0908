@@ -4,10 +4,10 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import CustomForm from "../../CustomForm";
 import CustomSelect from "../../CustomSelect";
-import { getAllAdmin, getWarehouses, updateAdminWarehouse } from "../../../../../feature/admin/AdminSlice";
 import ConfirmationModal from "./ConfirmationModal";
 import RenderCity from "./RenderCity";
 import RenderWarehouse from "./RenderWarehouse";
+import { getAllAdmin, getWarehousesInCities, updateAdminWarehouse } from "../../../../../feature/admin";
 
 function EditAdminModal(props) {
   const { warehouseCities, setModal, page } = props;
@@ -22,7 +22,7 @@ function EditAdminModal(props) {
   const passwordRegex = /^(?=.*\d).{6,}$/;
 
   const getDataWarehouse = async (input) => {
-    const data = await getWarehouses(input);
+    const data = await getWarehousesInCities(input);
     setWarehouses([...data]);
   };
 

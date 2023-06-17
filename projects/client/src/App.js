@@ -10,8 +10,8 @@ import ProductOrder from "./pages/ProductOrder";
 import ProductReport from "./pages/ProductReport";
 import AdminLogin from "./pages/AdminLogin";
 import { useSelector, useDispatch } from "react-redux";
-import { keepAdminLoggedIn } from "./feature/admin/AdminLogInSlice";
 import WarehouseMgt from "./pages/WarehouseMgt";
+import { keepAdminLoggedIn } from "./feature/admin_auth";
 
 function App() {
   const [message, setMessage] = useState("");

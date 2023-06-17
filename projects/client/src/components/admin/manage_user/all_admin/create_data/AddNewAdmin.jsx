@@ -3,10 +3,10 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import CustomForm from "../../CustomForm";
 import CustomSelect from "../../CustomSelect";
-import { createNewAdmin, getAllAdmin, getWarehouses } from "../../../../../feature/admin/AdminSlice";
 import { useDispatch } from "react-redux";
 import RenderCity from "../edit_data/RenderCity";
 import RenderWarehouse from "../edit_data/RenderWarehouse";
+import { createNewAdmin, getAllAdmin, getWarehousesInCities } from "../../../../../feature/admin";
 
 function AddNewAdmin(props) {
   const { setNewAdminClicked, warehouseCities, page } = props;
@@ -16,7 +16,7 @@ function AddNewAdmin(props) {
 
   // get warehouse list after select city
   const getDataWarehouse = async (cityInput) => {
-    const data = await getWarehouses(cityInput);
+    const data = await getWarehousesInCities(cityInput);
     setWarehouses([...data]);
   };
 
