@@ -30,4 +30,5 @@ module.exports = {
   EditDataAdmin,
   CreateDataAdmin,
   CreateWarehouse,
+  phoneRegExp,
 };
