@@ -60,7 +60,7 @@ const getAllWarehouseCity = async () => {
 };
 
 const getSpecificWarehouseByIdCity = async (id_city) => {
-  const warehouses = await Warehouse.findAll({ where: { id_city } });
+  const warehouses = await Warehouse.findAll({ where: { [Op.and]: [{ id_city }, { is_deleted: 0 }] } });
   return warehouses;
 };
 
@@ -134,10 +134,10 @@ const getWarehousesLogic = async (offset, limit, page) => {
   try {
     // get total count warehouses
     let warehousesCount = await getWarehousesDataCount();
-
+    console.log(warehousesCount);
     // get warehouses with limit
     const warehouses = await getWarehousesData(offset, limit, page);
-
+    console.log(warehouses);
     // get total page if fetching data being limited
     warehousesCount = warehousesCount[0].dataValues.warehouse_count;
     const totalPage = Math.ceil(warehousesCount / limit);
