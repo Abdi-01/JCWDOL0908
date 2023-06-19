@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { getCategories, postCategory } from "../../../";
 
 function AddNewCategory(props) {
-  const { setNewCategoryClicked, pageNum } = props;
+  const { setNewCategoryClicked, pageNum, setCategories } = props;
   const [preview, setPreview] = useState();
   const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 
@@ -39,7 +39,9 @@ function AddNewCategory(props) {
       formData.append("data", JSON.stringify(values));
       console.log(formData);
       const response = await postCategory(formData);
+      alert(response.message);
       const refetchData = await getCategories(pageNum);
+      await setCategories({ ...refetchData });
       setNewCategoryClicked(false);
     },
   });

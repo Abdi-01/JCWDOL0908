@@ -3,9 +3,12 @@ import AddNewCategory from "./add_category/AddNewCategory";
 import { getCategories } from "../../";
 import RenderCategories from "./RenderCategories";
 import Pagination from "./Pagination";
+import DeleteModal from "./delete_category/DeleteModal";
 
 function CategoryBody() {
   const [isNewCategoryClicked, setNewCategoryClicked] = useState(false);
+  const [isDeleteClicked, setDeleteClicked] = useState(false);
+  const [singleCategory, setSingleCategory] = useState({});
   const [categories, setCategories] = useState({});
   const [pageNum, setPageNum] = useState(1);
 
@@ -25,13 +28,27 @@ function CategoryBody() {
 
   return (
     <>
-      {isNewCategoryClicked ? <AddNewCategory setNewCategoryClicked={setNewCategoryClicked} pageNum={pageNum} /> : null}
+      {isNewCategoryClicked ? (
+        <AddNewCategory setNewCategoryClicked={setNewCategoryClicked} pageNum={pageNum} setCategories={setCategories} />
+      ) : null}
+      {isDeleteClicked ? (
+        <DeleteModal
+          setDeleteClicked={setDeleteClicked}
+          pageNum={pageNum}
+          singleCategory={singleCategory}
+          setCategories={setCategories}
+        />
+      ) : null}
       <div className="row-span-6 grid gap-2 lg:gap-2">
         <div
           className="font-semibold text-slate-800 grid grid-rows-4 md:grid-rows-2
-          md:grid-cols-2 items-start gap-2 text-sm lg:text-2xl md:text-lg lg:gap-6 pt-4"
+          md:grid-cols-2 items-start gap-2 text-lg lg:text-4xl md:text-xl lg:gap-6 pt-4"
         >
-          <RenderCategories categories={categories?.categories} />
+          <RenderCategories
+            categories={categories?.categories}
+            setSingleCategory={setSingleCategory}
+            setDeleteClicked={setDeleteClicked}
+          />
         </div>
       </div>
       <div className="row-span-1 flex text-center items-end lg:grid lg:grid-cols-2">

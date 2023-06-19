@@ -48,4 +48,19 @@ const getCategories = async (req, res, next) => {
   }
 };
 
-module.exports = { createNewCategory, editCategory, getCategories };
+const deleteCategory = async (req, res, next) => {
+  const { id_category } = req.params;
+  console.log(id_category);
+  try {
+    const { error, result } = await CategoryService.deleteCategoryLogic(id_category);
+    console.log(error, result);
+    if (error) return res.status(error?.statusCode).send({ message: error?.errMsg, isSuccess: false });
+
+    return res.status(202).send({ message: "data deleted", isSuccess: true });
+  } catch (error) {
+    // unknown error
+    next(error);
+  }
+};
+
+module.exports = { createNewCategory, editCategory, getCategories, deleteCategory };

@@ -1,8 +1,13 @@
 import React from "react";
 
 function RenderCategories(props) {
-  const { categories } = props;
+  const { categories, setSingleCategory, setDeleteClicked } = props;
   const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+  const delBtnHandler = (data) => {
+    setSingleCategory({ ...data });
+    setDeleteClicked(true);
+  };
 
   return categories?.map((category) => {
     return (
@@ -10,7 +15,7 @@ function RenderCategories(props) {
         key={category?.id_category}
         style={{ backgroundImage: `url(${REACT_APP_SERVER_URL + category?.category_image})` }}
         className="h-full grid grid-cols-3 items-center px-4 bg-cover drop-shadow-md
-      gap-2 lg:grid-cols-4 lg:px-6 lg:h-full bg-slate-100 shadow-md"
+      gap-2 lg:grid-cols-4 lg:px-6 lg:h-full bg-slate-100 shadow-md transition hover:scale-105"
       >
         <div className="col-span-2 lg:col-span-3 text-left h-full flex items-center">
           <div className="relative">
@@ -24,7 +29,7 @@ function RenderCategories(props) {
           <button className="bg-slate-300">
             <i className="uil uil-pen"></i>
           </button>
-          <button className="bg-red-600 text-white">
+          <button onClick={() => delBtnHandler(category)} className="bg-red-600 text-white">
             <i className="uil uil-trash-alt"></i>
           </button>
         </div>

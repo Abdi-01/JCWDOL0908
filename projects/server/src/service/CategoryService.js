@@ -16,6 +16,11 @@ const getCategoriesCount = async () => {
   return categoriesCount;
 };
 
+const deleteCategory = async (id_category, transaction) => {
+  const deleteResult = await Category.update({ is_deleted: 1 }, { where: { id_category }, transaction });
+  return deleteResult;
+};
+
 const getCategories = async (offset, limit, page) => {
   const categories = await Category.findAll({
     where: { is_deleted: 0 },
@@ -64,4 +69,17 @@ const getCategoriesLogic = async (offset, limit, page) => {
   }
 };
 
-module.exports = { createNewCategoryLogic, getCategoriesLogic };
+const deleteCategoryLogic = async (id_category) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const response = await deleteCategory(id_category, transaction);
+    if (response[0] !== 1) throw { errMsg: "not found", statusCode: 404 };
+    transaction.commit();
+    return { error: null, result: response };
+  } catch (error) {
+    transaction.rollback();
+    return { error, result: null };
+  }
+};
+
+module.exports = { createNewCategoryLogic, getCategoriesLogic, deleteCategoryLogic };
