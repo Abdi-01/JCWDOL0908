@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, useFormik } from "formik";
 import * as Yup from "yup";
-import EmptyCategory from "../../../../../images/upload-image-icon.jpg";
+import { getCategories, postCategory } from "../../../";
 
 function AddNewCategory(props) {
-  const { setNewCategoryClicked } = props;
+  const { setNewCategoryClicked, pageNum } = props;
   const [preview, setPreview] = useState();
   const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 
@@ -31,8 +31,16 @@ function AddNewCategory(props) {
       category_name: "",
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
+      console.log(preview);
+      const formData = new FormData();
+      formData.append("photo", preview);
+      formData.append("data", JSON.stringify(values));
+      console.log(formData);
+      const response = await postCategory(formData);
+      const refetchData = await getCategories(pageNum);
+      setNewCategoryClicked(false);
     },
   });
 

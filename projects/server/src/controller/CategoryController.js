@@ -15,10 +15,13 @@ const createNewCategory = async (req, res, next) => {
       const category_image = req.uniqueUrl;
       const { category_name } = JSON.parse(req.body.data);
 
+      //validate input data
       var { error, value } = AdminDataValidation.CreateNewCategory.validate({ category_name });
       if (error) throw error;
 
       var { error, result } = await CategoryService.createNewCategoryLogic(category_image, category_name);
+
+      // check whether error exists
       if (error) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
 
       return res.status(202).send({ isSuccess: true, message: "success create category", result });
@@ -30,4 +33,19 @@ const createNewCategory = async (req, res, next) => {
 
 const editCategory = async (req, res, next) => {};
 
-module.exports = { createNewCategory };
+const getCategories = async (req, res, next) => {
+  try {
+    const { offset, limit, page } = req.query;
+    const { error, result } = await CategoryService.getCategoriesLogic(offset, limit, page);
+
+    // check whether error exists
+    if (error) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
+
+    return res.status(200).send({ isSuccess: true, message: "success fetched data", result });
+  } catch (error) {
+    // unknown error
+    next(error);
+  }
+};
+
+module.exports = { createNewCategory, editCategory, getCategories };
