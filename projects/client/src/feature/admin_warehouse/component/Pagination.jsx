@@ -1,7 +1,7 @@
 import React from "react";
 
 function Pagination(props) {
-  const { pageNum, setPageNum, totalPage } = props;
+  const { pageNum, setPageNum, totalPageWarehouse } = props;
 
   const addPageNum = async () => {
     setPageNum(pageNum + 1);
@@ -25,7 +25,7 @@ function Pagination(props) {
         <p>{pageNum}</p>
       </div>
       <div className="col-span-1 col-start-5 flex items-center justify-center lg:col-start-7">
-        <button onClick={addPageNum} disabled={pageNum === totalPage}>
+        <button onClick={addPageNum} disabled={pageNum === totalPageWarehouse}>
           <i className="uil uil-arrow-right hover:cursor-pointer"></i>
         </button>
       </div>

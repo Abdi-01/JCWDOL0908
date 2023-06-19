@@ -13,8 +13,8 @@ function WarehouseMgt() {
     (async () => {
       const data = await getWarehouses(pageNum);
       const { result, totalPage } = data;
-      setTotalPage(totalPage);
-      setWarehouses([...result]);
+      await setTotalPage(totalPage);
+      await setWarehouses([...result]);
     })();
   }, [pageNum]);
 

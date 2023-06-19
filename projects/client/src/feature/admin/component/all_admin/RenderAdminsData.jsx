@@ -15,6 +15,7 @@ function RenderAdminsData(props) {
   };
 
   return allAdmin.dataAll.map((data) => {
+    console.log(data);
     return (
       <div
         key={data.id_user}

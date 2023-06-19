@@ -1,12 +1,17 @@
 import React from "react";
 
 function RenderCategories(props) {
-  const { categories, setSingleCategory, setDeleteClicked } = props;
+  const { categories, setSingleCategory, setDeleteClicked, setEditClicked, roleAdmin } = props;
   const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   const delBtnHandler = (data) => {
     setSingleCategory({ ...data });
     setDeleteClicked(true);
+  };
+
+  const editBtnHandler = (data) => {
+    setSingleCategory({ ...data });
+    setEditClicked(true);
   };
 
   return categories?.map((category) => {
@@ -26,10 +31,20 @@ function RenderCategories(props) {
           </div>
         </div>
         <div className="h-1/3 md:h-1/4 grid grid-cols-2 gap-2">
-          <button className="bg-slate-300">
+          <button
+            className="bg-slate-300 disabled:bg-white disabled:border-2 lg:disabled:border-4
+            disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
+            onClick={() => editBtnHandler(category)}
+            disabled={roleAdmin.role_admin !== "super-admin"}
+          >
             <i className="uil uil-pen"></i>
           </button>
-          <button onClick={() => delBtnHandler(category)} className="bg-red-600 text-white">
+          <button
+            onClick={() => delBtnHandler(category)}
+            className="bg-red-600 text-white disabled:bg-white disabled:border-2 lg:disabled:border-4
+            disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
+            disabled={roleAdmin.role_admin !== "super-admin"}
+          >
             <i className="uil uil-trash-alt"></i>
           </button>
         </div>

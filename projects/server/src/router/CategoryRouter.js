@@ -7,5 +7,6 @@ const { isSuperAdmin } = require("../middleware/IsSuperAdmin");
 router.post("/", tokenDecoder, isSuperAdmin, CategoryController.createNewCategory);
 router.get("/", CategoryController.getCategories);
 router.patch("/delete/:id_category", tokenDecoder, isSuperAdmin, CategoryController.deleteCategory);
+router.patch("/edit", tokenDecoder, isSuperAdmin, CategoryController.editCategory);
 
 module.exports = router;

@@ -21,7 +21,6 @@ import { KeepUser } from "./feature/auth/slice/UserSlice";
 import ResetPassword from "./pages/client/profile/ResetPassword";
 import Logout from "./pages/client/auth/Logout";
 
-
 function App() {
   // const [message, setMessage] = useState("");
   const dispatch = useDispatch();
@@ -39,7 +38,6 @@ function App() {
     const userToken = Storage.getToken();
     if (userToken) dispatch(KeepUser(userToken));
   }, []);
-
 
   /**
    * TODO: Implement forbidden page
@@ -61,7 +59,6 @@ function App() {
         <Route path="/account/reset-password" element={<ResetPassword />} />
         <Route path="/logout" element={<Logout />} />
 
-
         {!loggedInAdmin.isLoggedIn && <Route path="/admin-login" element={<AdminLogin />} />}
         {loggedInAdmin.isLoggedIn && loggedInAdmin.is_admin ? (
           <>
@@ -79,6 +76,7 @@ function App() {
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 <Route path="/admin/dashboard/order" element={<ProductOrder />} />
                 <Route path="/admin/dashboard/report" element={<ProductReport />} />
+                <Route path="/admin/dashboard/product-management" element={<ProductManagement />} />
               </>
             )}
             <Route path="/*" element={<AdminDashboard />} />

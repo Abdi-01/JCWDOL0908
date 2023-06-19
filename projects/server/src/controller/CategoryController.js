@@ -31,7 +31,10 @@ const createNewCategory = async (req, res, next) => {
   }
 };
 
-const editCategory = async (req, res, next) => {};
+const editCategory = async (req, res, next) => {
+  try {
+  } catch (error) {}
+};
 
 const getCategories = async (req, res, next) => {
   try {

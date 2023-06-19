@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { getCategories, postCategory } from "../../../";
 
-function AddNewCategory(props) {
-  const { setNewCategoryClicked, pageNum, setCategories } = props;
-  const [preview, setPreview] = useState();
+function EditModal(props) {
+  const { setEditClicked, pageNum, setCategories, singleCategory } = props;
+  const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
+  const [preview, setPreview] = useState(`${REACT_APP_SERVER_URL + singleCategory.category_image}`);
   const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 
   const handleImageChange = (event) => {
@@ -28,7 +28,7 @@ function AddNewCategory(props) {
 
   const formik = useFormik({
     initialValues: {
-      category_name: "",
+      category_name: singleCategory.category_name,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -37,23 +37,23 @@ function AddNewCategory(props) {
       const formData = new FormData();
       formData.append("photo", preview);
       formData.append("data", JSON.stringify(values));
-      console.log(formData);
-      const response = await postCategory(formData);
-      alert(response.message);
-      const refetchData = await getCategories(pageNum);
-      await setCategories({ ...refetchData });
-      setNewCategoryClicked(false);
+      //   console.log(formData);
+      //   const response = await postCategory(formData);
+      //   alert(response.message);
+      //   const refetchData = await getCategories(pageNum);
+      //   await setCategories({ ...refetchData });
+      //   setEditClicked(false);
     },
   });
 
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <button onClick={() => setNewCategoryClicked(false)} className="close-btn-modal">
+        <button onClick={() => setEditClicked(false)} className="close-btn-modal">
           <i className="uil uil-times-circle"></i>
         </button>
         <div>
-          <h1 className="my-4 font-bold">Create Category</h1>
+          <h1 className="my-4 font-bold">Edit Category</h1>
           <form onSubmit={formik.handleSubmit} htmlFor="image" className="flex flex-col gap-4">
             <label>
               <div className="mx-auto hover:cursor-pointer w-60 h-40 flex items-center justify-center border-2 border-slate-100">
@@ -103,4 +103,4 @@ function AddNewCategory(props) {
   );
 }
 
-export default AddNewCategory;
+export default EditModal;
