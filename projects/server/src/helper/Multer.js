@@ -74,4 +74,33 @@ const UnlinkPhoto = (name) => {
   }
 };
 
-module.exports = { UploadPhoto, UnlinkPhoto };
+/**
+ * UploadPhotoEditData - a middleware helper to upload photo to storage using multer
+ * @param directory
+ * @returns {(function(*, *, *): void)|*}
+ * @constructor
+ */
+const UploadPhotoEditData = (directory) => {
+  return (req, res, next) => {
+    req.directory = directory;
+    upload.single("photo")(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred during the file upload
+        return res.status(500).json({ message: err.message });
+      } else if (err) {
+        // An unknown error occurred during the file upload
+        return res.status(500).json({ message: err.message || "Unknown error occurred during file upload" });
+      }
+
+      if (!req.file) {
+        req.uniqueUrl = null;
+      } else {
+        req.uniqueUrl = `/storage/${directory}/${req.file.filename}`;
+      }
+
+      next();
+    });
+  };
+};
+
+module.exports = { UploadPhoto, UnlinkPhoto, UploadPhotoEditData };

@@ -1,4 +1,4 @@
-const { UploadPhoto, UnlinkPhoto } = require("../helper/Multer");
+const { UploadPhoto, UnlinkPhoto, UploadPhotoEditData } = require("../helper/Multer");
 const { CategoryService } = require("../service");
 const { AdminDataValidation } = require("../validation");
 
@@ -36,14 +36,13 @@ const createNewCategory = async (req, res, next) => {
 const editCategory = async (req, res, next) => {
   const { id_category } = req.params;
   try {
-    const upload = await UploadPhoto("categories");
+    const upload = await UploadPhotoEditData("categories");
     upload(req, res, async (err) => {
       if (err) {
         return res.status(400).send({ message: err.message, data: null });
       }
-      const category_image = req.uniqueUrl;
+      const category_image = req?.uniqueUrl;
       const { category_name } = JSON.parse(req.body.data);
-      console.log(category_name);
 
       //validate input data
       var { error, value } = AdminDataValidation.CreateNewCategory.validate({ category_name });

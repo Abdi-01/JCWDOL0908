@@ -9,13 +9,26 @@ const getCategory = async (category_name, transaction) => {
   return category;
 };
 
+const getCategoryByNameExceptSelf = async (category_name, id_category, transaction) => {
+  const category = await Category.findOne({
+    where: { category_name, id_category: { [Op.not]: [id_category] } },
+    transaction,
+  });
+  return category;
+};
+
 const getCategoryById = async (id_category, transaction) => {
   const category = await Category.findOne({ where: { id_category }, transaction });
   return category;
 };
 
 const updateData = async (id_category, category_image, category_name, transaction) => {
-  const category = await Category.update({ category_image, category_name }, { where: { id_category }, transaction });
+  let category;
+  if (category_image) {
+    category = await Category.update({ category_image, category_name }, { where: { id_category }, transaction });
+  } else {
+    category = await Category.update({ category_name }, { where: { id_category }, transaction });
+  }
   return category;
 };
 
@@ -66,8 +79,8 @@ const createNewCategoryLogic = async (category_image, category_name, id_category
 const editCategoryLogic = async (category_image, category_name, id_category) => {
   const transaction = await db.sequelize.transaction();
   try {
-    const isNameExist = await getCategory(category_name, transaction);
-
+    const isNameExist = await getCategoryByNameExceptSelf(category_name, id_category, transaction);
+    console.log(isNameExist);
     if (isNameExist) throw { errMsg: "name already exists", statusCode: 400 };
 
     // get current image pattern data
@@ -78,7 +91,7 @@ const editCategoryLogic = async (category_image, category_name, id_category) => 
     const update = await updateData(id_category, category_image, category_name, transaction);
 
     // delete previous image pattern data
-    await UnlinkPhoto(oldImage);
+    if (category_image) await UnlinkPhoto(oldImage);
 
     transaction.commit();
     return { error: null, result: "halo" };
