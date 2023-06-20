@@ -130,6 +130,16 @@ const checkWarehouse = async (warehouse_name, id_city, transaction) => {
   return findWarehouse;
 };
 
+const checkWarehouseByNameExceptSelf = async (warehouse_name, id_warehouse, id_city, transaction) => {
+  const findWarehouse = await Warehouse.findAll({
+    where: {
+      [Op.and]: [{ warehouse_name }, { id_city }, { id_warehouse: { [Op.not]: id_warehouse } }],
+    },
+    transaction,
+  });
+  return findWarehouse;
+};
+
 const getWarehousesLogic = async (offset, limit, page) => {
   try {
     // get total count warehouses
@@ -229,7 +239,7 @@ const editWarehouseLogic = async (id_warehouse, warehouse_name, address, id_city
     if (!components.road) throw { errMsg: "we can't find the road", statusCode: 404 };
 
     //check if warehouse already exist
-    const isWarehouseExist = await checkWarehouse(warehouse_name, id_city, transaction);
+    const isWarehouseExist = await checkWarehouseByNameExceptSelf(warehouse_name, id_warehouse, id_city, transaction);
     if (isWarehouseExist.length > 0) throw { errMsg: "warehouse name already exists", statusCode: 400 };
 
     //edit warehouse
