@@ -134,7 +134,6 @@ const getAllAdminUserLogic = async (offset, limit, page) => {
     const totalPage = Math.ceil(adminCount / limit);
     const result = { totalPage, dataAll: allAdminUser };
     const provinces = await getProvinces();
-    console.log("provinces", provinces);
     return { error: null, result };
   } catch (error) {
     return { error, result: null };

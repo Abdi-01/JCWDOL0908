@@ -134,10 +134,10 @@ const getWarehousesLogic = async (offset, limit, page) => {
   try {
     // get total count warehouses
     let warehousesCount = await getWarehousesDataCount();
-    console.log(warehousesCount);
+
     // get warehouses with limit
     const warehouses = await getWarehousesData(offset, limit, page);
-    console.log(warehouses);
+
     // get total page if fetching data being limited
     warehousesCount = warehousesCount[0].dataValues.warehouse_count;
     const totalPage = Math.ceil(warehousesCount / limit);
