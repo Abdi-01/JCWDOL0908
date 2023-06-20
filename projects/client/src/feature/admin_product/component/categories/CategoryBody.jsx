@@ -53,7 +53,7 @@ function CategoryBody() {
           setCategories={setCategories}
         />
       ) : null}
-      <div className="row-span-6 grid gap-2 lg:gap-2">
+      <div className="row-span-10 grid gap-2 lg:gap-2">
         <div
           className="font-semibold text-slate-800 grid grid-rows-4 md:grid-rows-2
           md:grid-cols-2 items-start gap-2 text-2xl lg:text-4xl md:text-3xl lg:gap-6 pt-4"
