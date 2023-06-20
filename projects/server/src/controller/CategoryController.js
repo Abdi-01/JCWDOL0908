@@ -1,4 +1,4 @@
-const { UploadPhoto } = require("../helper/Multer");
+const { UploadPhoto, UnlinkPhoto } = require("../helper/Multer");
 const { CategoryService } = require("../service");
 const { AdminDataValidation } = require("../validation");
 
@@ -7,7 +7,7 @@ const createNewCategory = async (req, res, next) => {
     const upload = await UploadPhoto("categories");
     upload(req, res, async (err) => {
       if (err) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: err.message,
           data: null,
         });
@@ -22,18 +22,45 @@ const createNewCategory = async (req, res, next) => {
       var { error, result } = await CategoryService.createNewCategoryLogic(category_image, category_name);
 
       // check whether error exists
-      if (error) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
+      if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
+      if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
 
       return res.status(202).send({ isSuccess: true, message: "success create category", result });
     });
   } catch (error) {
+    await UnlinkPhoto(req.uniqueUrl);
     next(error);
   }
 };
 
 const editCategory = async (req, res, next) => {
+  const { id_category } = req.params;
   try {
-  } catch (error) {}
+    const upload = await UploadPhoto("categories");
+    upload(req, res, async (err) => {
+      if (err) {
+        return res.status(400).send({ message: err.message, data: null });
+      }
+      const category_image = req.uniqueUrl;
+      const { category_name } = JSON.parse(req.body.data);
+      console.log(category_name);
+
+      //validate input data
+      var { error, value } = AdminDataValidation.CreateNewCategory.validate({ category_name });
+      if (error) throw error;
+
+      var { error, result } = await CategoryService.editCategoryLogic(category_image, category_name, id_category);
+
+      // check whether error exists
+      if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
+      if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
+
+      return res.status(202).send({ isSuccess: true, message: "success edit category", result });
+    });
+  } catch (error) {
+    await UnlinkPhoto(req.uniqueUrl);
+    next(error);
+  }
 };
 
 const getCategories = async (req, res, next) => {
@@ -56,8 +83,10 @@ const deleteCategory = async (req, res, next) => {
   console.log(id_category);
   try {
     const { error, result } = await CategoryService.deleteCategoryLogic(id_category);
-    console.log(error, result);
-    if (error) return res.status(error?.statusCode).send({ message: error?.errMsg, isSuccess: false });
+
+    // check whether error exists
+    if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
 
     return res.status(202).send({ message: "data deleted", isSuccess: true });
   } catch (error) {

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { editCategory, getCategories } from "../../../";
 
 function EditModal(props) {
   const { setEditClicked, pageNum, setCategories, singleCategory } = props;
@@ -37,12 +38,12 @@ function EditModal(props) {
       const formData = new FormData();
       formData.append("photo", preview);
       formData.append("data", JSON.stringify(values));
-      //   console.log(formData);
-      //   const response = await postCategory(formData);
-      //   alert(response.message);
-      //   const refetchData = await getCategories(pageNum);
-      //   await setCategories({ ...refetchData });
-      //   setEditClicked(false);
+      console.log(formData);
+      const response = await editCategory(formData, singleCategory.id_category);
+      alert(response.message);
+      const refetchData = await getCategories(pageNum);
+      await setCategories({ ...refetchData });
+      setEditClicked(false);
     },
   });
 

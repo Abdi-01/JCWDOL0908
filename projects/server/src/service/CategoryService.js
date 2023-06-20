@@ -2,9 +2,20 @@ const db = require("../model");
 const { Category, sequelize } = db;
 const { Op } = require("sequelize");
 const { QueryTypes } = require("sequelize");
+const { UnlinkPhoto } = require("../helper/Multer");
 
 const getCategory = async (category_name, transaction) => {
   const category = await Category.findOne({ where: { category_name }, transaction });
+  return category;
+};
+
+const getCategoryById = async (id_category, transaction) => {
+  const category = await Category.findOne({ where: { id_category }, transaction });
+  return category;
+};
+
+const updateData = async (id_category, category_image, category_name, transaction) => {
+  const category = await Category.update({ category_image, category_name }, { where: { id_category }, transaction });
   return category;
 };
 
@@ -34,7 +45,7 @@ const createCategory = async (category_image, category_name, transaction) => {
   const newCategory = await Category.create({ category_image, category_name, is_deleted: 0 }, { transaction });
 };
 
-const createNewCategoryLogic = async (category_image, category_name) => {
+const createNewCategoryLogic = async (category_image, category_name, id_category) => {
   const transaction = await db.sequelize.transaction();
   try {
     const isNameExist = await getCategory(category_name, transaction);
@@ -46,6 +57,33 @@ const createNewCategoryLogic = async (category_image, category_name) => {
     transaction.commit();
     return { error: null, result };
   } catch (error) {
+    await UnlinkPhoto(category_image);
+    transaction.rollback();
+    return { error, result: null };
+  }
+};
+
+const editCategoryLogic = async (category_image, category_name, id_category) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const isNameExist = await getCategory(category_name, transaction);
+
+    if (isNameExist) throw { errMsg: "name already exists", statusCode: 400 };
+
+    // get current image pattern data
+    const getSingleData = await getCategoryById(id_category, transaction);
+    const oldImage = getSingleData.dataValues.category_image;
+
+    // update data
+    const update = await updateData(id_category, category_image, category_name, transaction);
+
+    // delete previous image pattern data
+    await UnlinkPhoto(oldImage);
+
+    transaction.commit();
+    return { error: null, result: "halo" };
+  } catch (error) {
+    await UnlinkPhoto(category_image);
     transaction.rollback();
     return { error, result: null };
   }
@@ -82,4 +120,4 @@ const deleteCategoryLogic = async (id_category) => {
   }
 };
 
-module.exports = { createNewCategoryLogic, getCategoriesLogic, deleteCategoryLogic };
+module.exports = { createNewCategoryLogic, getCategoriesLogic, deleteCategoryLogic, editCategoryLogic };
