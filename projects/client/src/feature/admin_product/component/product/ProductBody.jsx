@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "../Pagination";
 import CreateButton from "../CreateButton";
 import Filter from "./Filter";
 import AddDataModal from "./add_data/AddDataModal";
+import { getCategories } from "../../";
 
 function ProductBody(props) {
   const { admin } = props;
   const [pageNum, setPageNum] = useState(1);
   const [isNewProductClicked, setNewProductClicked] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await getCategories();
+      setCategories([...response.categories]);
+    })();
+  }, []);
+
   return (
     <>
-      {isNewProductClicked ? <AddDataModal setNewProductClicked={setNewProductClicked} /> : null}
+      {isNewProductClicked ? (
+        <AddDataModal setNewProductClicked={setNewProductClicked} categories={categories} />
+      ) : null}
       <div className="product-and-category-body-container grid grid-rows-10">
         <div className="row-span-1 flex items-end text-sm">
           <Filter />

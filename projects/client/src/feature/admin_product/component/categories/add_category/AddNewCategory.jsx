@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { getCategories, postCategory } from "../../../";
+import UploadPicture from "../../UploadPicture";
 
 function AddNewCategory(props) {
   const { setNewCategoryClicked, pageNum, setCategories } = props;
@@ -55,25 +56,7 @@ function AddNewCategory(props) {
         <div>
           <h1 className="my-4 font-bold">Create Category</h1>
           <form onSubmit={formik.handleSubmit} htmlFor="image" className="flex flex-col gap-4">
-            <label>
-              <div className="mx-auto hover:cursor-pointer w-60 h-40 flex items-center justify-center border-2 border-slate-100">
-                <img
-                  src={preview}
-                  alt="category_image"
-                  id="image_preview"
-                  className={`mx-auto object-contain ${preview ? "w-full h-full" : "hidden"}`}
-                />
-                <input
-                  type="file"
-                  id="photo"
-                  name="photo"
-                  className="w-full hidden"
-                  accept="image/png, image/jpeg, image/jpg"
-                  onChange={handleImageChange}
-                />
-                <i className={`uil uil-image-upload ${!preview ? " text-8xl text-slate-800" : "hidden"}`}></i>
-              </div>
-            </label>
+            <UploadPicture preview={preview} handleImageChange={handleImageChange} />
             <div className="grid grid-cols-3 items-center gap-2">
               <label className="col-span-1">category : </label>
               <input
