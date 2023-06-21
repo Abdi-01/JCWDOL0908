@@ -22,7 +22,7 @@ function Body(props) {
           )}
         </>
       ) : (
-        <ProductBody />
+        <ProductBody admin={admin} />
       )}
     </div>
   );
