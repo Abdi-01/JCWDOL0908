@@ -1,11 +1,10 @@
-
 const UserController = require("./UserController");
 const AdminController = require("./AdminController");
 const AdminLoginController = require("./AdminLoginController");
 const AdminWarehouseController = require("./AdminWarehouseController");
 const AuthController = require("./AuthController");
 const CategoryController = require("./CategoryController");
-
+const ProductController = require("./ProductController");
 
 module.exports = {
   UserController,
@@ -14,4 +13,5 @@ module.exports = {
   AdminWarehouseController,
   AuthController,
   CategoryController,
+  ProductController,
 };

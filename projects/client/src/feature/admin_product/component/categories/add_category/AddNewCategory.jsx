@@ -33,12 +33,9 @@ function AddNewCategory(props) {
     },
     validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
-      console.log(preview);
       const formData = new FormData();
       formData.append("photo", preview);
       formData.append("data", JSON.stringify(values));
-      console.log(formData);
       const response = await postCategory(formData);
       alert(response.message);
       const refetchData = await getCategories(pageNum);

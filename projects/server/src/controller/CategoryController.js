@@ -16,7 +16,7 @@ const createNewCategory = async (req, res, next) => {
       const { category_name } = JSON.parse(req.body.data);
 
       //validate input data
-      var { error, value } = AdminDataValidation.CreateNewCategory.validate({ category_name });
+      var { error, value } = AdminDataValidation.CreateNewCategory.validate({ category_name, category_image });
       if (error) throw error;
 
       var { error, result } = await CategoryService.createNewCategoryLogic(category_image, category_name);
@@ -45,7 +45,7 @@ const editCategory = async (req, res, next) => {
       const { category_name } = JSON.parse(req.body.data);
 
       //validate input data
-      var { error, value } = AdminDataValidation.CreateNewCategory.validate({ category_name });
+      var { error, value } = AdminDataValidation.CreateNewCategory.validate({ category_name, category_image });
       if (error) throw error;
 
       var { error, result } = await CategoryService.editCategoryLogic(category_image, category_name, id_category);
