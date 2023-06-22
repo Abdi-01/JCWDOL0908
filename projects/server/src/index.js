@@ -68,9 +68,9 @@ app.use((err, req, res, next) => {
   if (req.path.includes("/api/")) {
     console.error("Error : ", err);
     if (err.statusCode && err.message) {
-      res.status(err.statusCode).send(err.message);
+      return res.status(err.statusCode).send(err.message);
     }
-    res.status(500).send(err);
+    return res.status(500).send(err);
   } else {
     next();
   }
