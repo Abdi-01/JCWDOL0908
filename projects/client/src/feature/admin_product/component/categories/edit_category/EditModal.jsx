@@ -38,7 +38,6 @@ function EditModal(props) {
       const formData = new FormData();
       formData.append("photo", preview);
       formData.append("data", JSON.stringify(values));
-      console.log(formData);
       const response = await editCategory(formData, singleCategory.id_category);
       alert(response.message);
       const refetchData = await getCategories(pageNum);

@@ -85,7 +85,6 @@ const editCategoryLogic = async (category_image, category_name, id_category) => 
   const transaction = await db.sequelize.transaction();
   try {
     const isNameExist = await getCategoryByNameExceptSelf(category_name, id_category, transaction);
-    console.log(isNameExist);
     if (isNameExist) throw { errMsg: "name already exists", statusCode: 400 };
 
     // get current image pattern data

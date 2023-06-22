@@ -3,8 +3,8 @@ import React from "react";
 function CustomInput({ label, formik, type, id, name }) {
   return (
     <div className="relative grid grid-cols-8 gap-2 items-center">
-      <label className="text-left text-slate-800 text-xs font-medium my-0 col-span-2">{label}</label>
-      <p>:</p>
+      <label className="text-left text-slate-800 text-xs font-semibold my-0 col-span-2">{label}</label>
+      <p className="font-semibold">:</p>
       <input
         type={type}
         id={id}

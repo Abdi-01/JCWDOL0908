@@ -3,7 +3,10 @@ import React from "react";
 function UploadPicture({ preview, handleImageChange }) {
   return (
     <label>
-      <div className="mx-auto hover:cursor-pointer w-60 h-40 flex items-center justify-center border-2 border-slate-100">
+      <div
+        className="mx-auto hover:cursor-pointer w-60 h-40 flex items-center justify-center border-2 border-slate-100
+       lg:w-80 lg:h-60"
+      >
         <img
           src={preview}
           alt="category_image"

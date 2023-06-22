@@ -5,11 +5,18 @@ const { QueryTypes } = require("sequelize");
 
 const getProductByName = async (product_name, id_product) => {
   let product;
+  console.log("id_product", id_product);
   if (id_product) {
+    console.log("harusnya kesini jg");
     product = await Product.findOne({ where: { product_name, id_product: { [Op.not]: id_product } } });
   } else {
     product = await Product.findOne({ where: { product_name } });
   }
+  return product;
+};
+
+const getProductById = async (id_product, transaction) => {
+  const product = await Product.findOne({ where: { id_product }, transaction });
   return product;
 };
 
@@ -89,6 +96,31 @@ const deleteProduct = async (id_product, transaction) => {
   return result;
 };
 
+const updateProduct = async (
+  product_name,
+  description,
+  weight_kg,
+  product_image,
+  id_category,
+  price,
+  id_product,
+  transaction,
+) => {
+  let result;
+  if (product_image) {
+    result = await Product.update(
+      { product_name, description, weight_kg, product_image, id_category, price },
+      { where: { id_product }, transaction },
+    );
+  } else {
+    result = await Product.update(
+      { product_name, description, weight_kg, id_category, price },
+      { where: { id_product }, transaction },
+    );
+  }
+  return result;
+};
+
 module.exports = {
   getProductsCount,
   getProducts,
@@ -96,4 +128,6 @@ module.exports = {
   createProduct,
   createProductWarehouseRlt,
   deleteProduct,
+  updateProduct,
+  getProductById,
 };

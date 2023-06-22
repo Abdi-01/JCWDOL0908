@@ -4,8 +4,8 @@ import RenderCategoryOptions from "./add_data/RenderCategoryOptions";
 function CustomSelectCategory({ label, formik, name, categories }) {
   return (
     <div className="relative grid grid-cols-8 gap-2 items-center">
-      <label className="text-left text-slate-800 text-xs font-medium my-0 col-span-2">{label}</label>
-      <p>:</p>
+      <label className="text-left text-slate-800 text-xs font-semibold my-0 col-span-2">{label}</label>
+      <p className="font-semibold">:</p>
       <select
         name={name}
         className={

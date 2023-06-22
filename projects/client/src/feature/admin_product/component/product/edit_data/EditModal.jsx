@@ -1,20 +1,35 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import CurrencyInput from "./CurrencyInput";
+import UploadPicture from "../../UploadPicture";
 import CustomInput from "../../CustomInput";
 import CustomTextArea from "../../CustomTextArea";
-import UploadPicture from "../../UploadPicture";
+import CurrencyInput from "../add_data/CurrencyInput";
 import CustomSelectCategory from "../CustomSelectCategory";
-import { getProducts, postProduct } from "../../../";
+import { editProduct, getProducts } from "../../../";
 
-function AddDataModal(props) {
-  const { setNewProductClicked, categories, pageNum, setProducts, OFFSET, LIMIT, selectedCategory, setTotalPate } =
-    props;
-  const [currencyValue, setCurrencyValue] = useState(0);
-  const [preview, setPreview] = useState();
+function EditModal(props) {
+  const {
+    singleProduct,
+    setEditClicked,
+    pageNum,
+    setProducts,
+    OFFSET,
+    LIMIT,
+    selectedCategory,
+    setTotalPate,
+    categories,
+  } = props;
+
+  const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
+  const [currencyValue, setCurrencyValue] = useState(
+    new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(singleProduct.price),
+  );
+  const [preview, setPreview] = useState(`${REACT_APP_SERVER_URL + singleProduct.product_image}`);
   const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg"];
-
   const validationSchema = Yup.object().shape({
     product_name: Yup.string().min(3).max(45).required("required"),
     description: Yup.string().max(255),
@@ -38,44 +53,45 @@ function AddDataModal(props) {
 
   const formik = useFormik({
     initialValues: {
-      product_name: "",
-      description: "",
-      weight_kg: 0,
-      id_category: "",
+      product_name: singleProduct.product_name,
+      description: singleProduct.description,
+      weight_kg: singleProduct.weight_kg,
+      id_category: singleProduct.id_category,
     },
     validationSchema,
     onSubmit: async (values) => {
       let price = currencyValue.replace(/[^0-9]/g, "");
       price = parseInt(price.slice(0, price.length - 2));
+      const id_product = singleProduct.id_product;
       const data = { ...values, price };
       const formData = new FormData();
       formData.append("photo", preview);
       formData.append("data", JSON.stringify(data));
-      const response = await postProduct(formData);
-      alert(response.message);
+      const editResponse = await editProduct(formData, id_product);
+      alert(editResponse.message);
       const fetchedData = await getProducts(OFFSET, LIMIT, pageNum, selectedCategory);
       setProducts([...fetchedData.result.productsList]);
       setTotalPate(fetchedData.result.totalPage);
-      setNewProductClicked(false);
+      setEditClicked(false);
     },
   });
 
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <button onClick={() => setNewProductClicked(false)} className="close-btn-modal">
+        <button onClick={() => setEditClicked(false)} className="close-btn-modal">
           <i className="uil uil-times-circle"></i>
         </button>
         <div>
-          <h1 className="my-4 font-bold">Create Product</h1>
+          <h1 className="my-4 font-bold">Edit Product</h1>
           <form onSubmit={formik.handleSubmit} className="pt-4 pb-0 text-slate-800 gap-2 flex flex-col">
             <UploadPicture preview={preview} handleImageChange={handleImageChange} />
             <CustomInput type="text" name="product_name" id="product_name" formik={formik} label="product name" />
             <CustomTextArea type="textarea" name="description" id="description" formik={formik} label="description" />
             <CustomInput type="number" name="weight_kg" id="weight_kg" formik={formik} label="weight (kg)" />
             <div className="relative grid grid-cols-8 gap-2 items-center">
-              <label className="text-left text-slate-800 text-xs font-medium my-0 col-span-2">price</label>
-              <p>:</p>
+              <label className="text-left text-slate-800 text-xs font-semibold my-0 col-span-2">price</label>
+              <p className="font-semibold">:</p>
               <CurrencyInput
                 value={currencyValue}
                 onChange={setCurrencyValue}
@@ -97,4 +113,4 @@ function AddDataModal(props) {
   );
 }
 
-export default AddDataModal;
+export default EditModal;

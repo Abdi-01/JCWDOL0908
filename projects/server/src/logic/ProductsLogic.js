@@ -77,4 +77,43 @@ const deleteProductLogic = async (id_product) => {
   }
 };
 
-module.exports = { getProductsLogic, postNewProductLogic, deleteProductLogic };
+const editProductLogic = async (data) => {
+  const { product_name, description, weight_kg, product_image, id_category, price, id_product } = data;
+  const transaction = await db.sequelize.transaction();
+  let result;
+  let updateData;
+  console.log(product_image);
+  try {
+    // check if name already exists
+    const isNameExist = await ProductService.getProductByName(product_name, id_product);
+    // if name exist send error message
+    if (isNameExist) throw { errMsg: "name already exists", statusCode: 400 };
+    // get current image pattern data
+    const getSingleData = await ProductService.getProductById(id_product, transaction);
+    const oldImage = getSingleData.dataValues.product_image;
+
+    // update data
+    updateData = await ProductService.updateProduct(
+      product_name,
+      description,
+      weight_kg,
+      product_image,
+      id_category,
+      price,
+      id_product,
+      transaction,
+    );
+    result = updateData;
+    // delete previous image pattern data
+    if (product_image) await UnlinkPhoto(oldImage);
+
+    transaction.commit();
+    return { error: null, result };
+  } catch (error) {
+    await UnlinkPhoto(product_image);
+    transaction.rollback();
+    return { error, result: null };
+  }
+};
+
+module.exports = { getProductsLogic, postNewProductLogic, deleteProductLogic, editProductLogic };

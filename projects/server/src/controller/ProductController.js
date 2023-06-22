@@ -62,4 +62,34 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
-module.exports = { postNewProduct, getProducts, deleteProduct };
+const editProduct = async (req, res, next) => {
+  const { id_product } = req.params;
+  try {
+    const upload = await UploadPhotoEditData("products");
+    upload(req, res, async (err) => {
+      if (err) return res.status(400).send({ message: err.message, data: null });
+
+      const product_image = req.uniqueUrl;
+      let data = JSON.parse(req.body.data);
+
+      if (!product_image) {
+        var { error, value } = await AdminDataValidation.editProductWithoutImage.validate({ ...data });
+      } else {
+        var { error, value } = await AdminDataValidation.CreateNewProduct.validate({ ...data, product_image });
+      }
+      if (error) throw error;
+
+      var { error, result } = await ProductsLogic.editProductLogic({ ...data, product_image, id_product });
+
+      if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
+      if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
+
+      return res.status(202).send({ isSuccess: true, message: "success edit category", result });
+    });
+  } catch (error) {
+    await UnlinkPhoto(req.uniqueUrl);
+    next(error);
+  }
+};
+
+module.exports = { postNewProduct, getProducts, deleteProduct, editProduct };

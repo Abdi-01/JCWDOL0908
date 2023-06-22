@@ -7,5 +7,6 @@ const { isSuperAdmin } = require("../middleware/IsSuperAdmin");
 router.post("/", tokenDecoder, isAdmin, isSuperAdmin, ProductController.postNewProduct);
 router.get("/", tokenDecoder, isUser, ProductController.getProducts);
 router.patch("/delete/:id_product", tokenDecoder, isAdmin, isSuperAdmin, ProductController.deleteProduct);
+router.patch("/edit/:id_product", tokenDecoder, isAdmin, isSuperAdmin, ProductController.editProduct);
 
 module.exports = router;

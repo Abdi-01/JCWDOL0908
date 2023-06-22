@@ -3,8 +3,8 @@ import React from "react";
 function CustomTextArea({ label, formik, type, id, name }) {
   return (
     <div className="relative grid grid-cols-8 gap-2 items-center">
-      <label className="text-left text-slate-800 text-xs font-medium my-0 col-span-2">{label}</label>
-      <p>:</p>
+      <label className="text-left text-slate-800 text-xs my-0 col-span-2 font-semibold">{label}</label>
+      <p className="font-semibold">:</p>
       <textarea
         type={type}
         id={id}
@@ -21,7 +21,7 @@ function CustomTextArea({ label, formik, type, id, name }) {
               " placeholder col-span-5 h-fit py-1"
         }
         onChange={formik.handleChange}
-        value={formik.values.category_name}
+        value={formik.values[name]}
       />
       {formik.touched[name] && formik.errors[name] ? (
         <div className="absolute text-red-500 text-xs right-0 top-7 pt-1 font-normal">{formik.errors[name]}</div>

@@ -6,12 +6,15 @@ import { getCategories, getProducts } from "../../";
 import RenderProducts from "./RenderProducts";
 import { useSelector } from "react-redux";
 import DeleteModal from "./delete_data/DeleteModal";
+import EditModal from "./edit_data/EditModal";
+import NoData from "./NoData";
 
 function ProductBody(props) {
   const { admin } = props;
   const [totalPage, setTotalPate] = useState(null);
   const [pageNum, setPageNum] = useState(1);
   const [isNewProductClicked, setNewProductClicked] = useState(false);
+  const [isEditClicked, setEditClicked] = useState(false);
   const [isDeleteClicked, setDeleteClicked] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -48,7 +51,29 @@ function ProductBody(props) {
   return (
     <>
       {isNewProductClicked ? (
-        <AddDataModal setNewProductClicked={setNewProductClicked} categories={categories} />
+        <AddDataModal
+          setNewProductClicked={setNewProductClicked}
+          categories={categories}
+          pageNum={pageNum}
+          setProducts={setProducts}
+          OFFSET={OFFSET}
+          LIMIT={LIMIT}
+          selectedCategory={selectedCategory}
+          setTotalPate={setTotalPate}
+        />
+      ) : null}
+      {isEditClicked ? (
+        <EditModal
+          singleProduct={singleProduct}
+          setEditClicked={setEditClicked}
+          pageNum={pageNum}
+          setProducts={setProducts}
+          OFFSET={OFFSET}
+          LIMIT={LIMIT}
+          selectedCategory={selectedCategory}
+          setTotalPate={setTotalPate}
+          categories={categories}
+        />
       ) : null}
       {isDeleteClicked ? (
         <DeleteModal
@@ -79,11 +104,10 @@ function ProductBody(props) {
               roleAdmin={roleAdmin}
               setDeleteClicked={setDeleteClicked}
               setSingleProduct={setSingleProduct}
+              setEditClicked={setEditClicked}
             />
           ) : (
-            <div className="h-full w-full row-span-4 md:row-span-2 md:col-span-2 grid items-center text-center">
-              <h1>No Product</h1>
-            </div>
+            <NoData />
           )}
         </div>
       </div>
