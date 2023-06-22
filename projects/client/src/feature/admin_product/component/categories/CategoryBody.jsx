@@ -24,13 +24,6 @@ function CategoryBody() {
     })();
   }, [pageNum]);
 
-  useEffect(() => {
-    (async () => {
-      const response = await getCategories(pageNum);
-      await setCategories({ ...response });
-    })();
-  }, []);
-
   return (
     <>
       {isEditClicked ? (

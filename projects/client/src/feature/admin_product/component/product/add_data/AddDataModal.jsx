@@ -6,6 +6,7 @@ import CustomInput from "../../CustomInput";
 import CustomTextArea from "../../CustomTextArea";
 import UploadPicture from "../../UploadPicture";
 import CustomSelectCategory from "../CustomSelectCategory";
+import { postProduct } from "../../../";
 
 function AddDataModal(props) {
   const { setNewProductClicked, categories } = props;
@@ -49,6 +50,9 @@ function AddDataModal(props) {
       const formData = new FormData();
       formData.append("photo", preview);
       formData.append("data", JSON.stringify(data));
+      const response = await postProduct(formData);
+      alert(response.message);
+      setNewProductClicked(false);
     },
   });
 

@@ -86,6 +86,6 @@
 }
 
 .render-data-container {
-  @apply font-semibold text-slate-800 md:grid-rows-2 grid grid-rows-4
-  md:grid-cols-2 items-start gap-2 text-2xl lg:text-4xl md:text-3xl lg:gap-6 pt-4;
+  @apply font-semibold text-slate-800 grid grid-rows-4 md:grid-rows-2
+  md:grid-cols-2 items-start gap-2 text-xl lg:text-4xl md:text-3xl lg:gap-6 pt-4;
 }

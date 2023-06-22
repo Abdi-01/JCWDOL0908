@@ -1,10 +1,25 @@
 import React from "react";
+import RenderCategoryOptions from "./add_data/RenderCategoryOptions";
 
-function Filter() {
+function Filter(props) {
+  const { setSelectedCategory, categories, setPageNum, OFFSET, LIMIT } = props;
+
+  const onChangeHandle = async (event) => {
+    const id_category = parseInt(event.target.value);
+    const page = 1;
+    setSelectedCategory(id_category);
+  };
+
   return (
     <form className="text-sm font-medium">
-      <select className="px-2 py-1 default:text-sm shadow-black shadow-sm" name="category-filter" id="category-filter">
+      <select
+        onChange={onChangeHandle}
+        className="px-2 py-1 default:text-sm shadow-black shadow-sm"
+        name="category-filter"
+        id="category-filter"
+      >
         <option value={0}>select category</option>
+        <RenderCategoryOptions categories={categories} />
       </select>
     </form>
   );

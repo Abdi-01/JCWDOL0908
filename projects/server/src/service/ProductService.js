@@ -1,9 +1,7 @@
 const db = require("../model");
-const { Category, Product, ProductWarehouseRlt, sequelize } = db;
+const { Product, ProductWarehouseRlt, sequelize } = db;
 const { Op } = require("sequelize");
 const { QueryTypes } = require("sequelize");
-const { UnlinkPhoto } = require("../helper/Multer");
-const { getWarehousesData } = require("./AdminWarehouseService");
 
 const getProductByName = async (product_name, id_product) => {
   let product;
@@ -13,6 +11,53 @@ const getProductByName = async (product_name, id_product) => {
     product = await Product.findOne({ where: { product_name } });
   }
   return product;
+};
+
+const getProductsCount = async (id_category) => {
+  let productsCount;
+  //check if offset, limit, page value is given
+  if (id_category) {
+    // if id_category given, then get total count data with category filter
+    productsCount = await Product.findAll({
+      where: { is_deleted: 0, id_category },
+      attributes: [[sequelize.fn("COUNT", sequelize.col("id_product")), "product_count"]],
+    });
+  } else {
+    // if id_category not given, then get total count data without filter
+    productsCount = await Product.findAll({
+      where: { is_deleted: 0 },
+      attributes: [[sequelize.fn("COUNT", sequelize.col("id_product")), "product_count"]],
+    });
+  }
+  return productsCount;
+};
+
+const getProducts = async (offset, limit, page, id_category) => {
+  let products;
+
+  //check if offset, limit, page value is given
+  if (offset && limit && page) {
+    //check if id_category value given
+    if (id_category) {
+      // if id_category given, then get limited data with category filter
+      products = await Product.findAll({
+        where: { is_deleted: 0, id_category },
+        offset: parseInt(offset) * (parseInt(page) - 1),
+        limit: parseInt(limit),
+      });
+    } else {
+      // if id_category not given, then get limited data without filter
+      products = await Product.findAll({
+        where: { is_deleted: 0 },
+        offset: parseInt(offset) * (parseInt(page) - 1),
+        limit: parseInt(limit),
+      });
+    }
+  } else {
+    // if if offset, limit, page value is not given, get all data
+    products = await Product.findAll({ where: { is_deleted: 0 } });
+  }
+  return products;
 };
 
 const createProductWarehouseRlt = async (id_product, id_warehouse, transaction) => {
@@ -39,38 +84,10 @@ const createProduct = async (product_name, description, weight_kg, product_image
   return result;
 };
 
-const postNewProductLogic = async (data) => {
-  const { product_name, description, weight_kg, product_image, id_category, price } = data;
-  const transaction = await db.sequelize.transaction();
-  let result;
-  let createData;
-  try {
-    const isNameExist = await getProductByName(product_name);
-    if (isNameExist) throw { errMsg: "name already exists", statusCode: 400 };
-    createData = await createProduct(
-      product_name,
-      description,
-      weight_kg,
-      product_image,
-      id_category,
-      price,
-      transaction,
-    );
-    const id_product = createData.dataValues.id_product;
-    const getWarehouses = await getWarehousesData();
-
-    for (let iter = 0; iter < getWarehouses.length; iter++) {
-      const id_warehouse = getWarehouses[iter].dataValues.id_warehouse;
-      await createProductWarehouseRlt(id_product, id_warehouse, transaction);
-    }
-
-    transaction.commit();
-    return { error: null, result };
-  } catch (error) {
-    await UnlinkPhoto(product_image);
-    transaction.rollback();
-    return { error, result: null };
-  }
+module.exports = {
+  getProductsCount,
+  getProducts,
+  getProductByName,
+  createProduct,
+  createProductWarehouseRlt,
 };
-
-module.exports = { postNewProductLogic };

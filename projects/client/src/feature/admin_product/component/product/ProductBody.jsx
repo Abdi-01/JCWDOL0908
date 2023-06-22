@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "../Pagination";
-import CreateButton from "../CreateButton";
 import Filter from "./Filter";
 import AddDataModal from "./add_data/AddDataModal";
-import { getCategories } from "../../";
+import { getCategories, getProducts } from "../../";
+import RenderProducts from "./RenderProducts";
+import { useSelector } from "react-redux";
 
 function ProductBody(props) {
   const { admin } = props;
+  const [totalPage, setTotalPate] = useState(null);
   const [pageNum, setPageNum] = useState(1);
   const [isNewProductClicked, setNewProductClicked] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [products, setProducts] = useState([]);
+  const roleAdmin = useSelector((state) => state.adminLogin.loggedInAdminData);
+  const OFFSET = 4;
+  const LIMIT = 4;
 
   useEffect(() => {
     (async () => {
@@ -18,6 +25,23 @@ function ProductBody(props) {
     })();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const response = await getProducts(OFFSET, LIMIT, pageNum, selectedCategory);
+      setProducts([...response.result.productsList]);
+      setTotalPate(response.result.totalPage);
+    })();
+  }, [pageNum]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await getProducts(OFFSET, LIMIT, 1, selectedCategory);
+      setProducts([...response.result.productsList]);
+      setTotalPate(response.result.totalPage);
+      setPageNum(1);
+    })();
+  }, [selectedCategory]);
+
   return (
     <>
       {isNewProductClicked ? (
@@ -25,9 +49,23 @@ function ProductBody(props) {
       ) : null}
       <div className="product-and-category-body-container grid grid-rows-10">
         <div className="row-span-1 flex items-end text-sm">
-          <Filter />
+          <Filter
+            setSelectedCategory={setSelectedCategory}
+            categories={categories}
+            setPageNum={setPageNum}
+            OFFSET={OFFSET}
+            LIMIT={LIMIT}
+          />
         </div>
-        <div className=" row-span-9 render-data-container">render data</div>
+        <div className=" row-span-9 render-data-container">
+          {products.length > 0 ? (
+            <RenderProducts products={products} roleAdmin={roleAdmin} />
+          ) : (
+            <div className="h-full w-full row-span-4 md:row-span-2 md:col-span-2 grid items-center text-center">
+              <h1>No Product</h1>
+            </div>
+          )}
+        </div>
       </div>
       <div className="row-span-1 flex gap-4 justify-between text-center items-end ">
         <button
@@ -48,11 +86,7 @@ function ProductBody(props) {
         </button>
       </div>
       <div className="pagination-container">
-        <Pagination
-          setPageNum={setPageNum}
-          pageNum={pageNum}
-          //  totalPage={categories?.totalPage}
-        />
+        <Pagination setPageNum={setPageNum} pageNum={pageNum} totalPage={totalPage} />
       </div>
     </>
   );
