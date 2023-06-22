@@ -5,14 +5,17 @@ import AddDataModal from "./add_data/AddDataModal";
 import { getCategories, getProducts } from "../../";
 import RenderProducts from "./RenderProducts";
 import { useSelector } from "react-redux";
+import DeleteModal from "./delete_data/DeleteModal";
 
 function ProductBody(props) {
   const { admin } = props;
   const [totalPage, setTotalPate] = useState(null);
   const [pageNum, setPageNum] = useState(1);
   const [isNewProductClicked, setNewProductClicked] = useState(false);
+  const [isDeleteClicked, setDeleteClicked] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [singleProduct, setSingleProduct] = useState({});
   const [products, setProducts] = useState([]);
   const roleAdmin = useSelector((state) => state.adminLogin.loggedInAdminData);
   const OFFSET = 4;
@@ -47,6 +50,18 @@ function ProductBody(props) {
       {isNewProductClicked ? (
         <AddDataModal setNewProductClicked={setNewProductClicked} categories={categories} />
       ) : null}
+      {isDeleteClicked ? (
+        <DeleteModal
+          setDeleteClicked={setDeleteClicked}
+          singleProduct={singleProduct}
+          pageNum={pageNum}
+          setProducts={setProducts}
+          OFFSET={OFFSET}
+          LIMIT={LIMIT}
+          selectedCategory={selectedCategory}
+          setTotalPate={setTotalPate}
+        />
+      ) : null}
       <div className="product-and-category-body-container grid grid-rows-10">
         <div className="row-span-1 flex items-end text-sm">
           <Filter
@@ -59,7 +74,12 @@ function ProductBody(props) {
         </div>
         <div className=" row-span-9 render-data-container">
           {products.length > 0 ? (
-            <RenderProducts products={products} roleAdmin={roleAdmin} />
+            <RenderProducts
+              products={products}
+              roleAdmin={roleAdmin}
+              setDeleteClicked={setDeleteClicked}
+              setSingleProduct={setSingleProduct}
+            />
           ) : (
             <div className="h-full w-full row-span-4 md:row-span-2 md:col-span-2 grid items-center text-center">
               <h1>No Product</h1>
@@ -71,7 +91,7 @@ function ProductBody(props) {
         <button
           onClick={() => setNewProductClicked(true)}
           className="bg-green-800 text-white px-2 py-1 text-base 
-          font-semibold lg:w-1/5 disabled:bg-white disabled:border-2 lg:disabled:border-4
+          font-semibold lg:w-1/5 disabled:bg-white disabled:border-[3px] 
           disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
           disabled={admin?.role_admin !== "super-admin"}
         >

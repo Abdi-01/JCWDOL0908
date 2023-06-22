@@ -32,7 +32,7 @@
 /* DELETE MODAL */
 
 .delete-modal-header-container {
-  @apply grid grid-rows-8 gap-2;
+  @apply flex flex-col gap-2;
 }
 
 .delete-modal-header-text {
@@ -40,7 +40,7 @@
 }
 
 .delete-modal-body-container {
-  @apply row-span-5 text-sm lg:text-base;
+  @apply text-sm lg:text-base;
 }
 
 .delete-modal-confirmation-btn {
@@ -87,5 +87,5 @@
 
 .render-data-container {
   @apply font-semibold text-slate-800 grid grid-rows-4 md:grid-rows-2
-  md:grid-cols-2 items-start gap-2 text-xl lg:text-4xl md:text-3xl lg:gap-6 pt-4;
+  md:grid-cols-2 items-start gap-2 text-xl lg:text-4xl md:text-3xl lg:gap-6 py-2;
 }

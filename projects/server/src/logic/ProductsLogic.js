@@ -64,4 +64,17 @@ const postNewProductLogic = async (data) => {
   }
 };
 
-module.exports = { getProductsLogic, postNewProductLogic };
+const deleteProductLogic = async (id_product) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const response = await ProductService.deleteProduct(id_product, transaction);
+    if (response[0] !== 1) throw { errMsg: "data not found", statusCode: 404 };
+    transaction.commit();
+    return { error: null, result: response };
+  } catch (error) {
+    transaction.rollback();
+    return { error, result: null };
+  }
+};
+
+module.exports = { getProductsLogic, postNewProductLogic, deleteProductLogic };

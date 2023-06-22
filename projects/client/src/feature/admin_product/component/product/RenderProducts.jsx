@@ -1,8 +1,13 @@
 import React from "react";
 
 function RenderProducts(props) {
-  const { products, roleAdmin } = props;
+  const { products, roleAdmin, setDeleteClicked, setSingleProduct } = props;
   const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+  const delBtnHandler = (product) => {
+    setDeleteClicked(true);
+    setSingleProduct({ ...product });
+  };
 
   return products?.map((product) => {
     return (
@@ -30,7 +35,7 @@ function RenderProducts(props) {
             <i className="uil uil-pen"></i>
           </button>
           <button
-            // onClick={() => delBtnHandler(category)}
+            onClick={() => delBtnHandler(product)}
             className="bg-red-600 text-white disabled:bg-white disabled:border-2 lg:disabled:border-4
             disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
             disabled={roleAdmin.role_admin !== "super-admin"}

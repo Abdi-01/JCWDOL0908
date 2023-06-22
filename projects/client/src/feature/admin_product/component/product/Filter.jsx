@@ -18,7 +18,7 @@ function Filter(props) {
         name="category-filter"
         id="category-filter"
       >
-        <option value={0}>select category</option>
+        <option value={0}>SELECT CATEGORY</option>
         <RenderCategoryOptions categories={categories} />
       </select>
     </form>

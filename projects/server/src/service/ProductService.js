@@ -84,10 +84,16 @@ const createProduct = async (product_name, description, weight_kg, product_image
   return result;
 };
 
+const deleteProduct = async (id_product, transaction) => {
+  const result = await Product.update({ is_deleted: 1 }, { where: { id_product }, transaction });
+  return result;
+};
+
 module.exports = {
   getProductsCount,
   getProducts,
   getProductByName,
   createProduct,
   createProductWarehouseRlt,
+  deleteProduct,
 };

@@ -4,3 +4,4 @@ export * from "./api/deleteCategory";
 export * from "./api/editCategory";
 export * from "./api/postProduct";
 export * from "./api/getProducts";
+export * from "./api/deleteProduct";

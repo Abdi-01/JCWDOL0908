@@ -47,4 +47,19 @@ const getProducts = async (req, res, next) => {
   }
 };
 
-module.exports = { postNewProduct, getProducts };
+const deleteProduct = async (req, res, next) => {
+  const { id_product } = req.params;
+  try {
+    const { error, result } = await ProductsLogic.deleteProductLogic(id_product);
+
+    // check whether error exists
+    if (error) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
+
+    return res.status(200).send({ isSuccess: true, message: "success delete data", result });
+  } catch (error) {
+    // unknown error
+    next(error);
+  }
+};
+
+module.exports = { postNewProduct, getProducts, deleteProduct };

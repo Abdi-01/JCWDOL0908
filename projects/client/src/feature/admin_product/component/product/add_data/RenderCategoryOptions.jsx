@@ -4,7 +4,7 @@ function RenderCategoryOptions({ categories }) {
   return categories?.map((category) => {
     return (
       <option key={category.id_category} value={category.id_category}>
-        {category.category_name}
+        {category.category_name.toUpperCase()}
       </option>
     );
   });
