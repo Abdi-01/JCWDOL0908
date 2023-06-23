@@ -26,6 +26,8 @@ function EditModal(props) {
     new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(singleProduct.price),
   );
   const [preview, setPreview] = useState(`${REACT_APP_SERVER_URL + singleProduct.product_image}`);

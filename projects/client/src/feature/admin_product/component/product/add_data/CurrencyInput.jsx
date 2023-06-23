@@ -9,7 +9,9 @@ const CurrencyInput = ({ value, onChange, name, id, formik }) => {
     const formattedValue = new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-    }).format(numericValue / 100);
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numericValue);
     // Update the value and pass it to the parent component
     onChange(formattedValue);
   };
@@ -30,11 +32,13 @@ const CurrencyInput = ({ value, onChange, name, id, formik }) => {
           ? new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
-            }).format(value / 100)
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(value)
           : value
       }
       onChange={handleInputChange}
-      placeholder="0.00"
+      placeholder="0"
     />
   );
 };
