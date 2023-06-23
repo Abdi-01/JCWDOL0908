@@ -84,7 +84,7 @@ const editProduct = async (req, res, next) => {
       if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
       if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
 
-      return res.status(202).send({ isSuccess: true, message: "success edit category", result });
+      return res.status(202).send({ isSuccess: true, message: "success edit product", result });
     });
   } catch (error) {
     await UnlinkPhoto(req.uniqueUrl);

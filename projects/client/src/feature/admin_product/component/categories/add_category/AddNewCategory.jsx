@@ -53,7 +53,7 @@ function AddNewCategory(props) {
         <div>
           <h1 className="my-4 font-bold">Create Category</h1>
           <form onSubmit={formik.handleSubmit} htmlFor="image" className="flex flex-col gap-4">
-            <UploadPicture preview={preview} handleImageChange={handleImageChange} />
+            <UploadPicture preview={preview} handleImageChange={handleImageChange} alt="category image" />
             <div className="grid grid-cols-3 items-center gap-2">
               <label className="col-span-1">category : </label>
               <input

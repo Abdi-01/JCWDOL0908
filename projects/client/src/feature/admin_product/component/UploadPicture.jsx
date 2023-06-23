@@ -1,6 +1,6 @@
 import React from "react";
 
-function UploadPicture({ preview, handleImageChange }) {
+function UploadPicture({ preview, handleImageChange, alt }) {
   return (
     <label>
       <div
@@ -9,7 +9,7 @@ function UploadPicture({ preview, handleImageChange }) {
       >
         <img
           src={preview}
-          alt="category_image"
+          alt={alt}
           id="image_preview"
           className={`mx-auto object-contain ${preview ? "w-full h-full" : "hidden"}`}
         />

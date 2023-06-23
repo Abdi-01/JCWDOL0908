@@ -87,7 +87,7 @@ function EditModal(props) {
         <div>
           <h1 className="my-4 font-bold">Edit Product</h1>
           <form onSubmit={formik.handleSubmit} className="pt-4 pb-0 text-slate-800 gap-2 flex flex-col">
-            <UploadPicture preview={preview} handleImageChange={handleImageChange} />
+            <UploadPicture preview={preview} handleImageChange={handleImageChange} alt="product image" />
             <CustomInput type="text" name="product_name" id="product_name" formik={formik} label="product name" />
             <CustomTextArea type="textarea" name="description" id="description" formik={formik} label="description" />
             <CustomInput type="number" name="weight_kg" id="weight_kg" formik={formik} label="weight (kg)" />
