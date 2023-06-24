@@ -35,10 +35,10 @@ const editWarehouseLogic = async (id_warehouse, warehouse_name, address, id_city
       lng.toString(),
       transaction,
     );
-    transaction.commit();
+    await transaction.commit();
     return { error: null, result: edit };
   } catch (error) {
-    transaction.rollback();
+    await transaction.rollback();
     return { error, result: null };
   }
 };
@@ -77,10 +77,10 @@ const createWarehouseLogic = async (warehouse_name, address, id_city) => {
       createNew.dataValues.id_warehouse,
       transaction,
     );
-    transaction.commit();
+    await transaction.commit();
     return { error: null, result: createNewAdminRole };
   } catch (error) {
-    transaction.rollback();
+    await transaction.rollback();
     return { error, result: null };
   }
 };
@@ -99,7 +99,7 @@ const deleteWarehouseLogic = async (id_warehouse) => {
     await transaction.commit();
     return { error: null, result };
   } catch (error) {
-    transaction.rollback();
+    await transaction.rollback();
     return { error, result: null };
   }
 };
