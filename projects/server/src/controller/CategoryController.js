@@ -1,6 +1,6 @@
 const { UploadPhoto, UnlinkPhoto, UploadPhotoEditData } = require("../helper/Multer");
-const { CategoryService } = require("../service");
 const { AdminDataValidation } = require("../validation");
+const { CategoryLogic } = require("../logic");
 
 const createNewCategory = async (req, res, next) => {
   try {
@@ -19,7 +19,7 @@ const createNewCategory = async (req, res, next) => {
       var { error, value } = AdminDataValidation.CreateNewCategory.validate({ category_name, category_image });
       if (error) throw error;
 
-      var { error, result } = await CategoryService.createNewCategoryLogic(category_image, category_name);
+      var { error, result } = await CategoryLogic.createNewCategoryLogic(category_image, category_name);
 
       // check whether error exists
       if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
@@ -52,7 +52,7 @@ const editCategory = async (req, res, next) => {
       }
       if (error) throw error;
 
-      var { error, result } = await CategoryService.editCategoryLogic(category_image, category_name, id_category);
+      var { error, result } = await CategoryLogic.editCategoryLogic(category_image, category_name, id_category);
 
       // check whether error exists
       if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
@@ -69,7 +69,7 @@ const editCategory = async (req, res, next) => {
 const getCategories = async (req, res, next) => {
   try {
     const { offset, limit, page } = req.query;
-    const { error, result } = await CategoryService.getCategoriesLogic(offset, limit, page);
+    const { error, result } = await CategoryLogic.getCategoriesLogic(offset, limit, page);
 
     // check whether error exists
     if (error) return res.status(500).send({ isSuccess: false, message: "internal server error", error });
@@ -85,7 +85,7 @@ const deleteCategory = async (req, res, next) => {
   const { id_category } = req.params;
   console.log(id_category);
   try {
-    const { error, result } = await CategoryService.deleteCategoryLogic(id_category);
+    const { error, result } = await CategoryLogic.deleteCategoryLogic(id_category);
 
     // check whether error exists
     if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
