@@ -9,7 +9,7 @@ const getAllAdminUser = async (req, res, next) => {
     const { result, error } = await AdminUserLogic.getAllAdminUserLogic(offset, limit, page);
 
     //check whether error exist/no result found
-    if (error) throw error;
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
 
     return res.status(200).send({ isSuccess: true, message: "success fetched data", result });
   } catch (error) {
@@ -23,7 +23,7 @@ const getSingleUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     const { error, result } = await AdminUserLogic.getSingleUserLogic(id, isAdmin, idRole);
-    if (error) throw error;
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
     return res.status(200).send({ isSuccess: true, result, message: "success retrieve data" });
   } catch (error) {
     //unknown error
@@ -46,7 +46,7 @@ const getAllUser = async (req, res, next) => {
   const { offset, limit, page } = req.query;
   try {
     const { error, result } = await AdminUserLogic.getAllUserLogic(offset, limit, page);
-    if (error) throw error;
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
     return res.status(200).send({ isSuccess: true, result, message: "success retrieve data" });
   } catch (error) {
     //unknown error
@@ -97,7 +97,7 @@ const updateAdminWarehouse = async (req, res, next) => {
     );
 
     if (error?.errMsg) res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
-    if (error) throw error;
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
 
     return res.status(204).send({ isSuccess: true, message: "data updated" });
   } catch (error) {
@@ -110,7 +110,7 @@ const deleteUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     const { error, result } = await AdminUserLogic.deleteUserLogic(id);
-    if (error) throw error;
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
     return res.status(202).send({ isSuccess: true, result, message: "data deleted" });
   } catch (error) {
     //unknown error
@@ -141,7 +141,7 @@ const createNewAdmin = async (req, res, next) => {
       id_warehouse,
     );
     if (error?.errMsg) res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
-    if (error) throw error;
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
 
     return res.status(201).send({ isSuccess: true, result, message: "data succesfully created" });
   } catch (error) {

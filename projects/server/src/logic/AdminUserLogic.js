@@ -10,6 +10,7 @@ const getAllUserLogic = async (offset, limit, page) => {
     const result = { totalPage, dataAll: allUser };
     return { error: null, result };
   } catch (error) {
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -26,6 +27,7 @@ const getSingleUserLogic = async (id, isAdmin, idRole) => {
     }
     return { error: null, result };
   } catch (error) {
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -39,6 +41,7 @@ const getAllAdminUserLogic = async (offset, limit, page) => {
     const result = { totalPage, dataAll: allAdminUser };
     return { error: null, result };
   } catch (error) {
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -51,6 +54,7 @@ const deleteUserLogic = async (id) => {
     return { error: null, result };
   } catch (error) {
     await transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -78,6 +82,7 @@ const createNewAdminLogic = async (username, email, phone_number, password, id_w
     return { error: null, result: createNewAdmin };
   } catch (error) {
     await transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };

@@ -11,6 +11,7 @@ const deleteCategoryLogic = async (id_category) => {
     return { error: null, result: response };
   } catch (error) {
     transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -34,6 +35,7 @@ const getCategoriesLogic = async (offset, limit, page) => {
     const result = { categories, totalPage };
     return { error: null, result };
   } catch (error) {
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -43,7 +45,6 @@ const editCategoryLogic = async (category_image, category_name, id_category) => 
   try {
     const isNameExist = await CategoryService.getCategoryByNameExceptSelf(category_name, id_category, transaction);
     if (isNameExist) throw { errMsg: "name already exists", statusCode: 400 };
-
     // get current image pattern data
     const getSingleData = await CategoryService.getCategoryById(id_category, transaction);
     const oldImage = getSingleData.dataValues.category_image;
@@ -59,6 +60,7 @@ const editCategoryLogic = async (category_image, category_name, id_category) => 
   } catch (error) {
     await UnlinkPhoto(category_image);
     transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -77,6 +79,7 @@ const createNewCategoryLogic = async (category_image, category_name, id_category
   } catch (error) {
     await UnlinkPhoto(category_image);
     transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };

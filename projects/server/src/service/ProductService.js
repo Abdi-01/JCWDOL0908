@@ -5,9 +5,7 @@ const { QueryTypes } = require("sequelize");
 
 const getProductByName = async (product_name, id_product) => {
   let product;
-  console.log("id_product", id_product);
   if (id_product) {
-    console.log("harusnya kesini jg");
     product = await Product.findOne({ where: { product_name, id_product: { [Op.not]: id_product } } });
   } else {
     product = await Product.findOne({ where: { product_name } });

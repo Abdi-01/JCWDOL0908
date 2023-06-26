@@ -14,6 +14,7 @@ const getProvinces = async () => {
     const result = await Province.findAll();
     return { error: null, result };
   } catch (error) {
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -23,6 +24,7 @@ const getCitiesByProvinceId = async (id_province) => {
     const result = await City.findAll({ where: { id_province } });
     return { error: null, result };
   } catch (error) {
+    console.log(error);
     return { error, result: null };
   }
 };

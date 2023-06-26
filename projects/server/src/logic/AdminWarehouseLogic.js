@@ -39,6 +39,7 @@ const editWarehouseLogic = async (id_warehouse, warehouse_name, address, id_city
     return { error: null, result: edit };
   } catch (error) {
     await transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -81,6 +82,7 @@ const createWarehouseLogic = async (warehouse_name, address, id_city) => {
     return { error: null, result: createNewAdminRole };
   } catch (error) {
     await transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -100,6 +102,7 @@ const deleteWarehouseLogic = async (id_warehouse) => {
     return { error: null, result };
   } catch (error) {
     await transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };

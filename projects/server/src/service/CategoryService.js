@@ -1,5 +1,6 @@
 const db = require("../model");
 const { Category, sequelize } = db;
+const { Op } = require("sequelize");
 
 const getCategory = async (category_name, transaction) => {
   const category = await Category.findOne({ where: { category_name }, transaction });

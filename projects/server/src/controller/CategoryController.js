@@ -43,7 +43,7 @@ const editCategory = async (req, res, next) => {
       }
       const category_image = req?.uniqueUrl;
       const { category_name } = JSON.parse(req.body.data);
-
+      console.log(category_image, category_name);
       //validate input data
       if (!category_image) {
         var { error, value } = AdminDataValidation.editCategoryWithoutImage.validate({ category_name });

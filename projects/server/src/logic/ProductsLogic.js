@@ -22,6 +22,7 @@ const getProductsLogic = async (offset, limit, page, id_category) => {
     const result = { productsList, totalPage };
     return { error: null, result };
   } catch (error) {
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -60,6 +61,7 @@ const postNewProductLogic = async (data) => {
   } catch (error) {
     await UnlinkPhoto(product_image);
     transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -73,6 +75,7 @@ const deleteProductLogic = async (id_product) => {
     return { error: null, result: response };
   } catch (error) {
     transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };
@@ -112,6 +115,7 @@ const editProductLogic = async (data) => {
   } catch (error) {
     await UnlinkPhoto(product_image);
     transaction.rollback();
+    console.log(error);
     return { error, result: null };
   }
 };
