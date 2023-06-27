@@ -20,7 +20,7 @@ const getProductById = async (id_product, transaction) => {
 
 const getProductsCount = async (id_category) => {
   let productsCount;
-  //check if offset, limit, page value is given
+  //check if id_category is given
   if (id_category) {
     // if id_category given, then get total count data with category filter
     productsCount = await Product.findAll({
@@ -63,14 +63,6 @@ const getProducts = async (offset, limit, page, id_category) => {
     products = await Product.findAll({ where: { is_deleted: 0 } });
   }
   return products;
-};
-
-const createProductWarehouseRlt = async (id_product, id_warehouse, transaction) => {
-  const response = await ProductWarehouseRlt.create(
-    { id_product, stock: 0, id_warehouse, booked_stock: 0 },
-    { transaction },
-  );
-  return response;
 };
 
 const createProduct = async (product_name, description, weight_kg, product_image, id_category, price, transaction) => {
@@ -124,7 +116,6 @@ module.exports = {
   getProducts,
   getProductByName,
   createProduct,
-  createProductWarehouseRlt,
   deleteProduct,
   updateProduct,
   getProductById,

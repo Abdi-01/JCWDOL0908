@@ -1,4 +1,4 @@
-const { ProductService, AdminWarehouseService } = require("../service");
+const { ProductService, AdminWarehouseService, ProductWarehouseRltService } = require("../service");
 const { UnlinkPhoto } = require("../helper/Multer");
 const db = require("../model");
 
@@ -53,7 +53,7 @@ const postNewProductLogic = async (data) => {
     // give the relation between created product with all warehouses
     for (let iter = 0; iter < getWarehouses.length; iter++) {
       const id_warehouse = getWarehouses[iter].dataValues.id_warehouse;
-      await ProductService.createProductWarehouseRlt(id_product, id_warehouse, transaction);
+      await ProductWarehouseRltService.createProductWarehouseRlt(id_product, id_warehouse, transaction);
     }
 
     transaction.commit();
@@ -82,6 +82,7 @@ const deleteProductLogic = async (id_product) => {
 
 const editProductLogic = async (data) => {
   const { product_name, description, weight_kg, product_image, id_category, price, id_product } = data;
+  console.log(price);
   const transaction = await db.sequelize.transaction();
   let result;
   let updateData;

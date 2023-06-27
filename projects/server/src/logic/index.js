@@ -3,6 +3,7 @@ const AdminWarehouseLogic = require("./AdminWarehouseLogic");
 const AdminUserLogic = require("./AdminUserLogic");
 const CategoryLogic = require("./CategoryLogic");
 const AdminLoginLogic = require("./AdminLoginLogic");
+const ProductWarehouseRltLogic = require("./ProductWarehouseRltLogic");
 
 module.exports = {
   ProductsLogic,
@@ -10,4 +11,5 @@ module.exports = {
   AdminUserLogic,
   CategoryLogic,
   AdminLoginLogic,
+  ProductWarehouseRltLogic,
 };

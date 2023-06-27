@@ -63,7 +63,7 @@ function EditModal(props) {
     validationSchema,
     onSubmit: async (values) => {
       let price = currencyValue.replace(/[^0-9]/g, "");
-      price = parseInt(price.slice(0, price.length - 2));
+      price = parseInt(price);
       const id_product = singleProduct.id_product;
       const data = { ...values, price };
       const formData = new FormData();
