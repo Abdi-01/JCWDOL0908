@@ -44,7 +44,17 @@ function ManageStock() {
           setProductsList={setProductsList}
           setTotalPage={setTotalPage}
         />
-        <BodyStock productsList={productsList} totalPage={totalPage} setPageNum={setPageNum} pageNum={pageNum} />
+        <BodyStock
+          productsList={productsList}
+          totalPage={totalPage}
+          setPageNum={setPageNum}
+          pageNum={pageNum}
+          userAdmin={userAdmin}
+          OFFSET={OFFSET}
+          LIMIT={LIMIT}
+          selectedCategories={selectedCategories}
+          setProductsList={setProductsList}
+        />
       </div>
     </LayoutAdmin>
   );

@@ -7,6 +7,7 @@ const CategoryService = require("./CategoryService");
 const ProductService = require("./ProductService");
 const AddressService = require("./AddressService");
 const ProductWarehouseRltService = require("./ProductWarehouseRltService");
+const ProductJournalService = require("./ProductJournalService");
 
 module.exports = {
   AdminUserMgtService,
@@ -18,4 +19,5 @@ module.exports = {
   ProductService,
   AddressService,
   ProductWarehouseRltService,
+  ProductJournalService,
 };

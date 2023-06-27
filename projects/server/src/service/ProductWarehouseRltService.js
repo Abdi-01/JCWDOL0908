@@ -19,12 +19,13 @@ const getProductsCountWithNameAndCateogryFilter = async (name_search, id_categor
   return productsCount;
 };
 
+// if super admin then there is no value on id_warehouse
 const getProductsWithNameAndCategoryFilter = async (offset, limit, page, name_search, id_category, id_warehouse) => {
   const products = await sequelize.query(
     `SELECT p.id_product,p.product_name , ${id_warehouse ? "pw.stock" : "SUM(pw.stock)"} as totalStock, 
     ${id_warehouse ? "pw.booked_stock" : "SUM(pw.booked_stock)"} as bookedStock, p.weight_kg 
-    FROM product_warehouse_rlt pw JOIN products p ON pw.id_product = p.id_product
-    WHERE pw.is_deleted = 0 AND p.product_name LIKE '%${name_search}%' AND p.id_category = ${id_category} 
+    FROM product_warehouse_rlt pw JOIN products p ON pw.id_product = p.id_product JOIN warehouses w ON w.id_warehouse = pw.id_warehouse
+    WHERE pw.is_deleted = 0 AND w.is_deleted = 0 AND p.product_name LIKE '%${name_search}%' AND p.id_category = ${id_category} 
     ${id_warehouse ? "AND pw.id_warehouse = " + id_warehouse : ""} 
     ${id_warehouse ? "" : "GROUP BY p.id_product"} ORDER BY p.product_name LIMIT ${offset * (page - 1)},${limit}`,
     { type: QueryTypes.SELECT },
@@ -49,12 +50,13 @@ const getProductsCountWithCategoryFilter = async (id_category) => {
   return productsCount;
 };
 
+// if super admin then there is no value on id_warehouse
 const getProductsWithNameFilter = async (offset, limit, page, name_search, id_warehouse) => {
   const products = await sequelize.query(
     `SELECT p.id_product,p.product_name , ${id_warehouse ? "pw.stock" : "SUM(pw.stock)"} as totalStock, 
     ${id_warehouse ? "pw.booked_stock" : "SUM(pw.booked_stock)"} as bookedStock, p.weight_kg 
-    FROM product_warehouse_rlt pw JOIN products p ON pw.id_product = p.id_product
-    WHERE pw.is_deleted = 0 AND p.product_name LIKE '%${name_search}%' 
+    FROM product_warehouse_rlt pw JOIN products p ON pw.id_product = p.id_product JOIN warehouses w ON w.id_warehouse = pw.id_warehouse
+    WHERE pw.is_deleted = 0 AND w.is_deleted = 0 AND p.product_name LIKE '%${name_search}%' 
     ${id_warehouse ? "AND pw.id_warehouse = " + id_warehouse : ""} 
     ${id_warehouse ? "" : "GROUP BY p.id_product"} ORDER BY p.product_name LIMIT ${offset * (page - 1)},${limit}`,
     { type: QueryTypes.SELECT },
@@ -62,12 +64,13 @@ const getProductsWithNameFilter = async (offset, limit, page, name_search, id_wa
   return products;
 };
 
+// if super admin then there is no value on id_warehouse
 const getProductsWithCategoryFilter = async (offset, limit, page, id_category, id_warehouse) => {
   const products = await sequelize.query(
     `SELECT p.id_product,p.product_name , ${id_warehouse ? "pw.stock" : "SUM(pw.stock)"} as totalStock, 
     ${id_warehouse ? "pw.booked_stock" : "SUM(pw.booked_stock)"} as bookedStock, p.weight_kg 
-    FROM product_warehouse_rlt pw JOIN products p ON pw.id_product = p.id_product
-    WHERE pw.is_deleted = 0 AND p.id_category = ${id_category} 
+    FROM product_warehouse_rlt pw JOIN products p ON pw.id_product = p.id_product JOIN warehouses w ON w.id_warehouse = pw.id_warehouse
+    WHERE pw.is_deleted = 0 AND w.is_deleted = 0 AND p.id_category = ${id_category} 
     ${id_warehouse ? "AND pw.id_warehouse = " + id_warehouse : ""}
     ${id_warehouse ? "" : "GROUP BY p.id_product"} ORDER BY p.product_name LIMIT ${offset * (page - 1)},${limit}`,
     { type: QueryTypes.SELECT },
@@ -75,12 +78,13 @@ const getProductsWithCategoryFilter = async (offset, limit, page, id_category, i
   return products;
 };
 
+// if super admin then there is no value on id_warehouse
 const getProductsWithoutFilter = async (offset, limit, page, id_warehouse) => {
   const products = await sequelize.query(
     `SELECT p.id_product,p.product_name , ${id_warehouse ? "pw.stock" : "SUM(pw.stock)"} as totalStock, 
     ${id_warehouse ? "pw.booked_stock" : "SUM(pw.booked_stock)"} as bookedStock, p.weight_kg 
-    FROM product_warehouse_rlt pw JOIN products p ON pw.id_product = p.id_product
-    WHERE pw.is_deleted = 0 ${id_warehouse ? "AND pw.id_warehouse = " + id_warehouse : ""} 
+    FROM product_warehouse_rlt pw JOIN products p ON pw.id_product = p.id_product JOIN warehouses w ON w.id_warehouse = pw.id_warehouse
+    WHERE pw.is_deleted = 0 AND w.is_deleted = 0 ${id_warehouse ? "AND pw.id_warehouse = " + id_warehouse : ""} 
     ${id_warehouse ? "" : "GROUP BY p.id_product"} ORDER BY p.product_name 
     LIMIT ${offset * (page - 1)},${limit}`,
     { type: QueryTypes.SELECT },
@@ -96,6 +100,29 @@ const getProductsCountWithoutFilter = async () => {
   return productsCount;
 };
 
+const getStockProduct = async (id_product, id_warehouse) => {
+  const productDetail = await ProductWarehouseRlt.findOne({
+    where: { is_deleted: 0, id_warehouse, id_product },
+  });
+  return productDetail;
+};
+
+const updateStock = async (id_product_warehouse, stock, booked_stock, newStock, transaction) => {
+  const update = await ProductWarehouseRlt.update(
+    { stock: newStock },
+    { where: { is_deleted: 0, id_product_warehouse, stock, booked_stock }, transaction },
+  );
+  return update;
+};
+
+const createStock = async (id_product, id_warehouse, transaction) => {
+  const createNew = await ProductWarehouseRlt.create(
+    { id_product, stock: 0, id_warehouse, booked_stock: 0 },
+    { transaction },
+  );
+  return createNew;
+};
+
 module.exports = {
   createProductWarehouseRlt,
   getProductsCountWithNameAndCateogryFilter,
@@ -106,4 +133,7 @@ module.exports = {
   getProductsWithCategoryFilter,
   getProductsWithoutFilter,
   getProductsCountWithoutFilter,
+  getStockProduct,
+  updateStock,
+  createStock,
 };

@@ -50,8 +50,8 @@ app.use("/api/admin", AdminRouter);
 app.use("/api/admin-login", AdminLoginRouter);
 app.use("/api/admin-warehouse", AdminWarehouseRouter);
 app.use("/api/auth", AuthRouter);
-app.use("/api/category", CategoryRouter);
-app.use("/api/product", ProductRouter);
+app.use("/api/categories", CategoryRouter);
+app.use("/api/products", ProductRouter);
 app.use("/api/address", AddressRouter);
 
 // ===========================

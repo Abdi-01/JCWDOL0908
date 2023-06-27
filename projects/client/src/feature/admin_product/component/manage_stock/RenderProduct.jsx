@@ -21,7 +21,7 @@ function RenderProduct(props) {
         <div className="col-span-1 grid grid-cols-2 h-full lg:grid-cols-4 ">
           <button
             className="col-span-1 bg-slate-300 text-slate-800 h-full lg:col-start-3"
-            onClick={() => editBtnHndler(product.id_product)}
+            onClick={() => editBtnHndler(product)}
           >
             <i className="uil uil-pen"></i>
           </button>

@@ -111,7 +111,7 @@ const getWarehousesLogic = async (offset, limit, page) => {
   try {
     let warehousesCount;
     let totalPage;
-
+    page = parseInt(page);
     // get total count warehouses
     if (offset && limit && page) {
       warehousesCount = await AdminWarehouseService.getWarehousesDataCount();

@@ -1,19 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "../Pagination";
 import RenderProduct from "./RenderProduct";
 import EditModal from "./edit_data/EditModal";
+import { getWarehouses } from "../../../admin_warehouse/";
+import { getStock } from "../../";
 
 function BodyStock(props) {
-  const { productsList, totalPage, setPageNum, pageNum } = props;
+  const {
+    productsList,
+    totalPage,
+    setPageNum,
+    pageNum,
+    userAdmin,
+    OFFSET,
+    LIMIT,
+    selectedCategories,
+    setProductsList,
+  } = props;
+  const [warehouses, setWarehouses] = useState([]);
+  const [singleProduct, setProduct] = useState({});
   const [isEditClicked, setEditClicked] = useState(false);
+  const [productStock, setProductStock] = useState({});
 
-  const editBtnHndler = async (id_product) => {
+  const editBtnHndler = async (product) => {
+    const response = await getStock(product.id_product, userAdmin?.id_warehouse);
+    setProductStock({ ...response?.result });
+    setProduct({ ...product });
     setEditClicked(true);
   };
 
+  useEffect(() => {
+    (async () => {
+      const response = await getWarehouses();
+      setWarehouses([...response?.result]);
+    })();
+  }, []);
+
   return (
     <>
-      {isEditClicked ? <EditModal setEditClicked={setEditClicked} /> : null}
+      {isEditClicked ? (
+        <EditModal
+          setEditClicked={setEditClicked}
+          warehouses={warehouses}
+          productStock={productStock}
+          userAdmin={userAdmin}
+          singleProduct={singleProduct}
+          OFFSET={OFFSET}
+          LIMIT={LIMIT}
+          pageNum={pageNum}
+          selectedCategories={selectedCategories}
+          setProductsList={setProductsList}
+        />
+      ) : null}
       <div className="row-span-6 grid grid-rows-10">
         <div className="row-span-9 grid grid-rows-10 gap-2 lg:gap-2">
           <div

@@ -14,3 +14,36 @@ export const getProductsStocks = async (offset, limit, page, name_search, id_cat
     return error.response?.data;
   }
 };
+
+export const getStock = async (id_product, id_warehouse) => {
+  id_warehouse = id_warehouse ? id_warehouse : "null";
+  try {
+    const response = await axiosInstanceStockUpdate.get(`/${id_product}?id_warehouse=${id_warehouse}`);
+    return response.data;
+  } catch (error) {
+    console.log(error.response?.data);
+    return error.response?.data;
+  }
+};
+
+export const updateStock = async (id_product, id_warehouse, newStock) => {
+  try {
+    const response = await axiosInstanceStockUpdate.patch(`/${id_product}`, { id_warehouse, newStock });
+    return response.data;
+  } catch (error) {
+    console.log(error.response?.data);
+    alert(error.response.data.message);
+    return error.response?.data;
+  }
+};
+
+export const createNewStock = async (id_product, id_warehouse) => {
+  try {
+    const response = await axiosInstanceStockUpdate.post(`/${id_product}?id_warehouse=${id_warehouse}`);
+    return response.data;
+  } catch (error) {
+    console.log(error.response?.data);
+    alert(error.response.data.message);
+    return error.response?.data;
+  }
+};
