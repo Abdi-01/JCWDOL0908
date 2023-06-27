@@ -115,7 +115,7 @@ function ProductBody(props) {
       <div className="row-span-1 flex gap-4 justify-between text-center items-end ">
         <button
           onClick={() => setNewProductClicked(true)}
-          className="bg-green-800 text-white px-2 py-1 text-base 
+          className="bg-slate-800 text-white px-2 py-1 text-base 
           font-semibold lg:w-1/5 disabled:bg-white disabled:border-[3px] 
           disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
           disabled={admin?.role_admin !== "super-admin"}
@@ -124,8 +124,9 @@ function ProductBody(props) {
         </button>
         <button
           onClick={() => navigate("/admin/dashboard/product-management/stock")}
-          className="bg-slate-800 text-white px-2 py-1 text-base 
-          font-semibold lg:w-1/5 disabled:bg-white disabled:border-2 lg:disabled:border-4
+          className="bg-white text-slate-800 px-2 py-1 text-base border-2 border-slate-800
+          hover:bg-slate-800 hover:text-white font-semibold lg:w-1/5 
+          disabled:bg-white disabled:border-2 lg:disabled:border-4
           disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
         >
           Manage Stock

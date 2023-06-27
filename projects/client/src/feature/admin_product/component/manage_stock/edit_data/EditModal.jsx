@@ -109,7 +109,7 @@ function EditModal(props) {
                 <button
                   onClick={addQty}
                   disabled={!selectedWarehouses || stockQty === undefined}
-                  className="text-green-800 hover:bg-green-800 hover:text-white text-center
+                  className="text-green-800 hover:bg-slate-800 hover:text-white text-center
                    disabled:text-white disabled:bg-slate-300 disabled:cursor-not-allowed"
                 >
                   +
@@ -120,7 +120,7 @@ function EditModal(props) {
               {stockQty === undefined && selectedWarehouses ? (
                 <button
                   disabled={!selectedWarehouses}
-                  className="bg-green-800 text-white h-full disabled:bg-slate-300 disabled:hover:cursor-not-allowed"
+                  className="bg-slate-800 text-white h-full disabled:bg-slate-300 disabled:hover:cursor-not-allowed"
                   onClick={createStockBtnHandler}
                 >
                   Create Stock
@@ -128,7 +128,7 @@ function EditModal(props) {
               ) : (
                 <button
                   disabled={!selectedWarehouses}
-                  className="bg-green-800 text-white h-full disabled:bg-slate-300 disabled:hover:cursor-not-allowed"
+                  className="bg-slate-800 text-white h-full disabled:bg-slate-300 disabled:hover:cursor-not-allowed"
                   onClick={submitBtnHandler}
                 >
                   Submit

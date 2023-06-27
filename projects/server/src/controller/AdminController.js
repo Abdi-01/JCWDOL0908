@@ -80,14 +80,19 @@ const updateAdminWarehouse = async (req, res, next) => {
   let newRole;
   try {
     // validating data
-    var { error, value } = AdminDataValidation.EditDataAdmin.validate({ username, email, phoneNumber, id_warehouse });
-    if (error) throw error;
+    const { error: err_validation, value } = AdminDataValidation.EditDataAdmin.validate({
+      username,
+      email,
+      phoneNumber,
+      id_warehouse,
+    });
+    if (err_validation) throw error;
     if (password !== "") {
       const { error, value } = AdminDataValidation.EditDataAdmin.validate({ password });
       if (error) throw error;
     }
 
-    var { error, value } = AdminUserLogic.updateAdminWarehouseLogic(
+    const { error, result } = AdminUserLogic.updateAdminWarehouseLogic(
       id_user,
       username,
       email,
@@ -99,7 +104,7 @@ const updateAdminWarehouse = async (req, res, next) => {
     if (error?.errMsg) res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
     if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
 
-    return res.status(204).send({ isSuccess: true, message: "data updated" });
+    return res.status(204).send({ isSuccess: true, message: "data updated", result });
   } catch (error) {
     // unknown error
     next(error);
@@ -122,7 +127,7 @@ const createNewAdmin = async (req, res, next) => {
   const { username, email, phone_number, password, id_warehouse } = req.body;
   try {
     // validating data
-    var { error, value } = AdminDataValidation.CreateDataAdmin.validate({
+    const { error: err_validation, value } = AdminDataValidation.CreateDataAdmin.validate({
       username,
       email,
       phone_number,
@@ -131,9 +136,9 @@ const createNewAdmin = async (req, res, next) => {
     });
 
     //check whether any data-validation error exist
-    if (error) throw error;
+    if (err_validation) throw error;
     // if error not exist, create data logic begin
-    var { error, result } = await AdminUserLogic.createNewAdminLogic(
+    const { error, result } = await AdminUserLogic.createNewAdminLogic(
       username,
       email,
       phone_number,

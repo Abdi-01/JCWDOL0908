@@ -72,7 +72,7 @@
 }
 
 .conf-modal-btn-confirm {
-  @apply py-1 px-2 bg-green-800 text-white;
+  @apply py-1 px-2 bg-slate-800 text-white;
 }
 
 .conf-modal-btn-cancel {

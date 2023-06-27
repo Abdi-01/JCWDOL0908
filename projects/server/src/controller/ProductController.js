@@ -16,10 +16,10 @@ const postNewProduct = async (req, res, next) => {
       let data = JSON.parse(req.body.data);
       data = { ...data, product_image };
 
-      var { error, value } = await AdminDataValidation.CreateNewProduct.validate({ ...data });
-      if (error) throw error;
+      const { error: err_validation, value } = await AdminDataValidation.CreateNewProduct.validate({ ...data });
+      if (err_validation) throw error;
 
-      var { error, result } = await ProductsLogic.postNewProductLogic(data);
+      const { error, result } = await ProductsLogic.postNewProductLogic(data);
 
       if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
       if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
@@ -73,13 +73,19 @@ const editProduct = async (req, res, next) => {
       let data = JSON.parse(req.body.data);
 
       if (!product_image) {
-        var { error, value } = await AdminDataValidation.editProductWithoutImage.validate({ ...data });
+        const { error: err_validation, value } = await AdminDataValidation.editProductWithoutImage.validate({
+          ...data,
+        });
+        if (err_validation) throw error;
       } else {
-        var { error, value } = await AdminDataValidation.CreateNewProduct.validate({ ...data, product_image });
+        const { error: err_validation, value } = await AdminDataValidation.CreateNewProduct.validate({
+          ...data,
+          product_image,
+        });
+        if (err_validation) throw error;
       }
-      if (error) throw error;
 
-      var { error, result } = await ProductsLogic.editProductLogic({ ...data, product_image, id_product });
+      const { error, result } = await ProductsLogic.editProductLogic({ ...data, product_image, id_product });
 
       if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
       if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
