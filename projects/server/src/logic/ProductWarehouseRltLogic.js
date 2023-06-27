@@ -141,7 +141,27 @@ const createStockLogic = async (id_product, id_warehouse) => {
   }
 };
 
-module.exports = { getTotalStockProductsLogic, getStockProductLogic, updateStockLogic, createStockLogic };
+const deleteStockLogic = async (id_product, id_warehouse) => {
+  const transaction = await db.sequelize.transaction();
+  try {
+    const deleteStock = await ProductWarehouseRltService.deleteStock(id_product, id_warehouse);
+    if (!deleteStock) throw { errMsg: "there are no product and warehouse matched", statusCode: 404 };
+    await transaction.commit();
+    return { error: null, result: deleteStock };
+  } catch (error) {
+    await transaction.rollback();
+    console.log(error);
+    return { error, result: null };
+  }
+};
+
+module.exports = {
+  getTotalStockProductsLogic,
+  getStockProductLogic,
+  updateStockLogic,
+  createStockLogic,
+  deleteStockLogic,
+};
 
 // ACTIVITY TYPE ID
 // id_activity : 1 => user's bought

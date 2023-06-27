@@ -1,7 +1,7 @@
 import React from "react";
 
 function RenderProduct(props) {
-  const { productsList, editBtnHndler } = props;
+  const { productsList, editBtnHndler, deleteBtnHandler } = props;
 
   const cutString = (string) => {
     return string.length > 15 ? string.slice(0, 10) + "..." : string;
@@ -27,9 +27,7 @@ function RenderProduct(props) {
           </button>
           <button
             className="col-span-1 bg-red-600 text-white h-full lg:col-start-4"
-            // onClick={() => {
-            //   delBtnHandler(data.id_user, data.id_role);
-            // }}
+            onClick={() => deleteBtnHandler(product)}
           >
             <i className="uil uil-trash-alt"></i>
           </button>

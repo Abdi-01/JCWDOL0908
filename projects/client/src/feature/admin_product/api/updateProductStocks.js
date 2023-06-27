@@ -47,3 +47,14 @@ export const createNewStock = async (id_product, id_warehouse) => {
     return error.response?.data;
   }
 };
+
+export const deleteStock = async (id_product, id_warehouse) => {
+  try {
+    const response = await axiosInstanceStockUpdate.patch(`/${id_product}/delete?id_warehouse=${id_warehouse}`);
+    return response.data;
+  } catch (error) {
+    console.log(error.response?.data);
+    alert(error.response.data.message);
+    return error.response?.data;
+  }
+};

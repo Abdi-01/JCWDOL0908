@@ -12,5 +12,6 @@ router.get("/products-stocks", tokenDecoder, isAdmin, ProductWarehouseRltControl
 router.get("/products-stocks/:id_product", tokenDecoder, isAdmin, ProductWarehouseRltController.getStockProduct);
 router.patch("/products-stocks/:id_product", tokenDecoder, isAdmin, ProductWarehouseRltController.updateStock);
 router.post("/products-stocks/:id_product", tokenDecoder, isAdmin, ProductWarehouseRltController.createStock);
+router.patch("/products-stocks/:id_product/delete", tokenDecoder, isAdmin, ProductWarehouseRltController.deleteStock);
 
 module.exports = router;

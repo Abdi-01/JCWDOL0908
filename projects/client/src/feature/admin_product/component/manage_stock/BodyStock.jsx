@@ -4,6 +4,7 @@ import RenderProduct from "./RenderProduct";
 import EditModal from "./edit_data/EditModal";
 import { getWarehouses } from "../../../admin_warehouse/";
 import { getStock } from "../../";
+import DeleteModal from "./delete_data/DeleteModal";
 
 function BodyStock(props) {
   const {
@@ -20,6 +21,7 @@ function BodyStock(props) {
   const [warehouses, setWarehouses] = useState([]);
   const [singleProduct, setProduct] = useState({});
   const [isEditClicked, setEditClicked] = useState(false);
+  const [isDeleteClicked, setDeleteClicked] = useState(false);
   const [productStock, setProductStock] = useState({});
 
   const editBtnHndler = async (product) => {
@@ -27,6 +29,13 @@ function BodyStock(props) {
     setProductStock({ ...response?.result });
     setProduct({ ...product });
     setEditClicked(true);
+  };
+
+  const deleteBtnHandler = async (product) => {
+    const response = await getStock(product.id_product, userAdmin?.id_warehouse);
+    setProductStock({ ...response?.result });
+    setProduct({ ...product });
+    setDeleteClicked(true);
   };
 
   useEffect(() => {
@@ -52,6 +61,20 @@ function BodyStock(props) {
           setProductsList={setProductsList}
         />
       ) : null}
+      {isDeleteClicked ? (
+        <DeleteModal
+          setDeleteClicked={setDeleteClicked}
+          warehouses={warehouses}
+          productStock={productStock}
+          userAdmin={userAdmin}
+          singleProduct={singleProduct}
+          OFFSET={OFFSET}
+          LIMIT={LIMIT}
+          pageNum={pageNum}
+          selectedCategories={selectedCategories}
+          setProductsList={setProductsList}
+        />
+      ) : null}
       <div className="row-span-6 grid grid-rows-10">
         <div className="row-span-9 grid grid-rows-10 gap-2 lg:gap-2">
           <div
@@ -64,7 +87,11 @@ function BodyStock(props) {
             <p className="col-span-2 lg:col-span-1 text-center">booked qty</p>
             <p className="text-right">action</p>
           </div>
-          <RenderProduct productsList={productsList} editBtnHndler={editBtnHndler} />
+          <RenderProduct
+            productsList={productsList}
+            editBtnHndler={editBtnHndler}
+            deleteBtnHandler={deleteBtnHandler}
+          />
         </div>
         <div className="pagination-container">
           <Pagination pageNum={pageNum} setPageNum={setPageNum} totalPage={totalPage} />

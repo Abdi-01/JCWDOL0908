@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import RenderWarehouseOption from "./RenderWarehouseOption";
+import RenderWarehouseOption from "../RenderWarehouseOption";
 import { createNewStock, getProductsStocks, getStock, updateStock } from "../../../";
 
 function EditModal(props) {
@@ -22,13 +22,10 @@ function EditModal(props) {
   const onChangeSelect = async (event) => {
     const response = await getStock(singleProduct.id_product, event.target.value);
     setStock(response?.result?.stock);
-    console.log("stock", response?.result?.stock);
     setWarehouse(event.target.value);
   };
 
   const createStockBtnHandler = async () => {
-    console.log(selectedWarehouses);
-    console.log(singleProduct.id_product);
     const response = await createNewStock(singleProduct.id_product, selectedWarehouses);
     if (!response.isSuccess) return;
     alert(response.message);
