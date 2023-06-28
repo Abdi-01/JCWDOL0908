@@ -82,7 +82,6 @@ const deleteProductLogic = async (id_product) => {
 
 const editProductLogic = async (data) => {
   const { product_name, description, weight_kg, product_image, id_category, price, id_product } = data;
-  console.log(price);
   const transaction = await db.sequelize.transaction();
   let result;
   let updateData;

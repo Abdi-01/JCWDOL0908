@@ -59,6 +59,7 @@ const getCategories = async (offset, limit, page) => {
 
 const createCategory = async (category_image, category_name, transaction) => {
   const newCategory = await Category.create({ category_image, category_name, is_deleted: 0 }, { transaction });
+  return newCategory;
 };
 
 module.exports = {
