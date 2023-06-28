@@ -86,13 +86,13 @@ function EditModal(props) {
         </button>
         <div>
           <h1 className="my-4 font-bold">Edit Product</h1>
-          <form onSubmit={formik.handleSubmit} className="pt-4 pb-0 text-slate-800 gap-2 flex flex-col">
+          <form onSubmit={formik.handleSubmit} className="pt-4 pb-0 text-primary gap-2 flex flex-col">
             <UploadPicture preview={preview} handleImageChange={handleImageChange} alt="product image" />
             <CustomInput type="text" name="product_name" id="product_name" formik={formik} label="product name" />
             <CustomTextArea type="textarea" name="description" id="description" formik={formik} label="description" />
             <CustomInput type="number" name="weight_kg" id="weight_kg" formik={formik} label="weight (kg)" />
             <div className="relative grid grid-cols-8 gap-2 items-center">
-              <label className="text-left text-slate-800 text-xs font-semibold my-0 col-span-2">price</label>
+              <label className="text-left text-primary text-xs font-semibold my-0 col-span-2">price</label>
               <p className="font-semibold">:</p>
               <CurrencyInput
                 value={currencyValue}
@@ -104,7 +104,7 @@ function EditModal(props) {
             </div>
             <CustomSelectCategory formik={formik} categories={categories} label="category" name="id_category" />
             <div className="grid grid-cols-3 gap-2 text-sm h-8 mt-4">
-              <button type="submit" onClick={formik.handleSubmit} className="bg-slate-800 text-white h-full">
+              <button type="submit" onClick={formik.handleSubmit} className="bg-primary text-white h-full">
                 Submit
               </button>
             </div>

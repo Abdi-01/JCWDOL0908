@@ -25,7 +25,7 @@ function RenderCategories(props) {
       >
         <div className="col-span-2 lg:col-span-3 text-left h-full flex items-center">
           <div className="bg-white bg-opacity-40 py-1 px-2">
-            <p className=" text-slate-800 relative z-10">{category?.category_name}</p>
+            <p className=" text-primary relative z-10">{category?.category_name}</p>
           </div>
         </div>
         <div className="h-1/3 md:h-1/4 grid grid-cols-2 gap-2">

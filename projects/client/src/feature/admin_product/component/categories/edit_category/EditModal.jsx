@@ -61,8 +61,8 @@ function EditModal(props) {
                 type="text"
                 id="category_name"
                 name="category_name"
-                className=" placeholder:text-xs text-xs bg-gray-50 border border-slate-200 text-slate-800
-                 sm:text-xs rounded-none my-1 shadow-slate-800
+                className=" placeholder:text-xs text-xs bg-gray-50 border border-slate-200 text-primary
+                 sm:text-xs rounded-none my-1 shadow-primary
                  focus:ring-light focus:border-light block w-full px-2
                  placeholder col-span-2 py-2"
                 onChange={formik.handleChange}
@@ -73,7 +73,7 @@ function EditModal(props) {
               ) : null}
             </div>
             <div className="grid grid-cols-3 gap-2 text-sm h-8">
-              <button type="submit" onClick={formik.handleSubmit} className="bg-slate-800 text-white h-full">
+              <button type="submit" onClick={formik.handleSubmit} className="bg-primary text-white h-full">
                 Submit
               </button>
             </div>

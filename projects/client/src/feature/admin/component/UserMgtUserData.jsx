@@ -55,7 +55,7 @@ function UserMgtUserData() {
               <RenderUsers allUserData={allUserData} dataClicked={dataClicked} />
             </div>
             <div
-              className="items-center row-span-1 py-2 grid grid-cols-7 text-slate-800
+              className="items-center row-span-1 py-2 grid grid-cols-7 text-primary
               text-lg lg:grid-cols-11 lg:gap-0 lg:text-lg lg:font-bold"
             >
               <Pagination

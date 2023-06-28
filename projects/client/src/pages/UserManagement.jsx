@@ -25,14 +25,14 @@ function UserManagement() {
         <div className="w-full text-center row-span-2 grid grid-rows-3 gap-8">
           <h1
             className="font-semibold text-2xl pt-8 row-span-2
-          text-slate-800 lg:text-3xl font-title"
+          text-primary lg:text-3xl font-title"
           >
             User Management
           </h1>
           <div className="grid grid-cols-2 row-span-1 gap-20 lg:grid-cols-4 lg:gap-8">
             <button
-              className="py-1 px-1 bg-slate-800 text-white text-sm 
-              font-semibold hover:bg-slate-900 disabled:bg-slate-100 disabled:text-slate-400 
+              className="py-1 px-1 bg-primary text-white text-sm 
+              font-semibold hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-400 
                lg:text-lg"
               disabled={allDataBtnClicked}
               onClick={() => {
@@ -43,8 +43,8 @@ function UserManagement() {
               All User
             </button>
             <button
-              className="py-1 px-1 bg-white text-slate-800 text-sm 
-            font-semibold border-slate-800 border-2 hover:bg-slate-950 
+              className="py-1 px-1 bg-white text-primary text-sm 
+            font-semibold border-primary border-2 hover:bg-slate-950 
            hover:text-white disabled:bg-slate-100 disabled:text-slate-400
             disabled:border-slate-400 lg:text-lg"
               disabled={mngAdminBtnClicked}

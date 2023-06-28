@@ -70,16 +70,16 @@ function EditModal(props) {
           <h2 className="text-xs mb-4 md:text-base lg:text-lg">
             <span className="font-bold">product</span> : <i>{singleProduct.product_name}</i>
           </h2>
-          <div className="pt-4 pb-0 text-slate-800 gap-2 flex flex-col">
+          <div className="pt-4 pb-0 text-primary gap-2 flex flex-col">
             <div className="relative grid grid-cols-8 gap-2 items-center">
-              <label className="text-left text-slate-800 text-xs font-semibold my-0 col-span-2">Warehouse</label>
+              <label className="text-left text-primary text-xs font-semibold my-0 col-span-2">Warehouse</label>
               <p className="font-semibold">:</p>
               <select
                 onChange={onChangeSelect}
                 name="warehouse"
                 id="warehouse"
-                className="placeholder:text-xs text-xs bg-gray-50 border border-gray-300 text-slate-800
-                sm:text-xs rounded-none my-1 shadow-slate-800 focus:ring-light focus:border-light block w-full px-2
+                className="placeholder:text-xs text-xs bg-gray-50 border border-gray-300 text-primary
+                sm:text-xs rounded-none my-1 shadow-primary focus:ring-light focus:border-light block w-full px-2
                 placeholder col-span-5 h-fit py-1"
                 value={userAdmin?.id_warehouse}
                 disabled={userAdmin?.id_warehouse}
@@ -89,7 +89,7 @@ function EditModal(props) {
               </select>
             </div>
             <div className="relative grid grid-cols-8 gap-2 items-center font-bold">
-              <label className="text-left text-slate-800 text-xs font-semibold my-0 col-span-2">Quantity</label>
+              <label className="text-left text-primary text-xs font-semibold my-0 col-span-2">Quantity</label>
               <p className="font-semibold">:</p>
               <div className="col-span-5 p-1 border-2 border-slate-200 grid grid-cols-3 md:col-span-2 items-center">
                 <button
@@ -106,7 +106,7 @@ function EditModal(props) {
                 <button
                   onClick={addQty}
                   disabled={!selectedWarehouses || stockQty === undefined}
-                  className="text-green-800 hover:bg-slate-800 hover:text-white text-center
+                  className="text-green-800 hover:bg-primary hover:text-white text-center
                    disabled:text-white disabled:bg-slate-300 disabled:cursor-not-allowed"
                 >
                   +
@@ -117,7 +117,7 @@ function EditModal(props) {
               {stockQty === undefined && selectedWarehouses ? (
                 <button
                   disabled={!selectedWarehouses}
-                  className="bg-slate-800 text-white h-full disabled:bg-slate-300 disabled:hover:cursor-not-allowed"
+                  className="bg-primary text-white h-full disabled:bg-slate-300 disabled:hover:cursor-not-allowed"
                   onClick={createStockBtnHandler}
                 >
                   Create Stock
@@ -125,7 +125,7 @@ function EditModal(props) {
               ) : (
                 <button
                   disabled={!selectedWarehouses}
-                  className="bg-slate-800 text-white h-full disabled:bg-slate-300 disabled:hover:cursor-not-allowed"
+                  className="bg-primary text-white h-full disabled:bg-slate-300 disabled:hover:cursor-not-allowed"
                   onClick={submitBtnHandler}
                 >
                   Submit
