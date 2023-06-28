@@ -35,7 +35,7 @@ function RenderProducts(props) {
         <div className="h-1/3 md:h-1/4 grid grid-cols-2 gap-2">
           <button
             className="bg-slate-300 disabled:bg-white disabled:border-2 lg:disabled:border-4
-            disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
+            disabled:border-primaryLight disabled:cursor-not-allowed disabled:text-slate-300"
             onClick={() => editBtnHandler(product)}
             disabled={roleAdmin.role_admin !== "super-admin"}
           >
@@ -44,7 +44,7 @@ function RenderProducts(props) {
           <button
             onClick={() => delBtnHandler(product)}
             className="bg-red-600 text-white disabled:bg-white disabled:border-2 lg:disabled:border-4
-            disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
+            disabled:border-primaryLight disabled:cursor-not-allowed disabled:text-slate-300"
             disabled={roleAdmin.role_admin !== "super-admin"}
           >
             <i className="uil uil-trash-alt"></i>

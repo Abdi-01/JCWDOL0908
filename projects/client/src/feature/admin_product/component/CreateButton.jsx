@@ -8,7 +8,7 @@ function CreateButton(props) {
         onClick={() => setFunction(true)}
         className="bg-primary text-white px-2 py-1 text-base 
         font-semibold lg:w-1/3 disabled:bg-white disabled:border-2 lg:disabled:border-4
-        disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
+        disabled:border-primaryLight disabled:cursor-not-allowed disabled:text-slate-300"
         disabled={admin?.role_admin !== "super-admin"}
       >
         <i className="uil uil-plus"></i> New {text}

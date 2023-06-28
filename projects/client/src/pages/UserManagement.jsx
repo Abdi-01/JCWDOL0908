@@ -46,7 +46,7 @@ function UserManagement() {
               className="py-1 px-1 bg-white text-primary text-sm 
             font-semibold border-primary border-2 hover:bg-slate-950 
            hover:text-white disabled:bg-slate-100 disabled:text-slate-400
-            disabled:border-slate-400 lg:text-lg"
+            disabled:border-primaryLight lg:text-lg"
               disabled={mngAdminBtnClicked}
               onClick={() => {
                 setMngAdminBtnClicked(true);

@@ -117,7 +117,7 @@ function ProductBody(props) {
           onClick={() => setNewProductClicked(true)}
           className="bg-primary text-white px-2 py-1 text-base 
           font-semibold lg:w-1/5 disabled:bg-white disabled:border-[3px] 
-          disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
+          disabled:border-primaryLight disabled:cursor-not-allowed disabled:text-slate-300"
           disabled={admin?.role_admin !== "super-admin"}
         >
           <i className="uil uil-plus"></i> New Product
@@ -127,7 +127,7 @@ function ProductBody(props) {
           className="bg-white text-primary px-2 py-1 text-base border-2 border-primary
           hover:bg-primary hover:text-white font-semibold lg:w-1/5 
           disabled:bg-white disabled:border-2 lg:disabled:border-4
-          disabled:border-slate-300 disabled:cursor-not-allowed disabled:text-slate-300"
+          disabled:border-primaryLight disabled:cursor-not-allowed disabled:text-slate-300"
         >
           Manage Stock
         </button>

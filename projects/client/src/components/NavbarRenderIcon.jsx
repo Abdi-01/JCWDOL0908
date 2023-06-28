@@ -1,15 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 function NavbarRenderIcon(props) {
-  const { listNav } = props;
-  const navigate = useNavigate();
+  const { listNav, onClickNavbarBtn, isClicked } = props;
   return listNav.map((navItem) => {
     return (
-      <li key={navItem.text} className="text-center hover:text-black hover:cursor-pointer">
+      <li key={navItem.text} className={"text-center md:py-4 hover:text-white hover:bg-secondary hover:cursor-pointer"}>
         <button
           onClick={() => {
-            navigate(navItem.navlink);
+            onClickNavbarBtn(navItem.navlink);
           }}
         >
           <i className={navItem.class}></i>

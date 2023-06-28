@@ -30,7 +30,7 @@ function HeaderPage(props) {
           }}
           className="py-1 px-1 bg-white text-primary text-sm 
           font-semibold border-primary border-2 hover:bg-slate-950 disabled:hover:cursor-not-allowed
-          hover:text-white disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-400 lg:text-lg"
+          hover:text-white disabled:bg-slate-100 disabled:text-slate-400 disabled:border-primaryLight lg:text-lg"
         >
           Product
         </button>

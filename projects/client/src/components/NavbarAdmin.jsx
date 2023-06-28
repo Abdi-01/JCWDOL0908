@@ -6,6 +6,7 @@ import { setLoggedInAdminDataBack } from "../feature/admin_auth/slice/AdminLogIn
 
 function NavbarAdmin() {
   const [toggleNav, setToggleNav] = useState(false);
+  const [isClicked, setClicked] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -40,7 +41,12 @@ function NavbarAdmin() {
   const logoutBtnHandler = () => {
     localStorage.removeItem("admin_token");
     dispatch(setLoggedInAdminDataBack());
-    navigate("/admin-login");
+    navigate("/");
+  };
+
+  const onClickNavbarBtn = (navlink) => {
+    navigate(navlink);
+    setClicked(navlink);
   };
 
   return (
@@ -60,16 +66,19 @@ function NavbarAdmin() {
           <h1
             onClick={() => navigate("/admin/dashboard")}
             className="invisible md:visible md:text-lg text-primary
-      md:pt-10 md:pb-8 scale-y-110 font-bold lg:text-2xl hover:cursor-pointer font-title"
+            md:pt-10 md:pb-8 scale-y-110 font-bold lg:text-2xl hover:cursor-pointer font-title"
           >
             WarehouseKu
           </h1>
           <ul
             className="grid grid-cols-3 gap-4 text-lg text-slate-700 md:grid 
-      md:grid-rows-6 md:grid-cols-1 md:gap-6 lg:gap-8 md:text-2xl py-4 lg:text-3xl"
+            md:grid-rows-6 md:grid-cols-1 md:gap-0 md:text-2xl py-4 lg:text-3xl"
           >
-            <NavbarRenderIcon listNav={listNav} />
-            <li className="text-center text-red-600 hover:text-red-900 hover:cursor-pointer" onClick={logoutBtnHandler}>
+            <NavbarRenderIcon listNav={listNav} onClickNavbarBtn={onClickNavbarBtn} isClicked={isClicked} />
+            <li
+              className="text-center md:py-4 text-red-600 hover:text-white hover:bg-red-600 hover:cursor-pointer"
+              onClick={logoutBtnHandler}
+            >
               <i className="uil uil-signout"></i>
               <h2 className=" text-sm md:text-lg">logout</h2>
             </li>
