@@ -19,6 +19,10 @@ function RenderProducts(props) {
     return string.length > limit ? string.slice(0, limit) + "..." : string;
   };
 
+  const isItNotSuperAdmin = () => {
+    return roleAdmin.role_admin !== "super-admin";
+  };
+
   return products?.map((product) => {
     return (
       <div
@@ -37,7 +41,7 @@ function RenderProducts(props) {
             className="bg-slate-300 disabled:bg-white disabled:border-2 lg:disabled:border-4
             disabled:border-primaryLight disabled:cursor-not-allowed disabled:text-slate-300"
             onClick={() => editBtnHandler(product)}
-            disabled={roleAdmin.role_admin !== "super-admin"}
+            disabled={isItNotSuperAdmin()}
           >
             <i className="uil uil-pen"></i>
           </button>
@@ -45,7 +49,7 @@ function RenderProducts(props) {
             onClick={() => delBtnHandler(product)}
             className="bg-red-600 text-white disabled:bg-white disabled:border-2 lg:disabled:border-4
             disabled:border-primaryLight disabled:cursor-not-allowed disabled:text-slate-300"
-            disabled={roleAdmin.role_admin !== "super-admin"}
+            disabled={isItNotSuperAdmin()}
           >
             <i className="uil uil-trash-alt"></i>
           </button>

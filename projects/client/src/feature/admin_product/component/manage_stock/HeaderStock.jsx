@@ -1,37 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import SearchBar from "../../../../components/SearchBar";
 import Filter from "../Filter";
-import { getProductsStocks } from "../../";
 
 function HeaderStock(props) {
-  const {
-    categories,
-    setSelectedCategories,
-    selectedCategories,
-    LIMIT,
-    OFFSET,
-    pageNum,
-    userAdmin,
-    setProductsList,
-    setTotalPage,
-  } = props;
-
-  const filterOnChangeHandle = (event) => {
-    setSelectedCategories(event.target.value);
-  };
-
-  const inputOnChangeHandler = async (event) => {
-    const response = await getProductsStocks(
-      OFFSET,
-      LIMIT,
-      pageNum,
-      event.target.value,
-      selectedCategories,
-      userAdmin?.id_warehouse,
-    );
-    setProductsList([...response.result.productsList]);
-    setTotalPage(response.result.totalPage);
-  };
+  const { categories, inputOnChangeHandler, filterOnChangeHandle } = props;
 
   return (
     <div className="w-full text-center row-span-2 grid grid-rows-4">

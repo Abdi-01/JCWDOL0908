@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import DetailData from "./DetailData";
-import { deleteProduct, getProducts } from "../../../";
+import { deleteProduct } from "../../../";
 
 function DeleteModal(props) {
-  const { setDeleteClicked, singleProduct, setProducts, pageNum, LIMIT, OFFSET, selectedCategory, setTotalPate } =
-    props;
+  const { setDeleteClicked, singleProduct, refetchedData } = props;
   const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
   const [preview, setPreview] = useState(`${REACT_APP_SERVER_URL + singleProduct.product_image}`);
 
@@ -12,9 +11,7 @@ function DeleteModal(props) {
     console.log(singleProduct.id_product);
     const response = await deleteProduct(singleProduct.id_product);
     alert(response.message);
-    const fetchedData = await getProducts(OFFSET, LIMIT, pageNum, selectedCategory);
-    setProducts([...fetchedData.result.productsList]);
-    setTotalPate(fetchedData.result.totalPage);
+    await refetchedData();
     setDeleteClicked(false);
   };
 

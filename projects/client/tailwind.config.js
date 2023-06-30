@@ -8,6 +8,9 @@ module.exports = {
         "span-9": "span 9 / span 9",
         "span-10": "span 10 / span 10",
       },
+      gridRowStart: {
+        8: "8",
+      },
       gridTemplateColumns: {
         // Simple 16 column grid
         10: "repeat(10, minmax(0, 1fr))",

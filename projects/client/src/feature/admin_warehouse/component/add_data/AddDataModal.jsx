@@ -95,10 +95,7 @@ function AddDataModal(props) {
                     <option value="">Select City</option>
                     <RenderCity cityList={cityList} />
                   </CustomSelect>
-                  <div className="invisible"></div>
-                  <div className="invisible"></div>
-                  <div className="invisible"></div>
-                  <div className=" row-span-1">
+                  <div className=" row-span-1 row-start-8">
                     <div className="grid grid-cols-2 gap-8 text-sm h-5/6 mt-4">
                       <button className="bg-primary text-white" type="submit">
                         Create

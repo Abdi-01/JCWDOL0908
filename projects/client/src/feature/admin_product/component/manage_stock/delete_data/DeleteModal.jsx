@@ -3,19 +3,14 @@ import RenderWarehouseOption from "../RenderWarehouseOption";
 import { deleteStock, getProductsStocks, getStock } from "../../../";
 
 function DeleteModal(props) {
-  const {
-    setDeleteClicked,
-    warehouses,
-    userAdmin,
-    productStock,
-    singleProduct,
-    OFFSET,
-    LIMIT,
-    pageNum,
-    selectedCategories,
-    setProductsList,
-  } = props;
-  const initialValues = userAdmin?.id_warehouse ? userAdmin?.id_warehouse : "";
+  const { setDeleteClicked, warehouses, userAdmin, productStock, singleProduct, refetchedData } = props;
+  const idWarehouse = userAdmin?.id_warehouse;
+
+  const isItWarehouseAdmin = () => {
+    return userAdmin?.id_warehouse;
+  };
+
+  const initialValues = isItWarehouseAdmin() ? idWarehouse : "";
   const [selectedWarehouses, setWarehouse] = useState(initialValues);
   const [stockQty, setStock] = useState(productStock.stock);
 
@@ -29,15 +24,7 @@ function DeleteModal(props) {
     const response = await deleteStock(singleProduct.id_product, selectedWarehouses);
     if (!response.isSuccess) return setDeleteClicked(false);
     alert(response.message);
-    const fetchingData = await getProductsStocks(
-      OFFSET,
-      LIMIT,
-      pageNum,
-      "",
-      selectedCategories,
-      userAdmin?.id_warehouse,
-    );
-    setProductsList([...fetchingData.result.productsList]);
+    await refetchedData();
     setDeleteClicked(false);
   };
 
@@ -62,8 +49,8 @@ function DeleteModal(props) {
                 className="bg-gray-50 border border-gray-300 text-primary
                 rounded-none my-1 shadow-primary focus:ring-light focus:border-light block w-full px-2
                 placeholder col-span-5 h-fit py-1"
-                value={userAdmin?.id_warehouse}
-                disabled={userAdmin?.id_warehouse}
+                value={idWarehouse}
+                disabled={isItWarehouseAdmin()}
               >
                 <option value={""}>Select Warehouse</option>
                 <RenderWarehouseOption warehouses={warehouses} />

@@ -6,11 +6,10 @@ import CustomInput from "../../CustomInput";
 import CustomTextArea from "../../CustomTextArea";
 import UploadPicture from "../../UploadPicture";
 import CustomSelectCategory from "../CustomSelectCategory";
-import { getProducts, postProduct } from "../../../";
+import { postProduct } from "../../../";
 
 function AddDataModal(props) {
-  const { setNewProductClicked, categories, pageNum, setProducts, OFFSET, LIMIT, selectedCategory, setTotalPate } =
-    props;
+  const { setNewProductClicked, categories, refetchedData } = props;
   const [currencyValue, setCurrencyValue] = useState(0);
   const [preview, setPreview] = useState();
   const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg"];
@@ -53,9 +52,7 @@ function AddDataModal(props) {
       formData.append("data", JSON.stringify(data));
       const response = await postProduct(formData);
       alert(response.message);
-      const fetchedData = await getProducts(OFFSET, LIMIT, pageNum, selectedCategory);
-      setProducts([...fetchedData.result.productsList]);
-      setTotalPate(fetchedData.result.totalPage);
+      await refetchedData();
       setNewProductClicked(false);
     },
   });

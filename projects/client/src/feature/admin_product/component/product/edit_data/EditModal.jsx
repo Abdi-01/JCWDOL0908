@@ -6,20 +6,10 @@ import CustomInput from "../../CustomInput";
 import CustomTextArea from "../../CustomTextArea";
 import CurrencyInput from "../add_data/CurrencyInput";
 import CustomSelectCategory from "../CustomSelectCategory";
-import { editProduct, getProducts } from "../../../";
+import { editProduct } from "../../../";
 
 function EditModal(props) {
-  const {
-    singleProduct,
-    setEditClicked,
-    pageNum,
-    setProducts,
-    OFFSET,
-    LIMIT,
-    selectedCategory,
-    setTotalPate,
-    categories,
-  } = props;
+  const { singleProduct, setEditClicked, categories, refetchedData } = props;
 
   const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
   const [currencyValue, setCurrencyValue] = useState(
@@ -71,9 +61,7 @@ function EditModal(props) {
       formData.append("data", JSON.stringify(data));
       const editResponse = await editProduct(formData, id_product);
       alert(editResponse.message);
-      const fetchedData = await getProducts(OFFSET, LIMIT, pageNum, selectedCategory);
-      setProducts([...fetchedData.result.productsList]);
-      setTotalPate(fetchedData.result.totalPage);
+      await refetchedData();
       setEditClicked(false);
     },
   });

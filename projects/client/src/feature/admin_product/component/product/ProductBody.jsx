@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "../Pagination";
+import AdminPagination from "../../../../components/AdminPagination";
 import Filter from "../Filter";
 import AddDataModal from "./add_data/AddDataModal";
 import { getCategories, getProducts } from "../../";
@@ -55,44 +55,35 @@ function ProductBody(props) {
     setSelectedCategory(id_category);
   };
 
+  const refetchedData = async () => {
+    const fetchedData = await getProducts(OFFSET, LIMIT, pageNum, selectedCategory);
+    setProducts([...fetchedData.result.productsList]);
+    setTotalPate(fetchedData.result.totalPage);
+  };
+
+  const isItNotSuperAdmin = () => {
+    return admin?.role_admin !== "super-admin";
+  };
+
   return (
     <>
       {isNewProductClicked ? (
         <AddDataModal
           setNewProductClicked={setNewProductClicked}
           categories={categories}
-          pageNum={pageNum}
-          setProducts={setProducts}
-          OFFSET={OFFSET}
-          LIMIT={LIMIT}
-          selectedCategory={selectedCategory}
-          setTotalPate={setTotalPate}
+          refetchedData={refetchedData}
         />
       ) : null}
       {isEditClicked ? (
         <EditModal
           singleProduct={singleProduct}
           setEditClicked={setEditClicked}
-          pageNum={pageNum}
-          setProducts={setProducts}
-          OFFSET={OFFSET}
-          LIMIT={LIMIT}
-          selectedCategory={selectedCategory}
-          setTotalPate={setTotalPate}
           categories={categories}
+          refetchedData={refetchedData}
         />
       ) : null}
       {isDeleteClicked ? (
-        <DeleteModal
-          setDeleteClicked={setDeleteClicked}
-          singleProduct={singleProduct}
-          pageNum={pageNum}
-          setProducts={setProducts}
-          OFFSET={OFFSET}
-          LIMIT={LIMIT}
-          selectedCategory={selectedCategory}
-          setTotalPate={setTotalPate}
-        />
+        <DeleteModal setDeleteClicked={setDeleteClicked} singleProduct={singleProduct} refetchedData={refetchedData} />
       ) : null}
       <div className="product-and-category-body-container grid grid-rows-10">
         <div className="row-span-1 flex items-end text-sm">
@@ -118,7 +109,7 @@ function ProductBody(props) {
           className="bg-primary text-white px-2 py-1 text-base 
           font-semibold lg:w-1/5 disabled:bg-white disabled:border-[3px] 
           disabled:border-primaryLight disabled:cursor-not-allowed disabled:text-slate-300"
-          disabled={admin?.role_admin !== "super-admin"}
+          disabled={isItNotSuperAdmin()}
         >
           <i className="uil uil-plus"></i> New Product
         </button>
@@ -133,7 +124,7 @@ function ProductBody(props) {
         </button>
       </div>
       <div className="pagination-container">
-        <Pagination setPageNum={setPageNum} pageNum={pageNum} totalPage={totalPage} />
+        <AdminPagination setPageNum={setPageNum} pageNum={pageNum} totalPage={totalPage} />
       </div>
     </>
   );

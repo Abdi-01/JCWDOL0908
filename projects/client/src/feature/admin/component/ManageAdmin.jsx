@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RenderAdminsData from "./all_admin/RenderAdminsData";
-import Pagination from "./all_admin/Pagination";
 import AddNewAdmin from "./all_admin/create_data/AddNewAdmin";
 import DeleteAdminModal from "./all_admin/delete_data/DeleteAdminModal";
 import EditAdminModal from "./all_admin/edit_data/EditAdminModal";
+import AdminPagination from "../../../components/AdminPagination";
 import { getAllAdmin, getSingleWarehouseAdmin, getWarehouseCities } from "../";
 
 function ManageAdmin(props) {
-  let { page } = props;
+  const { page, setPage } = props;
   const dispatch = useDispatch();
   const [editClicked, setEditClicked] = useState(false);
   const [deletedClicked, setDeleteClicked] = useState(false);
@@ -38,14 +38,6 @@ function ManageAdmin(props) {
   useEffect(() => {
     getDataWarehouseCities();
   }, [editClicked]);
-
-  const addPageNum = () => {
-    props.setPage(page + 1);
-  };
-
-  const minusPageNum = () => {
-    props.setPage(page - 1);
-  };
 
   const allAdmin = useSelector((state) => state.admin.allAdmin);
 
@@ -85,7 +77,7 @@ function ManageAdmin(props) {
           </button>
         </div>
         <div className="pagination-container">
-          <Pagination minusPageNum={minusPageNum} page={page} addPageNum={addPageNum} allAdmin={allAdmin} />
+          <AdminPagination pageNum={page} setPageNum={setPage} totalPage={allAdmin.totalPage} />
         </div>
       </div>
     </>
