@@ -6,34 +6,33 @@ import { setLoggedInAdminDataBack } from "../feature/admin_auth/slice/AdminLogIn
 
 function NavbarAdmin() {
   const [toggleNav, setToggleNav] = useState(false);
-  const [isClicked, setClicked] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const listNav = [
     {
       class: "uil uil-cog",
-      text: "user-mgt",
+      text: "user",
       navlink: "/admin/dashboard/user-management",
     },
     {
       class: "uil uil-estate",
-      text: "warehouse-mgt",
+      text: "warehouse",
       navlink: "/admin/dashboard/warehouse-management",
     },
     {
       class: "uil uil-suitcase",
-      text: "product-mgt",
+      text: "prod. & cat.",
       navlink: "/admin/dashboard/product-management",
     },
     {
       class: "uil uil-file-graph",
-      text: "product-order",
+      text: "prod-order",
       navlink: "/admin/dashboard/order",
     },
     {
       class: "uil uil-analytics",
-      text: "product-report",
+      text: "prod-report",
       navlink: "/admin/dashboard/report",
     },
   ];
@@ -46,7 +45,6 @@ function NavbarAdmin() {
 
   const onClickNavbarBtn = (navlink) => {
     navigate(navlink);
-    setClicked(navlink);
   };
 
   return (
@@ -74,13 +72,13 @@ function NavbarAdmin() {
             className="grid grid-cols-3 gap-4 text-lg text-slate-700 md:grid 
             md:grid-rows-6 md:grid-cols-1 md:gap-0 md:text-2xl py-4 lg:text-3xl"
           >
-            <NavbarRenderIcon listNav={listNav} onClickNavbarBtn={onClickNavbarBtn} isClicked={isClicked} />
+            <NavbarRenderIcon listNav={listNav} onClickNavbarBtn={onClickNavbarBtn} />
             <li
               className="text-center md:py-4 text-red-600 hover:text-white hover:bg-red-600 hover:cursor-pointer"
               onClick={logoutBtnHandler}
             >
               <i className="uil uil-signout"></i>
-              <h2 className=" text-sm md:text-lg">logout</h2>
+              <h2 className="text-base md:text-lg lg:text-xl">logout</h2>
             </li>
           </ul>
           <span
