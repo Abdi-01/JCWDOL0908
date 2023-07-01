@@ -1,4 +1,4 @@
-import { axiosInstanceStockUpdate } from "../slice/ProductSlice";
+import { axiosInstanceStockUpdate } from "../slice/ProductStockSlice";
 
 export const getProductsStocks = async (offset, limit, page, name_search, id_category, id_warehouse) => {
   name_search = name_search ? name_search : "null";
@@ -6,7 +6,7 @@ export const getProductsStocks = async (offset, limit, page, name_search, id_cat
   id_warehouse = id_warehouse ? id_warehouse : "null";
   try {
     const response = await axiosInstanceStockUpdate.get(
-      `/collections?offset=${offset}&limit=${limit}&page=${page}&name_search=${name_search}&id_category=${id_category}&id_warehouse=${id_warehouse}`,
+      `?offset=${offset}&limit=${limit}&page=${page}&name_search=${name_search}&id_category=${id_category}&id_warehouse=${id_warehouse}`,
     );
     return response.data;
   } catch (error) {
@@ -18,7 +18,7 @@ export const getProductsStocks = async (offset, limit, page, name_search, id_cat
 export const getStock = async (id_product, id_warehouse) => {
   id_warehouse = id_warehouse ? id_warehouse : "null";
   try {
-    const response = await axiosInstanceStockUpdate.get(`/${id_product}/product?id_warehouse=${id_warehouse}`);
+    const response = await axiosInstanceStockUpdate.get(`/${id_product}?id_warehouse=${id_warehouse}`);
     return response.data;
   } catch (error) {
     console.log(error.response?.data);

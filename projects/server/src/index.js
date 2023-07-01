@@ -12,6 +12,7 @@ const {
   CartRouter,
   ProductRouter,
   AddressRouter,
+  ProductWarehouseRltRouter,
   MutationRouter,
 } = require("./router");
 const db = require("./model");
@@ -56,6 +57,7 @@ app.use("/api/categories", CategoryRouter);
 app.use("/api/products", ProductRouter);
 app.use("/api/cart", CartRouter);
 app.use("/api/address", AddressRouter);
+app.use("/api/products-stocks", ProductWarehouseRltRouter);
 app.use("/api/mutation", MutationRouter);
 
 // ===========================
