@@ -3,6 +3,7 @@ import RenderWarehouseOption from "../RenderWarehouseOption";
 import { createNewStock, getStock, updateStock } from "../../../";
 import SubmitButton from "./SubmitButton";
 import AddOrDecrease from "./AddOrDecrease";
+import ClosedBtnModal from "../../../../../components/ClosedBtnModal";
 
 function EditModal(props) {
   const { setEditClicked, warehouses, userAdmin, productStock, singleProduct, refetchedData } = props;
@@ -55,9 +56,7 @@ function EditModal(props) {
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <button onClick={() => setEditClicked(false)} className="close-btn-modal">
-          <i className="uil uil-times-circle"></i>
-        </button>
+        <ClosedBtnModal setModal={setEditClicked} />
         <div>
           <h1 className="mt-4 mb-1 font-bold font-title text-lg md:text-xl lg:text-2xl">Update Stock </h1>
           <h2 className="text-xs mb-4 md:text-base lg:text-lg">

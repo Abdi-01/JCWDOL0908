@@ -57,8 +57,8 @@ function BodyStock(props) {
           refetchedData={refetchedData}
         />
       ) : null}
-      <div className="row-span-6 grid grid-rows-10">
-        <div className="row-span-9 grid grid-rows-10 gap-2 lg:gap-2">
+      <div className="row-span-6 grid grid-rows-12">
+        <div className="row-span-11 grid grid-rows-10 gap-2 lg:gap-2">
           <div
             className="row-span-1 font-semibold grid lg:grid-cols-5
               grid-cols-6 items-end text-xs pl-2 md:text-sm lg:text-base"

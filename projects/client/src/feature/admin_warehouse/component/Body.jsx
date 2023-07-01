@@ -31,11 +31,11 @@ function Body(props) {
           pageNum={pageNum}
         />
       ) : null}
-      <div className="row-span-6 grid grid-rows-8">
+      <div className="row-span-6 grid grid-rows-12">
         <div className="row-span-1 flex text-center items-center">
           <h1 className="text-lg font-semibold lg:text-xl">Warehouse List</h1>
         </div>
-        <div className="row-span-6 grid grid-rows-10 gap-2 lg:gap-2">
+        <div className="row-span-10 grid grid-rows-10 gap-2 lg:gap-2">
           <div
             className="row-span-1 font-semibold grid lg:grid-cols-5
               grid-cols-6 items-center text-xs pl-2 lg:text-base"

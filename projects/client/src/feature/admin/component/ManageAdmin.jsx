@@ -48,24 +48,22 @@ function ManageAdmin(props) {
         <AddNewAdmin setNewAdminClicked={setNewAdminClicked} warehouseCities={warehouseCities} page={page} />
       ) : null}
       {deletedClicked ? <DeleteAdminModal setDeleteClicked={setDeleteClicked} page={page} /> : null}
-      <div className="row-span-6 grid grid-rows-8 gap-2">
-        <div className="row-span-6 grid grid-rows-6">
-          <div className="row-span-1 flex text-center items-center">
-            <h1 className="text-lg font-semibold lg:text-xl">Admin-Warehouse List</h1>
-          </div>
-          <div className=" row-span-5 grid grid-rows-8 gap-3 lg:gap-2">
-            <div
-              className="row-span-1 font-semibold grid lg:grid-cols-5
+      <div className="row-span-6 grid grid-rows-12">
+        <div className="row-span-1 flex text-center items-center">
+          <h1 className="text-lg font-semibold lg:text-xl">Admin-Warehouse List</h1>
+        </div>
+        <div className="row-span-9 grid grid-rows-9 gap-3 lg:gap-2">
+          <div
+            className="row-span-1 font-semibold grid lg:grid-cols-5
               grid-cols-6 items-center text-xs pl-2 lg:text-base"
-            >
-              <p className="col-span-1">name</p>
-              <p className="hidden lg:inline lg:col-span-1">phone</p>
-              <p className="col-span-2 text-center lg:text-left lg:col-span-1">warehouse</p>
-              <p className="col-span-2 lg:col-span-1">location</p>
-              <p className="text-right">action</p>
-            </div>
-            <RenderAdminsData allAdmin={allAdmin} editBtnHndler={editBtnHndler} setDeleteClicked={setDeleteClicked} />
+          >
+            <p className="col-span-1">name</p>
+            <p className="hidden lg:inline lg:col-span-1">phone</p>
+            <p className="col-span-2 text-center lg:text-left lg:col-span-1">warehouse</p>
+            <p className="col-span-2 lg:col-span-1">location</p>
+            <p className="text-right">action</p>
           </div>
+          <RenderAdminsData allAdmin={allAdmin} editBtnHndler={editBtnHndler} setDeleteClicked={setDeleteClicked} />
         </div>
         <div className="row-span-1 grid items-center">
           <button

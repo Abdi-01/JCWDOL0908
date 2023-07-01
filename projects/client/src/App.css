@@ -10,13 +10,17 @@
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+.page-layout {
+  @apply grid grid-rows-8 maxvh pt-2 pb-6 md:pb-2 px-8 gap-4;
+}
+
 .pagination-container {
   @apply items-center row-span-1 py-2 grid grid-cols-7 text-primary
   text-lg lg:grid-cols-11 lg:font-bold;
 }
 
 .modal-background {
-  @apply modal-container-color fixed maxvh maxvw bg-white z-30 top-0 left-0
+  @apply modal-container-color fixed maxvh maxvw bg-white z-50 top-0 left-0
   flex items-center justify-center;
 }
 
@@ -31,16 +35,16 @@
 
 /* DELETE MODAL */
 
-.delete-modal-header-container {
+.modal-header-container {
   @apply flex flex-col gap-2;
 }
 
-.delete-modal-header-text {
+.modal-header-text {
   @apply my-4 font-bold font-title text-lg md:text-xl md:my-6 lg:text-2xl;
 }
 
-.delete-modal-body-container {
-  @apply text-sm lg:text-base;
+.modal-body-container {
+  @apply flex flex-col text-sm text-primary lg:text-base;
 }
 
 .delete-modal-confirmation-btn {

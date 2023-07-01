@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { editCategory, getCategories } from "../../../";
 import UploadPicture from "../../UploadPicture";
+import ClosedBtnModal from "../../../../../components/ClosedBtnModal";
 
 function EditModal(props) {
   const { setEditClicked, pageNum, setCategories, singleCategory } = props;
@@ -48,11 +49,9 @@ function EditModal(props) {
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <button onClick={() => setEditClicked(false)} className="close-btn-modal">
-          <i className="uil uil-times-circle"></i>
-        </button>
+        <ClosedBtnModal setModal={setEditClicked} />
         <div>
-          <h1 className="my-4 font-bold">Edit Category</h1>
+          <h1 className="modal-header-text">Edit Category</h1>
           <form onSubmit={formik.handleSubmit} htmlFor="image" className="flex flex-col gap-4">
             <UploadPicture preview={preview} handleImageChange={handleImageChange} alt="category image" />
             <div className="grid grid-cols-3 items-center gap-2">

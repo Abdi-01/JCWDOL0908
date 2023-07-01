@@ -8,6 +8,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import RenderCity from "./RenderCity";
 import RenderWarehouse from "./RenderWarehouse";
 import { getAllAdmin, getWarehousesInCities, updateAdminWarehouse } from "../../../../../feature/admin";
+import ClosedBtnModal from "../../../../../components/ClosedBtnModal";
 
 function EditAdminModal(props) {
   const { warehouseCities, setModal, page } = props;
@@ -61,9 +62,7 @@ function EditAdminModal(props) {
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <button onClick={() => setModal(false)} className="text-red-700 absolute top-0 right-1 font-bold text-xl">
-          <i className="uil uil-times-circle"></i>
-        </button>
+        <ClosedBtnModal setModal={setModal} />
         <Formik
           initialValues={{
             username: singleData.username,

@@ -6,6 +6,7 @@ import CustomSelect from "../../../../components/CustomSelect";
 import RenderProvince from "./RenderProvince";
 import RenderCity from "./RenderCity";
 import { createNewWarehouse, getCitiesByProvinces, getProvinces, getWarehouses } from "../..";
+import ClosedBtnModal from "../../../../components/ClosedBtnModal";
 //hooks formik
 function AddDataModal(props) {
   const { setIsCreateBtnClicked, pageNum, setWarehouses } = props;
@@ -54,11 +55,9 @@ function AddDataModal(props) {
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <button onClick={() => setIsCreateBtnClicked(false)} className="close-btn-modal">
-          <i className="uil uil-times-circle"></i>
-        </button>
+        <ClosedBtnModal setModal={setIsCreateBtnClicked} />
         <div>
-          <h1 className="my-4 font-bold">Create Warehouse</h1>
+          <h1 className="modal-header-text">Create Warehouse</h1>
           <Formik
             initialValues={{
               warehouse_name: "",

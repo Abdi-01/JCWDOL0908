@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import UploadPicture from "../../UploadPicture";
-import CustomInput from "../../CustomInput";
+import CustomInput from "../../../../../components/CustomInput";
 import CustomTextArea from "../../CustomTextArea";
 import CurrencyInput from "../add_data/CurrencyInput";
-import CustomSelectCategory from "../CustomSelectCategory";
+import CustomSelectFormikHook from "../../../../../components/CustomSelectFormikHook";
 import { editProduct } from "../../../";
+import RenderCategoryOptions from "../../RenderCategoryOptions";
+import ClosedBtnModal from "../../../../../components/ClosedBtnModal";
 
 function EditModal(props) {
   const { singleProduct, setEditClicked, categories, refetchedData } = props;
@@ -69,11 +71,9 @@ function EditModal(props) {
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <button onClick={() => setEditClicked(false)} className="close-btn-modal">
-          <i className="uil uil-times-circle"></i>
-        </button>
+        <ClosedBtnModal setModal={setEditClicked} />
         <div>
-          <h1 className="my-4 font-bold">Edit Product</h1>
+          <h1 className="modal-header-text">Edit Product</h1>
           <form onSubmit={formik.handleSubmit} className="pt-4 pb-0 text-primary gap-2 flex flex-col">
             <UploadPicture preview={preview} handleImageChange={handleImageChange} alt="product image" />
             <CustomInput type="text" name="product_name" id="product_name" formik={formik} label="product name" />
@@ -90,7 +90,9 @@ function EditModal(props) {
                 formik={formik}
               />
             </div>
-            <CustomSelectCategory formik={formik} categories={categories} label="category" name="id_category" />
+            <CustomSelectFormikHook formik={formik} categories={categories} label="category" name="id_category">
+              <RenderCategoryOptions categories={categories} />
+            </CustomSelectFormikHook>
             <div className="grid grid-cols-3 gap-2 text-sm h-8 mt-4">
               <button type="submit" onClick={formik.handleSubmit} className="bg-primary text-white h-full">
                 Submit

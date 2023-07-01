@@ -43,8 +43,8 @@ function NavbarAdmin() {
     navigate("/");
   };
 
-  const onClickNavbarBtn = (navlink) => {
-    navigate(navlink);
+  const onClickNavbarBtn = async (navItem) => {
+    navigate(navItem.navlink);
   };
 
   return (
@@ -69,7 +69,7 @@ function NavbarAdmin() {
             WarehouseKu
           </h1>
           <ul
-            className="grid grid-cols-3 gap-4 text-lg text-slate-700 md:grid 
+            className="grid grid-cols-3 gap-4 text-lg text-primary md:grid 
             md:grid-rows-6 md:grid-cols-1 md:gap-0 md:text-2xl py-4 lg:text-3xl"
           >
             <NavbarRenderIcon listNav={listNav} onClickNavbarBtn={onClickNavbarBtn} />

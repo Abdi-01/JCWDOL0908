@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import RenderWarehouseOption from "../RenderWarehouseOption";
 import { deleteStock, getProductsStocks, getStock } from "../../../";
+import ClosedBtnModal from "../../../../../components/ClosedBtnModal";
 
 function DeleteModal(props) {
   const { setDeleteClicked, warehouses, userAdmin, productStock, singleProduct, refetchedData } = props;
@@ -31,9 +32,7 @@ function DeleteModal(props) {
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <button onClick={() => setDeleteClicked(false)} className="close-btn-modal">
-          <i className="uil uil-times-circle"></i>
-        </button>
+        <ClosedBtnModal setModal={setDeleteClicked} />
         <div className="text-xs md:text-base lg:text-lg">
           <h1 className="mt-4 mb-1 font-bold font-title text-lg md:text-xl lg:text-2xl">Delete Stock </h1>
           <h2 className="text-xs mb-4 md:text-base lg:text-lg">

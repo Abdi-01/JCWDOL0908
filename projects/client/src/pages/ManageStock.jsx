@@ -61,7 +61,7 @@ function ManageStock() {
 
   return (
     <LayoutAdmin>
-      <div className="grid grid-rows-8 maxvh pt-2 pb-6 px-8 gap-4 ">
+      <div className="page-layout ">
         <HeaderStock
           categories={categories}
           inputOnChangeHandler={inputOnChangeHandler}

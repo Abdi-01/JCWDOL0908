@@ -6,6 +6,7 @@ import RenderProvince from "../../../../feature/admin_warehouse/component/add_da
 import RenderCity from "../../../../feature/admin_warehouse/component/add_data/RenderCity";
 import CustomSelect from "../../../../components/CustomSelect";
 import { editWarehouse, getCitiesByProvinces, getProvinces, getWarehouses } from "../../../../feature/admin_warehouse";
+import ClosedBtnModal from "../../../../components/ClosedBtnModal";
 
 function EditModal(props) {
   const { setIsEditBtnClicked, warehouseData, setWarehouses, pageNum } = props;
@@ -61,11 +62,9 @@ function EditModal(props) {
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <button className="close-btn-modal" onClick={() => setIsEditBtnClicked(false)}>
-          <i className="uil uil-times-circle"></i>
-        </button>
+        <ClosedBtnModal setModal={setIsEditBtnClicked} />
         <div>
-          <h1 className="my-4 font-bold">Edit Warehouse</h1>
+          <h1 className="modal-header-text">Edit Warehouse</h1>
           <Formik
             initialValues={{
               warehouse_name: warehouseData.warehouse_name,

@@ -6,10 +6,9 @@ function NavbarRenderIcon(props) {
     return (
       <li
         key={navItem.text}
-        className="text-center md:py-4 hover:text-white
-        hover:bg-secondary hover:cursor-pointer"
+        className={"text-center md:py-4 hover:text-white hover:bg-secondary hover:cursor-pointer"}
         onClick={() => {
-          onClickNavbarBtn(navItem.navlink);
+          onClickNavbarBtn(navItem);
         }}
       >
         <div>
