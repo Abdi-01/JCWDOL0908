@@ -12,6 +12,7 @@ const {
   CartRouter,
   ProductRouter,
   AddressRouter,
+  MutationRouter,
 } = require("./router");
 const db = require("./model");
 const bearerToken = require("express-bearer-token");
@@ -55,6 +56,7 @@ app.use("/api/categories", CategoryRouter);
 app.use("/api/products", ProductRouter);
 app.use("/api/cart", CartRouter);
 app.use("/api/address", AddressRouter);
+app.use("/api/mutation", MutationRouter);
 
 // ===========================
 

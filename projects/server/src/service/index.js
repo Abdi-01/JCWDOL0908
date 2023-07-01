@@ -9,6 +9,7 @@ const CartService = require("./CartService");
 const AddressService = require("./AddressService");
 const ProductWarehouseRltService = require("./ProductWarehouseRltService");
 const ProductJournalService = require("./ProductJournalService");
+const MutationService = require("./MutationService");
 
 module.exports = {
   AdminUserMgtService,
@@ -22,4 +23,5 @@ module.exports = {
   AddressService,
   ProductWarehouseRltService,
   ProductJournalService,
+  MutationService,
 };

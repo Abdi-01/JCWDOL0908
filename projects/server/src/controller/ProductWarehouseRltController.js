@@ -90,4 +90,13 @@ const deleteStock = async (req, res, next) => {
   }
 };
 
-module.exports = { getTotalStockProducts, getStockProduct, updateStock, createStock, deleteStock };
+const getWarehouseWhichProvideProduct = async (req, res, next) => {};
+
+module.exports = {
+  getTotalStockProducts,
+  getStockProduct,
+  updateStock,
+  createStock,
+  deleteStock,
+  getWarehouseWhichProvideProduct,
+};

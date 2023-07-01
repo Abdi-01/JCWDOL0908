@@ -56,11 +56,11 @@ const postNewProductLogic = async (data) => {
       await ProductWarehouseRltService.createProductWarehouseRlt(id_product, id_warehouse, transaction);
     }
 
-    transaction.commit();
+    await transaction.commit();
     return { error: null, result };
   } catch (error) {
     await UnlinkPhoto(product_image);
-    transaction.rollback();
+    await transaction.rollback();
     console.log(error);
     return { error, result: null };
   }
@@ -71,10 +71,10 @@ const deleteProductLogic = async (id_product) => {
   try {
     const response = await ProductService.deleteProduct(id_product, transaction);
     if (response[0] !== 1) throw { errMsg: "data not found", statusCode: 404 };
-    transaction.commit();
+    await transaction.commit();
     return { error: null, result: response };
   } catch (error) {
-    transaction.rollback();
+    await transaction.rollback();
     console.log(error);
     return { error, result: null };
   }
@@ -110,11 +110,11 @@ const editProductLogic = async (data) => {
     // delete previous image pattern data
     if (product_image) await UnlinkPhoto(oldImage);
 
-    transaction.commit();
+    await transaction.commit();
     return { error: null, result };
   } catch (error) {
     await UnlinkPhoto(product_image);
-    transaction.rollback();
+    await transaction.rollback();
     console.log(error);
     return { error, result: null };
   }

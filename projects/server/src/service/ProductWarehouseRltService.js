@@ -131,6 +131,11 @@ const deleteStock = async (id_product, id_warehouse, transaction) => {
   return deleteData;
 };
 
+const getProductWarehouseRlt = async (id_product, id_warehouse) => {
+  const getRelation = await ProductWarehouseRlt.findOne({ where: { is_deleted: 0, id_product, id_warehouse } });
+  return getRelation;
+};
+
 module.exports = {
   createProductWarehouseRlt,
   getProductsCountWithNameAndCateogryFilter,
@@ -141,6 +146,7 @@ module.exports = {
   getProductsWithCategoryFilter,
   getProductsWithoutFilter,
   getProductsCountWithoutFilter,
+  getProductWarehouseRlt,
   getStockProduct,
   updateStock,
   createStock,

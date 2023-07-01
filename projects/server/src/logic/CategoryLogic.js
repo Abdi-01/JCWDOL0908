@@ -7,10 +7,10 @@ const deleteCategoryLogic = async (id_category) => {
   try {
     const response = await CategoryService.deleteCategory(id_category, transaction);
     if (response[0] !== 1) throw { errMsg: "not found", statusCode: 404 };
-    transaction.commit();
+    await transaction.commit();
     return { error: null, result: response };
   } catch (error) {
-    transaction.rollback();
+    await transaction.rollback();
     console.log(error);
     return { error, result: null };
   }
@@ -55,11 +55,11 @@ const editCategoryLogic = async (category_image, category_name, id_category) => 
     // delete previous image pattern data
     if (category_image) await UnlinkPhoto(oldImage);
 
-    transaction.commit();
+    await transaction.commit();
     return { error: null, result: "halo" };
   } catch (error) {
     await UnlinkPhoto(category_image);
-    transaction.rollback();
+    await transaction.rollback();
     console.log(error);
     return { error, result: null };
   }
@@ -74,11 +74,11 @@ const createNewCategoryLogic = async (category_image, category_name, id_category
 
     const result = await CategoryService.createCategory(category_image, category_name, transaction);
 
-    transaction.commit();
+    await transaction.commit();
     return { error: null, result };
   } catch (error) {
     await UnlinkPhoto(category_image);
-    transaction.rollback();
+    await transaction.rollback();
     console.log(error);
     return { error, result: null };
   }

@@ -1,6 +1,10 @@
 const db = require("../model");
 const { AdminUserMgtService, AdminWarehouseService } = require("../service");
 
+const isWarehouseAdmin = (isAdmin, idRole) => {
+  return isAdmin === "true" && idRole != 1;
+};
+
 const getAllUserLogic = async (offset, limit, page) => {
   try {
     const allUserCount = await AdminUserMgtService.getAllUserCount();
@@ -20,7 +24,7 @@ const getSingleUserLogic = async (id, isAdmin, idRole) => {
   try {
     if (isAdmin === "false") {
       result = await AdminUserMgtService.getSingleUser(id);
-    } else if (isAdmin === "true" && idRole != 1) {
+    } else if (isWarehouseAdmin(isAdmin, idRole)) {
       result = await AdminWarehouseService.getSingleWarehouseAdmin(id);
     } else {
       result = await AdminUserMgtService.getSingleSuperAdmin(id);
