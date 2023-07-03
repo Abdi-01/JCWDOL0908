@@ -6,7 +6,7 @@ const deleteCategoryLogic = async (id_category) => {
   const transaction = await db.sequelize.transaction();
   try {
     const response = await CategoryService.deleteCategory(id_category, transaction);
-    if (response[0] !== 1) throw { errMsg: "not found", statusCode: 404 };
+    if (response[0] !== 1) throw { errMsg: "error: not found", statusCode: 404 };
     await transaction.commit();
     return { error: null, result: response };
   } catch (error) {
@@ -44,7 +44,7 @@ const editCategoryLogic = async (category_image, category_name, id_category) => 
   const transaction = await db.sequelize.transaction();
   try {
     const isNameExist = await CategoryService.getCategoryByNameExceptSelf(category_name, id_category, transaction);
-    if (isNameExist) throw { errMsg: "name already exists", statusCode: 400 };
+    if (isNameExist) throw { errMsg: "error: name already exists", statusCode: 400 };
     // get current image pattern data
     const getSingleData = await CategoryService.getCategoryById(id_category, transaction);
     const oldImage = getSingleData.dataValues.category_image;
@@ -70,7 +70,7 @@ const createNewCategoryLogic = async (category_image, category_name, id_category
   try {
     const isNameExist = await CategoryService.getCategory(category_name, transaction);
 
-    if (isNameExist) throw { errMsg: "name already exists", statusCode: 400 };
+    if (isNameExist) throw { errMsg: "error: name already exists", statusCode: 400 };
 
     const result = await CategoryService.createCategory(category_image, category_name, transaction);
 

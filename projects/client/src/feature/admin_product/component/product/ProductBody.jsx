@@ -7,8 +7,8 @@ import RenderProducts from "./RenderProducts";
 import { useSelector } from "react-redux";
 import DeleteModal from "./delete_data/DeleteModal";
 import EditModal from "./edit_data/EditModal";
-import NoData from "./NoData";
 import { useNavigate } from "react-router-dom";
+import NoData from "../../../../components/NoData";
 
 function ProductBody(props) {
   const { admin } = props;
@@ -99,7 +99,7 @@ function ProductBody(props) {
               setEditClicked={setEditClicked}
             />
           ) : (
-            <NoData />
+            <NoData text="Product" />
           )}
         </div>
       </div>

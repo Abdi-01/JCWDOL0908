@@ -19,4 +19,18 @@ const createNewMutationRequest = async (req, res, next) => {
   }
 };
 
-module.exports = { createNewMutationRequest };
+const fetchMutationRequests = async (req, res, next) => {
+  const data = req.query;
+  try {
+    const { error, result } = await MutationLogic.fetchMutationRequestsLogic(data);
+
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
+
+    return res.status(201).send({ isSuccess: true, message: "success fetch data", result });
+  } catch (error) {
+    // unknown error
+    next(error);
+  }
+};
+
+module.exports = { createNewMutationRequest, fetchMutationRequests };

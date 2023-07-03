@@ -58,3 +58,13 @@ export const deleteStock = async (id_product, id_warehouse) => {
     return error.response?.data;
   }
 };
+
+export const getWarehouseWhichProvideProduct = async (id_product) => {
+  try {
+    const response = await axiosInstanceStockUpdate.get(`/${id_product}/warehouses`);
+    return response.data;
+  } catch (error) {
+    console.log(error.response?.data);
+    alert(error.response.data.message);
+  }
+};

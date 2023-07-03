@@ -70,7 +70,7 @@ const createNewAdminLogic = async (username, email, phone_number, password, id_w
     // get admin role ID that associated with the selected warehouse id
     const getAdminRole = await AdminUserMgtService.findAdminRoleByIdWarehouse(id_warehouse);
 
-    if (!getAdminRole) throw { errMsg: "Admin-role for this warehouse is not yet created", statusCode: 404 };
+    if (!getAdminRole) throw { errMsg: "error: Admin-role for this warehouse is not yet created", statusCode: 404 };
 
     const adminRoleId = getAdminRole.dataValues.id_role;
     const hashedPassword = await AdminUserMgtService.hashingPassword(password);
@@ -100,7 +100,7 @@ const updateAdminWarehouseLogic = async (id_user, username, email, password, pho
     // get admin role ID that associated with the selected warehouse id
     const getAdminRole = await AdminUserMgtService.findAdminRoleByIdWarehouse(id_warehouse);
 
-    if (!getAdminRole) throw { errMsg: "Admin-role for this warehouse is not yet created", statusCode: 404 };
+    if (!getAdminRole) throw { errMsg: "error: Admin-role for this warehouse is not yet created", statusCode: 404 };
     const adminRoleId = getAdminRole.dataValues.id_role;
 
     const updatePersonalData = await AdminUserMgtService.updateDataAdmin(

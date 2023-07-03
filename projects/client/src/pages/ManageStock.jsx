@@ -28,7 +28,7 @@ function ManageStock() {
       setProductsList([...response.result?.productsList]);
       setTotalPage(response.result.totalPage);
     })();
-  }, [selectedCategories]);
+  }, [selectedCategories, pageNum]);
 
   const inputOnChangeHandler = async (event) => {
     const response = await getProductsStocks(
