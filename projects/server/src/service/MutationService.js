@@ -50,9 +50,9 @@ const statusConditionQuery = (status, conditionBefore) => {
   } else if (status === "rejected") {
     conditionBefore += " mp.is_reject=1";
   } else if (status === "on-delivery") {
-    conditionBefore += " mp.is_sending=1";
+    conditionBefore += " mp.is_sending=1 AND mp.is_accepted=0";
   } else if (status === "approval-request") {
-    conditionBefore += " mp.is_approve=0";
+    conditionBefore += " mp.is_approve=0 AND mp.is_reject=0";
   } else {
     conditionBefore += " mp.quantity <> 0";
   }
@@ -62,17 +62,17 @@ const statusConditionQuery = (status, conditionBefore) => {
 const fetchDatas = async (data) => {
   const { id_warehouse, mutationType, offset, limit, page, status } = data;
   let condition = conditionQuery(id_warehouse, mutationType);
-  console.log(condition);
   condition = statusConditionQuery(status, condition);
   const result = await sequelize.query(
-    `SELECT mp.*, p.product_name, u.username as creator,
+    `SELECT mp.*, p.product_name, u.username as creator, 
      w.warehouse_name as from_warehouse, ww.warehouse_name as to_warehouse 
      FROM mutation_processes mp 
      JOIN warehouses w ON mp.from_id_warehouse = w.id_warehouse
      JOIN warehouses ww ON mp.to_id_warehouse = ww.id_warehouse
      JOIN products p ON mp.id_product = p.id_product
      JOIN users u ON mp.created_by = u.id_user
-     WHERE ${condition} LIMIT ${offset * (page - 1)},${limit}`,
+     WHERE ${condition} ORDER BY mp.updatedAt DESC 
+     LIMIT ${offset * (page - 1)},${limit} `,
     { type: QueryTypes.SELECT },
   );
   return result;
@@ -92,4 +92,78 @@ const fetchDatasCount = async (data) => {
   return totalCount;
 };
 
-module.exports = { insertNewMutation, updateStockAndBookedStock, fetchDatas, fetchDatasCount };
+const findMutationByPk = async (id) => {
+  const result = await MutationProcess.findByPk(id);
+  return result;
+};
+
+const updateIsApprove = async (id_mutation, approved_by, transaction) => {
+  const update = await MutationProcess.update(
+    { is_approve: 1, approved_by, is_sending: 1 },
+    {
+      where: { id_mutation },
+      transaction,
+    },
+  );
+  return update;
+};
+
+const updateIsReject = async (id_mutation, rejected_by, transaction) => {
+  const update = await MutationProcess.update(
+    { is_reject: 1, rejected_by },
+    {
+      where: { id_mutation },
+      transaction,
+    },
+  );
+  return update;
+};
+
+const updateIsAccept = async (id_mutation, accepted_by, transaction) => {
+  const update = await MutationProcess.update(
+    { is_accepted: 1, accepted_by },
+    {
+      where: { id_mutation },
+      transaction,
+    },
+  );
+  return update;
+};
+
+const returnStock = async (id_product_warehouse, stock, booked_stock, newStock, newBookedStock, transaction) => {
+  const returnStock = await ProductWarehouseRlt.update(
+    { stock: newStock, booked_stock: newBookedStock },
+    { where: { id_product_warehouse, stock, booked_stock }, transaction },
+  );
+  return returnStock;
+};
+
+const updateStock = async (id_product_warehouse, stock, booked_stock, newStock, transaction) => {
+  const updateStock = await ProductWarehouseRlt.update(
+    { stock: newStock },
+    { where: { id_product_warehouse, stock, booked_stock }, transaction },
+  );
+  return updateStock;
+};
+
+const returnBookedStock = async (id_product_warehouse, booked_stock, newBookedStock, transaction) => {
+  const returnStock = await ProductWarehouseRlt.update(
+    { booked_stock: newBookedStock },
+    { where: { id_product_warehouse, booked_stock }, transaction },
+  );
+  return returnStock;
+};
+
+module.exports = {
+  insertNewMutation,
+  updateStockAndBookedStock,
+  fetchDatas,
+  fetchDatasCount,
+  findMutationByPk,
+  updateIsApprove,
+  updateIsReject,
+  returnStock,
+  updateIsAccept,
+  updateStock,
+  returnBookedStock,
+};

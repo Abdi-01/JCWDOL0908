@@ -1,5 +1,5 @@
 const db = require("../model");
-const { MutationService, ProductWarehouseRltService } = require("../service");
+const { MutationService, ProductWarehouseRltService, ProductJournalService } = require("../service");
 
 const createNewMutationRequestLogic = async (data) => {
   const { id_user, id_product, quantity, from_id_warehouse, to_id_warehouse } = data;
@@ -64,4 +64,154 @@ const fetchMutationRequestsLogic = async (data) => {
   }
 };
 
-module.exports = { createNewMutationRequestLogic, fetchMutationRequestsLogic };
+const notAuthorizedToAct = (adminData, mutationData) => {
+  return notSuperAdmin(adminData) && notAnAdminInTheWarehouse(mutationData, adminData);
+};
+
+const notSuperAdmin = (adminData) => {
+  return adminData.id_role !== 1;
+};
+
+const notAnAdminInTheWarehouse = (mutationData, adminData) => {
+  return mutationData.from_id_warehouse !== adminData.id_warehouse;
+};
+
+const approvingMutationLogic = async (input) => {
+  let { adminData, mutationData } = input;
+  const transaction = await db.sequelize.transaction();
+  try {
+    const mutationDataByPk = await MutationService.findMutationByPk(mutationData.id_mutation);
+    mutationData = { ...mutationData, ...mutationDataByPk.dataValues };
+    if (notAuthorizedToAct(adminData, mutationData)) {
+      throw { errMsg: "error: not authorized to approve", statusCode: 401 };
+    }
+    const updateIsApprove = await MutationService.updateIsApprove(
+      mutationData.id_mutation,
+      adminData.id_user,
+      transaction,
+    );
+
+    const getWarehouseRequestedData = await ProductWarehouseRltService.getProductWarehouseRlt(
+      mutationData.id_product,
+      mutationData.from_id_warehouse,
+    );
+    const { booked_stock, id_product_warehouse } = getWarehouseRequestedData.dataValues;
+    const newBookedStock = booked_stock - mutationData.quantity;
+    const returnBookedStock = await MutationService.returnBookedStock(
+      id_product_warehouse,
+      booked_stock,
+      newBookedStock,
+      transaction,
+    );
+
+    if (!updateIsApprove) throw { errMsg: "error: not found", statusCode: 404 };
+    const insertNewJournal = await ProductJournalService.insertNewJournal(
+      mutationData.id_product,
+      mutationData.from_id_warehouse,
+      5,
+      mutationData.quantity,
+      transaction,
+    );
+
+    await transaction.commit();
+    return { error: null, result: insertNewJournal };
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    return { error, result: null };
+  }
+};
+
+const rejectMutationLogic = async (input) => {
+  let { adminData, mutationData } = input;
+  const transaction = await db.sequelize.transaction();
+  try {
+    const mutationDataByPk = await MutationService.findMutationByPk(mutationData.id_mutation);
+    mutationData = { ...mutationData, ...mutationDataByPk.dataValues };
+    if (notAuthorizedToAct(adminData, mutationData))
+      throw { errMsg: "error: not authorized to reject", statusCode: 401 };
+    const updateIsReject = await MutationService.updateIsReject(
+      mutationData.id_mutation,
+      adminData.id_user,
+      transaction,
+    );
+    if (!updateIsReject) throw { errMsg: "error: not found", statusCode: 404 };
+    const getWarehouseRequestedData = await ProductWarehouseRltService.getProductWarehouseRlt(
+      mutationData.id_product,
+      mutationData.from_id_warehouse,
+    );
+    const { stock, booked_stock, id_product_warehouse } = getWarehouseRequestedData.dataValues;
+    const newStock = stock + mutationData.quantity;
+    const newBookedStock = booked_stock - mutationData.quantity;
+    const returningStockAfterReject = await MutationService.returnStock(
+      id_product_warehouse,
+      stock,
+      booked_stock,
+      newStock,
+      newBookedStock,
+      transaction,
+    );
+
+    await transaction.commit();
+    return { error: null, result: returningStockAfterReject };
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    return { error, result: null };
+  }
+};
+
+const acceptLogic = async (input) => {
+  let { adminData, mutationData } = input;
+  const transaction = await db.sequelize.transaction();
+  try {
+    const mutationDataByPk = await MutationService.findMutationByPk(mutationData.id_mutation);
+    mutationData = { ...mutationData, ...mutationDataByPk.dataValues };
+    if (adminData.id_warehouse !== mutationData.to_id_warehouse) {
+      throw { errMsg: "error: not authorized", statusCode: 401 };
+    }
+    const updateIsAccept = await MutationService.updateIsAccept(
+      mutationData.id_mutation,
+      adminData.id_user,
+      transaction,
+    );
+    if (!updateIsAccept) throw { errMsg: "error: not found", statusCode: 404 };
+
+    const getWarehouseRequesterData = await ProductWarehouseRltService.getProductWarehouseRlt(
+      mutationData.id_product,
+      mutationData.to_id_warehouse,
+    );
+    const { stock, booked_stock, id_product_warehouse } = getWarehouseRequesterData.dataValues;
+    const newStock = stock + mutationData.quantity;
+    const updateStock = await MutationService.updateStock(
+      id_product_warehouse,
+      stock,
+      booked_stock,
+      newStock,
+      transaction,
+    );
+
+    const insertNewJournal = await ProductJournalService.insertNewJournal(
+      mutationData.id_product,
+      mutationData.to_id_warehouse,
+      4,
+      mutationData.quantity,
+      transaction,
+    );
+
+    await transaction.commit();
+    return { error: null, result: insertNewJournal };
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    return { error, result: null };
+  }
+};
+
+module.exports = {
+  createNewMutationRequestLogic,
+  fetchMutationRequestsLogic,
+  approvingMutationLogic,
+  rejectMutationLogic,
+  acceptLogic,
+};

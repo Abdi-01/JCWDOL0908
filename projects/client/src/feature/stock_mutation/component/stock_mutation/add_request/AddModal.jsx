@@ -13,7 +13,7 @@ import AddOrDecrease from "./AddorDecrease";
 import MaxQty from "./MaxQty";
 
 function AddModal(props) {
-  const { setNewRequest, admin, warehouse } = props;
+  const { setNewRequest, admin, warehouse, fetchingData } = props;
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [fromWarehouse, setFromWarehouse] = useState([]);
@@ -55,6 +55,7 @@ function AddModal(props) {
       console.log(dataToSend);
       const response = await createNewMutationRequest(dataToSend);
       alert(response.message);
+      await fetchingData();
       setNewRequest(false);
     },
   });

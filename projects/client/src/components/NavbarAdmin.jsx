@@ -32,7 +32,7 @@ function NavbarAdmin() {
     },
     {
       class: "uil uil-analytics",
-      text: "prod-report",
+      text: "report",
       navlink: "/admin/dashboard/report",
     },
   ];
@@ -69,6 +69,7 @@ function NavbarAdmin() {
             WarehouseKu
           </h1>
           <ul
+            id="navbar-items"
             className="grid grid-cols-3 gap-4 text-lg text-primary md:grid 
             md:grid-rows-6 md:grid-cols-1 md:gap-0 md:text-2xl py-4 lg:text-3xl"
           >
