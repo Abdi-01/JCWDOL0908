@@ -9,6 +9,7 @@ const AddressController = require("./AddressController");
 const ProductWarehouseRltController = require("./ProductWarehouseRltController");
 const CartController = require("./CartController");
 const MutationController = require("./MutationController");
+const CheckoutController = require("./CheckoutController");
 
 module.exports = {
   UserController,
@@ -22,4 +23,5 @@ module.exports = {
   ProductWarehouseRltController,
   CartController,
   MutationController,
+  CheckoutController,
 };

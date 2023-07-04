@@ -56,7 +56,7 @@ const editCategoryLogic = async (category_image, category_name, id_category) => 
     if (category_image) await UnlinkPhoto(oldImage);
 
     await transaction.commit();
-    return { error: null, result: "halo" };
+    return { error: null, result: update };
   } catch (error) {
     await UnlinkPhoto(category_image);
     await transaction.rollback();

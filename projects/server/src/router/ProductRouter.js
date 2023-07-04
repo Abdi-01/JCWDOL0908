@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { ProductController } = require("../controller");
+const { ProductController, ProductWarehouseRltController } = require("../controller");
 const { tokenDecoder, isAdmin, isUser } = require("../middleware/TokenDecoder");
 const { isSuperAdmin } = require("../middleware/IsSuperAdmin");
 

@@ -3,6 +3,7 @@ const UserValidation = require("./UserValidation");
 const AddressValidation = require("./AddressValidation");
 const CartValidation = require("./CartValidation");
 const MutationValidation = require("./MutationValidation");
+const CheckoutValidation = require("./CheckoutValidation");
 
 module.exports = {
   AdminDataValidation,
@@ -10,4 +11,5 @@ module.exports = {
   AddressValidation,
   CartValidation,
   MutationValidation,
+  CheckoutValidation,
 };
