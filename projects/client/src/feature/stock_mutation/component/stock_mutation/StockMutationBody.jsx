@@ -38,7 +38,7 @@ function StockMutationBody(props) {
     (async () => {
       fetchingData();
     })();
-  }, [filterState]);
+  }, [filterState, pageNum]);
 
   const fetchingData = async () => {
     const response = await getMutationRequests(OFFSET, LIMIT, pageNum, filterState);
@@ -97,7 +97,7 @@ function StockMutationBody(props) {
           <option value={"approval-request"}>approval-request</option>
           <option value={"on-delivery"}>on-delivery</option>
           <option value={"rejected"}>rejected</option>
-          <option value={"done"}>done</option>
+          <option value={"done"}>shipped</option>
         </SelectFilter>
       </form>
       <div className="row-span-10 grid grid-rows-9 gap-2 lg:gap-2">

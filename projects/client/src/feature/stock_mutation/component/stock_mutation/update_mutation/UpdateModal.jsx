@@ -14,7 +14,7 @@ function UpdateModal(props) {
     if (!singleData.is_approve && !singleData.is_reject) {
       status = "waiting for approval";
     } else if (singleData.is_accepted) {
-      status = "done-mutated";
+      status = "shipped";
     } else if (singleData.is_reject) {
       status = "rejected";
     } else if (singleData.is_sending) {

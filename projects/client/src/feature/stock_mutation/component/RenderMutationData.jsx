@@ -15,7 +15,7 @@ function RenderMutationData(props) {
     } else if (!data.is_approve) {
       status = "waiting for approval";
     } else if (data.is_accepted) {
-      status = "done-mutated";
+      status = "shipped";
     } else if (data.is_sending) {
       status = "on-delivery";
     }
