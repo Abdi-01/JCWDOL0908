@@ -65,7 +65,7 @@ const acceptOnDeliveredProduct = async (req, res, next) => {
     const { error, result } = await MutationLogic.acceptLogic(input);
     if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false });
     if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
-    return res.status(202).send({ isSuccess: true, message: "mutation data updated into done", result });
+    return res.status(202).send({ isSuccess: true, message: "products are safely mutated", result });
   } catch (error) {
     // unknown error
     next(error);
