@@ -1,5 +1,11 @@
 const db = require("../model");
-const { AdminWarehouseService, AdminUserMgtService } = require("../service");
+const {
+  AdminWarehouseService,
+  AdminUserMgtService,
+  TransactionService,
+  MutationService,
+  ProductWarehouseRltService,
+} = require("../service");
 
 const editWarehouseLogic = async (id_warehouse, warehouse_name, address, id_city) => {
   const transaction = await db.sequelize.transaction();
@@ -89,17 +95,45 @@ const createWarehouseLogic = async (warehouse_name, address, id_city) => {
 
 const deleteWarehouseLogic = async (id_warehouse) => {
   const transaction = await db.sequelize.transaction();
+  let result;
   try {
+    const getTransactionWarehouse = await TransactionService.getTransactionsByWarehouseId(id_warehouse);
+
+    if (getTransactionWarehouse.length)
+      throw {
+        errMsg: "error: can't delete warehouse which an on-going transaction still exists",
+        statusCode: 400,
+      };
+    const getMutationWarehouse = await MutationService.findMutationByWarehouseId(id_warehouse);
+
+    if (getMutationWarehouse.length)
+      throw {
+        errMsg: "error: can't delete warehouse which an on-going mutation still exists",
+        statusCode: 400,
+      };
     // delete warehouse
-    const response = await AdminWarehouseService.deleteWarehouseById(id_warehouse, transaction);
-    let result = response[0];
+    const deleteWarehouse = await AdminWarehouseService.deleteWarehouseById(id_warehouse, transaction);
+    result = deleteWarehouse[0];
+
+    // delete products in the warehouses
+    let findProducts = await ProductWarehouseRltService.getProductsInWarehouse(id_warehouse);
+    findProducts = findProducts.map((productWarehouse) => {
+      return productWarehouse.dataValues;
+    });
+
+    result = [];
+
+    for (let i = 0; i < findProducts.length; i++) {
+      const { id_product, id_warehouse } = findProducts[i];
+      const response = await ProductWarehouseRltService.deleteStock(id_product, id_warehouse, transaction);
+      result.push(response);
+    }
 
     // check whether data changed exist
     if (!result) throw { errMsg: "error: warehouse not found", statusCode: 404 };
 
-    result = "success";
     await transaction.commit();
-    return { error: null, result };
+    return { error: null, result: findProducts };
   } catch (error) {
     await transaction.rollback();
     console.log(error);

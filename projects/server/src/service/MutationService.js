@@ -64,8 +64,9 @@ const fetchDatas = async (data) => {
   let condition = conditionQuery(id_warehouse, mutationType);
   condition = statusConditionQuery(status, condition);
   const result = await sequelize.query(
-    `SELECT mp.*, p.product_name, u.username as creator, 
-     w.warehouse_name as from_warehouse, ww.warehouse_name as to_warehouse 
+    `SELECT mp.*, p.product_name, u.username as creator,
+     w.warehouse_name as from_warehouse, ww.warehouse_name as to_warehouse,
+     w.is_deleted as requested_deleted, ww.is_deleted as requester_deleted 
      FROM mutation_processes mp 
      JOIN warehouses w ON mp.from_id_warehouse = w.id_warehouse
      JOIN warehouses ww ON mp.to_id_warehouse = ww.id_warehouse
@@ -154,6 +155,18 @@ const returnBookedStock = async (id_product_warehouse, booked_stock, newBookedSt
   return returnStock;
 };
 
+const findMutationByWarehouseId = async (id_warehouse) => {
+  const mutation = await MutationProcess.findAll({
+    where: {
+      [Op.or]: [{ from_id_warehouse: id_warehouse }, { to_id_warehouse: id_warehouse }],
+      is_sending: 1,
+      is_approve: 1,
+      is_accepted: 0,
+    },
+  });
+  return mutation;
+};
+
 module.exports = {
   insertNewMutation,
   updateStockAndBookedStock,
@@ -166,4 +179,5 @@ module.exports = {
   updateIsAccept,
   updateStock,
   returnBookedStock,
+  findMutationByWarehouseId,
 };

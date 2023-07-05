@@ -42,6 +42,7 @@ function StockMutationBody(props) {
 
   const fetchingData = async () => {
     const response = await getMutationRequests(OFFSET, LIMIT, pageNum, filterState);
+    console.log(response.result.dataToSend);
     setMutationList([...response?.result.dataToSend]);
     setTotalPage(response.result.totalPage);
   };
