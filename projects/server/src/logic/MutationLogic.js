@@ -5,6 +5,21 @@ const createNewMutationRequestLogic = async (data) => {
   const { id_user, id_product, quantity, from_id_warehouse, to_id_warehouse } = data;
   const transaction = await db.sequelize.transaction();
   try {
+    const findExistingMutation = await MutationService.findMutationByProductAndWarehouse(
+      id_product,
+      from_id_warehouse,
+      to_id_warehouse,
+    );
+
+    if (from_id_warehouse === to_id_warehouse) throw { errMsg: "error: bad request", statusCode: 400 };
+
+    if (findExistingMutation.length)
+      throw {
+        errMsg: `error: there is an on-going mutation with same two-warehouses (requester and requested) and same product. 
+You can make a new request after the on-going process are rejected or finished`,
+        statusCode: 400,
+      };
+
     const findRequestedWarehouse = await ProductWarehouseRltService.getProductWarehouseRlt(
       id_product,
       from_id_warehouse,
@@ -95,7 +110,7 @@ const approvingMutationLogic = async (input) => {
       mutationData.id_product,
       mutationData.from_id_warehouse,
     );
-    const { booked_stock, id_product_warehouse } = getWarehouseRequestedData.dataValues;
+    const { stock, booked_stock, id_product_warehouse } = getWarehouseRequestedData.dataValues;
     const newBookedStock = booked_stock - mutationData.quantity;
     const returnBookedStock = await MutationService.returnBookedStock(
       id_product_warehouse,
@@ -105,11 +120,13 @@ const approvingMutationLogic = async (input) => {
     );
 
     if (!updateIsApprove) throw { errMsg: "error: not found", statusCode: 404 };
+    let resultant_quantity = stock;
     const insertNewJournal = await ProductJournalService.insertNewJournal(
       mutationData.id_product,
       mutationData.from_id_warehouse,
       5,
       mutationData.quantity,
+      resultant_quantity,
       transaction,
     );
 
@@ -196,6 +213,7 @@ const acceptLogic = async (input) => {
       mutationData.to_id_warehouse,
       4,
       mutationData.quantity,
+      newStock,
       transaction,
     );
 

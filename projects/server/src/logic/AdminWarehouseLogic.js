@@ -5,6 +5,8 @@ const {
   TransactionService,
   MutationService,
   ProductWarehouseRltService,
+  ProductService,
+  ProductJournalService,
 } = require("../service");
 
 const editWarehouseLogic = async (id_warehouse, warehouse_name, address, id_city) => {
@@ -79,13 +81,41 @@ const createWarehouseLogic = async (warehouse_name, address, id_city) => {
       transaction,
     );
 
+    const id_warehouse = createNew.dataValues.id_warehouse;
+
     // create new admin role of the new warehouse
     const createNewAdminRole = await AdminUserMgtService.createAdminRoleWarehouse(
       createNew.dataValues.id_warehouse,
       transaction,
     );
+
+    let getProducts = await ProductService.getProducts();
+
+    if (!getProducts.length) {
+      await transaction.commit();
+      return { error: null, result: createNewAdminRole };
+    }
+
+    result = [];
+
+    for (let iter = 0; iter < getProducts.length; iter++) {
+      const id_product = getProducts[iter].dataValues.id_product;
+      const quantity = 0;
+      const resultant_quantity = 0;
+      const id_activity = 6; // initializing product stock, always start 0
+      await ProductWarehouseRltService.createProductWarehouseRlt(id_product, id_warehouse, transaction);
+      const response = await ProductJournalService.insertNewJournal(
+        id_product,
+        id_warehouse,
+        id_activity,
+        quantity,
+        resultant_quantity,
+        transaction,
+      );
+      result.push(response);
+    }
     await transaction.commit();
-    return { error: null, result: createNewAdminRole };
+    return { error: null, result };
   } catch (error) {
     await transaction.rollback();
     console.log(error);

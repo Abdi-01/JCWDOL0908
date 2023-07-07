@@ -167,6 +167,21 @@ const findMutationByWarehouseId = async (id_warehouse) => {
   return mutation;
 };
 
+const findMutationByProductAndWarehouse = async (id_product, from_id_warehouse, to_id_warehouse) => {
+  const mutationData = await MutationProcess.findAll({
+    where: {
+      from_id_warehouse,
+      to_id_warehouse,
+      id_product,
+      [Op.or]: [
+        { is_approve: 0, is_reject: 0 },
+        { is_approve: 1, is_accepted: 0 },
+      ],
+    },
+  });
+  return mutationData;
+};
+
 module.exports = {
   insertNewMutation,
   updateStockAndBookedStock,
@@ -180,4 +195,5 @@ module.exports = {
   updateStock,
   returnBookedStock,
   findMutationByWarehouseId,
+  findMutationByProductAndWarehouse,
 };
