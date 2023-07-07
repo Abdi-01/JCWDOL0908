@@ -153,7 +153,6 @@ const getWarehouseWhichProvideProduct = async (id_product) => {
     });
     getWarehouses = getWarehouses.map((warehouse) => {
       const { warehouse_name, city } = warehouse.dataValues.warehouse.dataValues;
-      console.log(city);
       return {
         ...warehouse.dataValues,
         warehouse_name: warehouse_name,
@@ -161,6 +160,7 @@ const getWarehouseWhichProvideProduct = async (id_product) => {
         type_city: city.dataValues.type_city,
       };
     });
+    console.log("data product warehouse", getWarehouses);
     return { error: null, result: getWarehouses };
   } catch (error) {
     console.log(error);

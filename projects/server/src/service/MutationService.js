@@ -22,10 +22,17 @@ const insertNewMutation = async (id_user, id_product, quantity, from_id_warehous
   return newRequest;
 };
 
-const updateStockAndBookedStock = async (id_product_warehouse, newStock, stock, booked_stock, transaction) => {
+const updateStockAndBookedStock = async (
+  id_product_warehouse,
+  newStock,
+  stock,
+  newBookedStock,
+  booked_stock,
+  transaction,
+) => {
   const update = await ProductWarehouseRlt.update(
-    { stock: newStock, booked_stock },
-    { where: { id_product_warehouse, stock }, transaction },
+    { stock: newStock, booked_stock: newBookedStock },
+    { where: { id_product_warehouse, stock, booked_stock }, transaction },
   );
   return update;
 };
@@ -131,28 +138,12 @@ const updateIsAccept = async (id_mutation, accepted_by, transaction) => {
   return update;
 };
 
-const returnStock = async (id_product_warehouse, stock, booked_stock, newStock, newBookedStock, transaction) => {
-  const returnStock = await ProductWarehouseRlt.update(
-    { stock: newStock, booked_stock: newBookedStock },
-    { where: { id_product_warehouse, stock, booked_stock }, transaction },
-  );
-  return returnStock;
-};
-
 const updateStock = async (id_product_warehouse, stock, booked_stock, newStock, transaction) => {
   const updateStock = await ProductWarehouseRlt.update(
     { stock: newStock },
     { where: { id_product_warehouse, stock, booked_stock }, transaction },
   );
   return updateStock;
-};
-
-const returnBookedStock = async (id_product_warehouse, booked_stock, newBookedStock, transaction) => {
-  const returnStock = await ProductWarehouseRlt.update(
-    { booked_stock: newBookedStock },
-    { where: { id_product_warehouse, booked_stock }, transaction },
-  );
-  return returnStock;
 };
 
 const findMutationByWarehouseId = async (id_warehouse) => {
@@ -190,10 +181,8 @@ module.exports = {
   findMutationByPk,
   updateIsApprove,
   updateIsReject,
-  returnStock,
   updateIsAccept,
   updateStock,
-  returnBookedStock,
   findMutationByWarehouseId,
   findMutationByProductAndWarehouse,
 };

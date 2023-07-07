@@ -32,13 +32,15 @@ You can make a new request after the on-going process are rejected or finished`,
       throw { errMsg: "error: The stock has not been created on the requester's side", statusCode: 400 };
 
     //update a new stock in a target warehouse after booked by a mutation request
-    const newStock = stock - quantity;
-    if (newStock < 0) throw { errMsg: "error: not enough stock to initiate a mutation request", statusCode: 400 };
-    booked_stock = booked_stock + quantity;
+    const availableStock = stock - booked_stock - quantity;
+    if (availableStock < 0)
+      throw { errMsg: "error: not enough stock to initiate a mutation request, please refresh page", statusCode: 400 };
+    const newBookedStock = booked_stock + quantity;
     const updateStockAndBookedStock = await MutationService.updateStockAndBookedStock(
       id_product_warehouse,
-      newStock,
       stock,
+      stock,
+      newBookedStock,
       booked_stock,
       transaction,
     );
@@ -112,14 +114,16 @@ const approvingMutationLogic = async (input) => {
     );
     const { stock, booked_stock, id_product_warehouse } = getWarehouseRequestedData.dataValues;
     const newBookedStock = booked_stock - mutationData.quantity;
-    const returnBookedStock = await MutationService.returnBookedStock(
+    const newStock = stock - mutationData.quantity;
+    const updateStockAndBookedStock = await MutationService.updateStockAndBookedStock(
       id_product_warehouse,
-      booked_stock,
+      newStock,
+      stock,
       newBookedStock,
+      booked_stock,
       transaction,
     );
-
-    if (!updateIsApprove) throw { errMsg: "error: not found", statusCode: 404 };
+    if (!updateIsApprove[0] && !updateStockAndBookedStock[0]) throw { errMsg: "error: not found", statusCode: 404 };
     let resultant_quantity = stock;
     const insertNewJournal = await ProductJournalService.insertNewJournal(
       mutationData.id_product,
@@ -152,20 +156,19 @@ const rejectMutationLogic = async (input) => {
       adminData.id_user,
       transaction,
     );
-    if (!updateIsReject) throw { errMsg: "error: not found", statusCode: 404 };
+    if (!updateIsReject[0]) throw { errMsg: "error: not found", statusCode: 404 };
     const getWarehouseRequestedData = await ProductWarehouseRltService.getProductWarehouseRlt(
       mutationData.id_product,
       mutationData.from_id_warehouse,
     );
     const { stock, booked_stock, id_product_warehouse } = getWarehouseRequestedData.dataValues;
-    const newStock = stock + mutationData.quantity;
     const newBookedStock = booked_stock - mutationData.quantity;
-    const returningStockAfterReject = await MutationService.returnStock(
+    const returningStockAfterReject = await MutationService.updateStockAndBookedStock(
       id_product_warehouse,
       stock,
-      booked_stock,
-      newStock,
+      stock,
       newBookedStock,
+      booked_stock,
       transaction,
     );
 
@@ -192,7 +195,7 @@ const acceptLogic = async (input) => {
       adminData.id_user,
       transaction,
     );
-    if (!updateIsAccept) throw { errMsg: "error: not found", statusCode: 404 };
+    if (!updateIsAccept[0]) throw { errMsg: "error: server error, please try again later", statusCode: 404 };
 
     const getWarehouseRequesterData = await ProductWarehouseRltService.getProductWarehouseRlt(
       mutationData.id_product,
@@ -200,13 +203,16 @@ const acceptLogic = async (input) => {
     );
     const { stock, booked_stock, id_product_warehouse } = getWarehouseRequesterData.dataValues;
     const newStock = stock + mutationData.quantity;
-    const updateStock = await MutationService.updateStock(
+    const updateStock = await MutationService.updateStockAndBookedStock(
       id_product_warehouse,
+      newStock,
       stock,
       booked_stock,
-      newStock,
+      booked_stock,
       transaction,
     );
+
+    if (!updateStock[0]) throw { errMsg: "error: server error, please try again later", statusCode: 404 };
 
     const insertNewJournal = await ProductJournalService.insertNewJournal(
       mutationData.id_product,
