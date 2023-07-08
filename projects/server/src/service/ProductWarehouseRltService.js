@@ -160,7 +160,6 @@ const getWarehouseWhichProvideProduct = async (id_product) => {
         type_city: city.dataValues.type_city,
       };
     });
-    console.log("data product warehouse", getWarehouses);
     return { error: null, result: getWarehouses };
   } catch (error) {
     console.log(error);
