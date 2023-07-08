@@ -73,7 +73,7 @@ function DetailJournal(props) {
           singleData.updatedAt,
         ).toLocaleString()}, in response to the introduction of a new product, ${
           singleJournal.product_name
-        }. The initial stock level begins at 0 items.`,
+        }. The initial stock level begins at 0 item.`,
       ];
       return (
         <div className="w-full pr-1 md:px-4 flex gap-2 py-1 md:gap-4">
@@ -104,8 +104,8 @@ function DetailJournal(props) {
             </h1>
           </div>
           <div
-            className="text-xs md:text-sm overflow-auto max-h-[27.5rem] mt-8 mb-6
-          flex flex-col gap-1 md:gap-2"
+            className="text-xs md:text-sm overflow-auto max-h-[27.5rem] mt-3 mb-4
+          flex flex-col gap-1 md:gap-2 shadow-inner bg-slate-100 p-2"
           >
             <RenderData />
           </div>
