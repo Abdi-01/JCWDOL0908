@@ -12,3 +12,23 @@ export const getOrderProducts = async (dataInput) => {
     return error.response.data;
   }
 };
+
+export const rejectPayment = async (id_transaction) => {
+  try {
+    const response = await axiosInstance.patch(`/${id_transaction}/reject`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
+  }
+};
+
+export const approvePayment = async (id_transaction) => {
+  try {
+    const response = await axiosInstance.patch(`/${id_transaction}/approve`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
+  }
+};

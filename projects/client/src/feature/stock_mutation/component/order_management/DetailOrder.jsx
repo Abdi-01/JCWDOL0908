@@ -4,9 +4,10 @@ import ImageRender from "./ImageRender";
 import DetailOrderBody from "./DetailOrderBody";
 import { getListOfProductsInWarehouse } from "../../../admin_product";
 import OrderButton from "./OrderButton";
+import { approvePayment, rejectPayment } from "../../";
 
 function DetailOrder(props) {
-  const { singleOrder, setSingleItemClicked } = props;
+  const { singleOrder, setSingleItemClicked, fetchingData } = props;
   const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
   const [productsStock, setProductsStock] = useState([]);
   const [isStockEnough, setIsStockEnough] = useState(true);
@@ -31,6 +32,32 @@ function DetailOrder(props) {
     });
   };
 
+  const rejectBtnHandler = async () => {
+    const rejectBtn = document.getElementById("reject-order");
+    const approveBtn = document.getElementById("approve-order");
+    rejectBtn.disabled = true;
+    approveBtn.disabled = true;
+    const response = await rejectPayment(singleOrder.id_transaction);
+    alert(response.message);
+    await fetchingData();
+    rejectBtn.disabled = false;
+    approveBtn.disabled = false;
+    setSingleItemClicked(false);
+  };
+
+  const approveBtnHandler = async () => {
+    const rejectBtn = document.getElementById("reject-order");
+    const approveBtn = document.getElementById("approve-order");
+    rejectBtn.disabled = true;
+    approveBtn.disabled = true;
+    const response = await approvePayment(singleOrder.id_transaction);
+    alert(response.message);
+    await fetchingData();
+    rejectBtn.disabled = false;
+    approveBtn.disabled = false;
+    setSingleItemClicked(false);
+  };
+
   useEffect(() => {
     checkStockAndOrderQty();
   }, [productsStock]);
@@ -47,7 +74,12 @@ function DetailOrder(props) {
                 <ImageRender preview={REACT_APP_SERVER_URL + singleOrder.payment_proof} alt="proof of payment" />
               )}
               <DetailOrderBody singleOrder={singleOrder} productsStock={productsStock} />
-              <OrderButton singleOrder={singleOrder} isStockEnough={isStockEnough} />
+              <OrderButton
+                singleOrder={singleOrder}
+                isStockEnough={isStockEnough}
+                rejectBtnHandler={rejectBtnHandler}
+                approveBtnHandler={approveBtnHandler}
+              />
             </div>
           </div>
         </div>

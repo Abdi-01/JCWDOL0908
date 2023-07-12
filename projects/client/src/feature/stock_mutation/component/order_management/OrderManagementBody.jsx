@@ -58,7 +58,11 @@ function OrderManagementBody(props) {
   return (
     <>
       {isSingleItemClicked ? (
-        <DetailOrder singleOrder={singleOrder} setSingleItemClicked={setSingleItemClicked} />
+        <DetailOrder
+          singleOrder={singleOrder}
+          setSingleItemClicked={setSingleItemClicked}
+          fetchingData={fetchingData}
+        />
       ) : null}
       <form className="grid grid-cols-3 gap-4 md:gap-4 md:grid-cols-4 lg:grid-cols-5 text-xs md:text-sm lg:text-base h-4/5">
         <SelectFilter

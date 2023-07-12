@@ -78,4 +78,19 @@ const getTotalData = async (dataInput) => {
   return dataCount;
 };
 
-module.exports = { getUsersTransactions, getTotalData };
+const getUserTransaction = async (id_transaction) => {
+  const transaction = await Transaction.findOne({
+    where: { id_transaction },
+  });
+  return transaction;
+};
+
+const updateStatus = async (id_transaction, status_update, status_before, transaction) => {
+  const reject = await Transaction.update(
+    { status_order: status_update },
+    { where: { id_transaction, status_order: status_before }, transaction },
+  );
+  return reject;
+};
+
+module.exports = { getUsersTransactions, getTotalData, getUserTransaction, updateStatus };

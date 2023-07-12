@@ -1,3 +1,4 @@
+const db = require("../model");
 const { AdminTransactionService } = require("../service");
 
 const getUserTransactionsLogic = async (dataInput) => {
@@ -21,6 +22,27 @@ const getUserTransactionsLogic = async (dataInput) => {
   }
 };
 
+const updateStatusLogic = async (id_transaction, status_update, status_before) => {
+  const dbTransaction = await db.sequelize.transaction();
+  try {
+    const updateStatusOrder = await AdminTransactionService.updateStatus(
+      id_transaction,
+      status_update,
+      status_before,
+      dbTransaction,
+    );
+    if (!updateStatusOrder[0])
+      throw { errMsg: "error: internal server error, please reload your page then try again", statusCode: 500 };
+    await dbTransaction.commit();
+    return { error: null, result: updateStatusOrder };
+  } catch (error) {
+    console.log(error);
+    await dbTransaction.rollback();
+    return { error, result: null };
+  }
+};
+
 module.exports = {
   getUserTransactionsLogic,
+  updateStatusLogic,
 };
