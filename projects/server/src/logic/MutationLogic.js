@@ -123,7 +123,7 @@ const approvingMutationLogic = async (input) => {
       transaction,
     );
     if (!updateIsApprove[0] && !updateStockAndBookedStock[0]) throw { errMsg: "error: not found", statusCode: 404 };
-    let resultant_quantity = stock;
+    let resultant_quantity = newStock;
     const insertNewJournal = await ProductJournalService.insertNewJournal(
       mutationData.id_product,
       mutationData.from_id_warehouse,
