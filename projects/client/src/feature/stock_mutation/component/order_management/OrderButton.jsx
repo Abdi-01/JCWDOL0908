@@ -3,7 +3,8 @@ import CancelButton from "./CancelButton";
 import ProceedButton from "./ProceedButton";
 
 function OrderButton(props) {
-  const { singleOrder, isStockEnough, rejectBtnHandler, approveBtnHandler, cancelBtnHandler } = props;
+  const { singleOrder, isStockEnough, rejectBtnHandler, approveBtnHandler, cancelBtnHandler, createMutationHandler } =
+    props;
   const { status_order } = singleOrder;
 
   const WaitingForPaymentButton = () => {
@@ -27,7 +28,7 @@ function OrderButton(props) {
     return (
       <>
         <CancelButton onClickFunction={cancelBtnHandler} />
-        <ProceedButton text="create-mutation" />
+        <ProceedButton text="create-mutation" onClickFunction={createMutationHandler} />
       </>
     );
   };

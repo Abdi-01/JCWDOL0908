@@ -42,3 +42,13 @@ export const cancelPayment = async (id_transaction) => {
     alert(error.response.data.message);
   }
 };
+
+export const createAutoMutation = async (id_transaction) => {
+  try {
+    const response = await axiosInstance.post(`/${id_transaction}/auto-mutation`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
+  }
+};

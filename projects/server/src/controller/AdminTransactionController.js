@@ -59,4 +59,17 @@ const cancelOrder = async (req, res, next) => {
   }
 };
 
-module.exports = { getUserTransactions, rejectPayment, approvePayment, cancelOrder };
+const autoMutation = async (req, res, next) => {
+  try {
+    const { id_transaction } = req.params;
+    const { error, result } = await AdminTransactionLogic.autoMutationLogic(id_transaction);
+    if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false, error });
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
+    return res.status(201).send({ isSuccess: true, message: "stock-mutation created", result });
+  } catch (error) {
+    // unknown error
+    next(error);
+  }
+};
+
+module.exports = { getUserTransactions, rejectPayment, approvePayment, cancelOrder, autoMutation };
