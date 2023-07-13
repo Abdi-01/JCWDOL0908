@@ -4,7 +4,7 @@ import ImageRender from "./ImageRender";
 import DetailOrderBody from "./DetailOrderBody";
 import { getListOfProductsInWarehouse } from "../../../admin_product";
 import OrderButton from "./OrderButton";
-import { approvePayment, rejectPayment } from "../../";
+import { approvePayment, cancelPayment, rejectPayment } from "../../";
 
 function DetailOrder(props) {
   const { singleOrder, setSingleItemClicked, fetchingData } = props;
@@ -58,6 +58,31 @@ function DetailOrder(props) {
     setSingleItemClicked(false);
   };
 
+  const cancelBtnHandler = async () => {
+    let createMutationBtn;
+    let sendBtn;
+    const cancelBtn = document.getElementById("cancel-order");
+    cancelBtn.disabled = true;
+    if (singleOrder.status_order === "on-process" && !isStockEnough) {
+      createMutationBtn = document.getElementById("create-mutation-order");
+      createMutationBtn.disabled = true;
+    }
+    if (singleOrder.status_order === "on-process" && isStockEnough) {
+      sendBtn = document.getElementById("send-order");
+      sendBtn.disabled = true;
+    }
+    const response = await cancelPayment(singleOrder.id_transaction);
+    alert(response.message);
+    await fetchingData();
+    if (singleOrder.status_order === "on-process" && !isStockEnough) {
+      createMutationBtn.disabled = false;
+    }
+    if (singleOrder.status_order === "on-process" && isStockEnough) {
+      sendBtn.disabled = false;
+    }
+    setSingleItemClicked(false);
+  };
+
   useEffect(() => {
     checkStockAndOrderQty();
   }, [productsStock]);
@@ -79,6 +104,7 @@ function DetailOrder(props) {
                 isStockEnough={isStockEnough}
                 rejectBtnHandler={rejectBtnHandler}
                 approveBtnHandler={approveBtnHandler}
+                cancelBtnHandler={cancelBtnHandler}
               />
             </div>
           </div>

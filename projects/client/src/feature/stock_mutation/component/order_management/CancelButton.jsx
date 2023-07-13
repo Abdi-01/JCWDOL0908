@@ -8,7 +8,7 @@ function CancelButton(props) {
       className="bg-red-600 text-white py-1 px-3 font-semibold flex items-center text-center
       hover:bg-red-900 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-primaryLight"
     >
-      <h1>cancel</h1>
+      <h1>cancel-order</h1>
     </button>
   );
 }

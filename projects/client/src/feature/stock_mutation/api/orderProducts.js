@@ -32,3 +32,13 @@ export const approvePayment = async (id_transaction) => {
     alert(error.response.data.message);
   }
 };
+
+export const cancelPayment = async (id_transaction) => {
+  try {
+    const response = await axiosInstance.patch(`/${id_transaction}/cancel`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
+  }
+};

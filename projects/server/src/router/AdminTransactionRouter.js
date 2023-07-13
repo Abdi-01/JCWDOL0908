@@ -7,5 +7,6 @@ const { isSuperAdmin } = require("../middleware/IsSuperAdmin");
 router.get("/", tokenDecoder, isAdmin, AdminTransactionController.getUserTransactions);
 router.patch("/:id_transaction/reject", tokenDecoder, isAdmin, AdminTransactionController.rejectPayment);
 router.patch("/:id_transaction/approve", tokenDecoder, isAdmin, AdminTransactionController.approvePayment);
+router.patch("/:id_transaction/cancel", tokenDecoder, isAdmin, AdminTransactionController.cancelOrder);
 
 module.exports = router;

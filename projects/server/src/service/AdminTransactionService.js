@@ -81,6 +81,7 @@ const getTotalData = async (dataInput) => {
 const getUserTransaction = async (id_transaction) => {
   const transaction = await Transaction.findOne({
     where: { id_transaction },
+    include: { model: TransactionProductRlt },
   });
   return transaction;
 };

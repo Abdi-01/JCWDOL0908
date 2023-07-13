@@ -3,14 +3,13 @@ import CancelButton from "./CancelButton";
 import ProceedButton from "./ProceedButton";
 
 function OrderButton(props) {
-  const { singleOrder, isStockEnough, rejectBtnHandler, approveBtnHandler } = props;
+  const { singleOrder, isStockEnough, rejectBtnHandler, approveBtnHandler, cancelBtnHandler } = props;
   const { status_order } = singleOrder;
-  console.log(singleOrder);
 
   const WaitingForPaymentButton = () => {
     return (
       <>
-        <CancelButton />
+        <CancelButton onClickFunction={cancelBtnHandler} />
       </>
     );
   };
@@ -27,7 +26,7 @@ function OrderButton(props) {
   const NotEnoughStockButton = () => {
     return (
       <>
-        <CancelButton />
+        <CancelButton onClickFunction={cancelBtnHandler} />
         <ProceedButton text="create-mutation" />
       </>
     );
@@ -36,8 +35,8 @@ function OrderButton(props) {
   const EnoughStockButton = () => {
     return (
       <>
-        <CancelButton />
-        <ProceedButton text="send order" />
+        <CancelButton onClickFunction={cancelBtnHandler} />
+        <ProceedButton text="send" />
       </>
     );
   };

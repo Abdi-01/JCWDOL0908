@@ -46,4 +46,17 @@ const approvePayment = async (req, res, next) => {
   }
 };
 
-module.exports = { getUserTransactions, rejectPayment, approvePayment };
+const cancelOrder = async (req, res, next) => {
+  try {
+    const { id_transaction } = req.params;
+    const { error, result } = await AdminTransactionLogic.cancelOrderLogic(id_transaction);
+    if (error?.errMsg) return res.status(error.statusCode).send({ message: error.errMsg, isSuccess: false, error });
+    if (error) return res.status(500).send({ message: "internal server error", isSuccess: false, error });
+    return res.status(202).send({ isSuccess: true, message: "order-canceled", result });
+  } catch (error) {
+    // unknown error
+    next(error);
+  }
+};
+
+module.exports = { getUserTransactions, rejectPayment, approvePayment, cancelOrder };
