@@ -3,8 +3,15 @@ import CancelButton from "./CancelButton";
 import ProceedButton from "./ProceedButton";
 
 function OrderButton(props) {
-  const { singleOrder, isStockEnough, rejectBtnHandler, approveBtnHandler, cancelBtnHandler, createMutationHandler } =
-    props;
+  const {
+    singleOrder,
+    isStockEnough,
+    rejectBtnHandler,
+    approveBtnHandler,
+    cancelBtnHandler,
+    createMutationHandler,
+    sendOrderHandler,
+  } = props;
   const { status_order } = singleOrder;
 
   const WaitingForPaymentButton = () => {
@@ -37,7 +44,7 @@ function OrderButton(props) {
     return (
       <>
         <CancelButton onClickFunction={cancelBtnHandler} />
-        <ProceedButton text="send" />
+        <ProceedButton text="send" onClickFunction={sendOrderHandler} />
       </>
     );
   };

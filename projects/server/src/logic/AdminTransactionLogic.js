@@ -139,6 +139,7 @@ const createMutationProduct = async (dataInput) => {
     for (let iter = 0; iter < transaction_product_rlts.length; iter++) {
       // iteration per-item ordered-product
       const { id_product, quantity } = transaction_product_rlts[iter];
+      // get data stock on warehouse where the user-order takes place (ordered-warehouse)
       const getWarehouseProductRlts = await ProductWarehouseRltService.getProductWarehouseRlt(id_product, id_warehouse);
       const { id_product_warehouse, stock } = getWarehouseProductRlts.dataValues;
       let shortageStock = quantity - stock; // get shortage value of stock
@@ -192,7 +193,7 @@ const warehousesProvideShortageFully = async (
   try {
     warehouses = warehouses.map((warehouse) => {
       const { longitude, latitude } = warehouse.warehouse.dataValues;
-      const origin = { latitude: parseFloat(latitude), longitude: parseFloat(longitude) };
+      const origin = { latitude: parseFloat(latitude), longitude: parseFloat(longitude) }; // get the long-lat of candidate-warehouses
       const distance = haversineFormula(origin, destination);
       return { ...warehouse.dataValues, longitude, latitude, warehouse: null, distance };
     });
@@ -246,7 +247,6 @@ const ifNoWarehouseProvideShortageFully = async (
   dbTransaction,
   id_warehouse, // warehouse where the user-order takes place (ordered-warehouse)
   shortageStock,
-  id_product_warehouse,
 ) => {
   try {
     let result = [];
@@ -254,7 +254,7 @@ const ifNoWarehouseProvideShortageFully = async (
     let warehouses = await AdminTransactionService.getWarehousesWhichProvideProduct(id_product, id_warehouse);
     warehouses = warehouses.map((warehouse) => {
       const { longitude, latitude } = warehouse;
-      const origin = { latitude: parseFloat(latitude), longitude: parseFloat(longitude) };
+      const origin = { latitude: parseFloat(latitude), longitude: parseFloat(longitude) }; // get the long-lat of candidate-warehouses
       const distance = haversineFormula(origin, destination);
       return { ...warehouse, distance };
     });
@@ -268,21 +268,21 @@ const ifNoWarehouseProvideShortageFully = async (
         stock: stockBeforeMutation,
         remainStock: maxStockToTransfer,
         booked_stock,
-      } = warehouses[newIter]; // take the nearest warehouse data
+      } = warehouses[newIter]; // take the candidate warehouse data
 
-      // checking stock to transfer
+      // decide number of stock to be transferred
       const stockToTransfer = shortageRemains - maxStockToTransfer < 0 ? shortageRemains : maxStockToTransfer;
 
       const createMutation = await AdminTransactionService.createAutoMutationRequest(
         id_product,
         stockToTransfer,
-        from_id_warehouse, // this is the nearest warehouse
+        from_id_warehouse, // this is the candidate warehouse
         id_warehouse, // warehouse where the user-order takes place (ordered-warehouse)
         dbTransaction,
       ); // create mutation out (sending to ordered-warehouse)
       const stockAfterMutation = stockBeforeMutation - stockToTransfer;
       const updateProductAfterMutationOut = await MutationService.updateStockAndBookedStock(
-        id_nearest_prod_warehouse_rlt, // relation id of product-warehouse (nearest)
+        id_nearest_prod_warehouse_rlt, // relation id of product-warehouse (candidate warehouse)
         stockAfterMutation,
         stockBeforeMutation,
         booked_stock,
@@ -315,9 +315,75 @@ const ifNoWarehouseProvideShortageFully = async (
   }
 };
 
+const sendOrderLogic = async (id_transaction) => {
+  const dbTransaction = await db.sequelize.transaction();
+  try {
+    // get latest update of the transaction
+    const getUserTransaction = await AdminTransactionService.getUserTransaction(id_transaction);
+    let { status_order, transaction_product_rlts, id_warehouse } = getUserTransaction.dataValues;
+    transaction_product_rlts = transaction_product_rlts.map((relation) => relation.dataValues); // remapping data
+
+    if (status_order !== "on-process")
+      throw {
+        errMsg: "error: cannot start sending order from a wrong-state status-order",
+        statusCode: 400,
+      };
+
+    const updateStatusOrder = await AdminTransactionService.updateStatus(
+      id_transaction,
+      "sending",
+      status_order,
+      dbTransaction,
+    );
+
+    if (!updateStatusOrder[0])
+      throw { errMsg: "error: internal server error, please reload your page then try again", statusCode: 500 };
+
+    for (let iter = 0; iter < transaction_product_rlts.length; iter++) {
+      // iteration per-item ordered-product
+      const { id_product, quantity } = transaction_product_rlts[iter];
+      // get latest updated data on warehouse where the user-order takes place (ordered-warehouse)
+      const getWarehouseProductRlts = await ProductWarehouseRltService.getProductWarehouseRlt(id_product, id_warehouse);
+      const { id_product_warehouse, stock: stockBeforeSend, booked_stock } = getWarehouseProductRlts.dataValues;
+      const stockAfterSend = stockBeforeSend - quantity;
+      const newBookedStock = booked_stock - quantity;
+      if (stockAfterSend < 0)
+        throw { errMsg: "error: not enough stock, please refresh to get latest updated data", statusCode: 500 };
+
+      const updateProductAfterSendOrder = await MutationService.updateStockAndBookedStock(
+        id_product_warehouse,
+        stockAfterSend,
+        stockBeforeSend,
+        newBookedStock,
+        booked_stock,
+        dbTransaction,
+      );
+
+      if (!updateProductAfterSendOrder[0])
+        throw { errMsg: "error: some conflict occurs, try again later", statusCode: 404 };
+
+      const updateProductJournal = await ProductJournalService.insertNewJournal(
+        id_product,
+        id_warehouse,
+        1, // user's bought journal id
+        quantity,
+        stockAfterSend,
+        dbTransaction,
+      );
+    }
+    await dbTransaction.commit();
+    return { error: null, result: "success" };
+  } catch (error) {
+    console.log(error);
+    await dbTransaction.rollback();
+    return { error, result: null };
+  }
+};
+
 module.exports = {
   getUserTransactionsLogic,
   updateStatusLogic,
   cancelOrderLogic,
   autoMutationLogic,
+  sendOrderLogic,
 };

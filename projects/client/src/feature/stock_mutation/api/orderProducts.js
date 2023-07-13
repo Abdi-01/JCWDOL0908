@@ -52,3 +52,13 @@ export const createAutoMutation = async (id_transaction) => {
     alert(error.response.data.message);
   }
 };
+
+export const sendOrder = async (id_transaction) => {
+  try {
+    const response = await axiosInstance.post(`/${id_transaction}/send-order`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
+  }
+};

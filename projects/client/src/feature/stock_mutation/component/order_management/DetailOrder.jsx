@@ -4,7 +4,7 @@ import ImageRender from "./ImageRender";
 import DetailOrderBody from "./DetailOrderBody";
 import { getListOfProductsInWarehouse } from "../../../admin_product";
 import OrderButton from "./OrderButton";
-import { approvePayment, cancelPayment, createAutoMutation, rejectPayment } from "../../";
+import { approvePayment, cancelPayment, createAutoMutation, rejectPayment, sendOrder } from "../../";
 
 function DetailOrder(props) {
   const { singleOrder, setSingleItemClicked, fetchingData } = props;
@@ -71,6 +71,19 @@ function DetailOrder(props) {
     setSingleItemClicked(false);
   };
 
+  const sendOrderHandler = async () => {
+    const cancelBtn = document.getElementById("cancel-order");
+    const sendOrderBtn = document.getElementById("send-order");
+    cancelBtn.disabled = true;
+    sendOrderBtn.disabled = true;
+    const response = await sendOrder(singleOrder.id_transaction);
+    alert(response.message);
+    await fetchingData();
+    cancelBtn.disabled = false;
+    sendOrderBtn.disabled = false;
+    setSingleItemClicked(false);
+  };
+
   const cancelBtnHandler = async () => {
     let createMutationBtn;
     let sendBtn;
@@ -119,6 +132,7 @@ function DetailOrder(props) {
                 approveBtnHandler={approveBtnHandler}
                 cancelBtnHandler={cancelBtnHandler}
                 createMutationHandler={createMutationHandler}
+                sendOrderHandler={sendOrderHandler}
               />
             </div>
           </div>

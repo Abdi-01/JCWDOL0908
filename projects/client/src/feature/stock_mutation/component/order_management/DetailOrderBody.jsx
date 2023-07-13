@@ -4,8 +4,12 @@ function DetailOrderBody({ singleOrder, productsStock }) {
   const RenderProducts = () => {
     const products = [...singleOrder.transaction_product_rlts].sort((a, b) => a.id_product - b.id_product);
 
-    const showIfNotCanceledOrShipped = () => {
-      return !(singleOrder.status_order === "canceled" || singleOrder.status_order === "shipped");
+    const showIfNotCanceledOrShippedOrSending = () => {
+      return !(
+        singleOrder.status_order === "canceled" ||
+        singleOrder.status_order === "shipped" ||
+        singleOrder.status_order === "sending"
+      );
     };
 
     return products.map((product, index) => {
@@ -13,14 +17,14 @@ function DetailOrderBody({ singleOrder, productsStock }) {
         <div key={index} className="flex flex-col gap-0">
           <p>{product.product.product_name}</p>
           <p>
-            {showIfNotCanceledOrShipped() && (
+            {showIfNotCanceledOrShippedOrSending() && (
               <>
                 <span className="font-semibold">stock</span> :{" "}
                 {[...productsStock].filter((productStock) => productStock.id_product === product.id_product)[0]?.stock}
               </>
             )}
             | <span className="font-semibold"> order-qty</span> : {product.quantity + " | "}
-            {showIfNotCanceledOrShipped() && (
+            {showIfNotCanceledOrShippedOrSending() && (
               <>
                 {productsStock[index]?.stock < product.quantity ? (
                   <span className="text-red-600 font-bold">insufficient</span>

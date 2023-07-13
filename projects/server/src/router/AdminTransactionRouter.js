@@ -9,5 +9,6 @@ router.patch("/:id_transaction/reject", tokenDecoder, isAdmin, AdminTransactionC
 router.patch("/:id_transaction/approve", tokenDecoder, isAdmin, AdminTransactionController.approvePayment);
 router.patch("/:id_transaction/cancel", tokenDecoder, isAdmin, AdminTransactionController.cancelOrder);
 router.post("/:id_transaction/auto-mutation", tokenDecoder, isAdmin, AdminTransactionController.autoMutation);
+router.post("/:id_transaction/send-order", tokenDecoder, isAdmin, AdminTransactionController.sendOrder);
 
 module.exports = router;
