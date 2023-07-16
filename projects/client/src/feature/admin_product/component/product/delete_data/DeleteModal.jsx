@@ -9,7 +9,6 @@ function DeleteModal(props) {
   const [preview, setPreview] = useState(`${REACT_APP_SERVER_URL + singleProduct.product_image}`);
 
   const deleteDataHandler = async () => {
-    console.log(singleProduct.id_product);
     const response = await deleteProduct(singleProduct.id_product);
     alert(response.message);
     await refetchedData();

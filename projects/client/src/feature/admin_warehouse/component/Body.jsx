@@ -10,8 +10,6 @@ function Body(props) {
   const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
   const [warehouseData, setWarehouseData] = useState({});
 
-  const deleteBtnHandler = () => {};
-
   return (
     <>
       {isDelBtnClicked ? (

@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AddNewCategory from "./add_category/AddNewCategory";
-import { getCategories } from "../../";
 import RenderCategories from "./RenderCategories";
 import AdminPagination from "../../../../components/AdminPagination";
 import DeleteModal from "./delete_category/DeleteModal";
 import EditModal from "./edit_category/EditModal";
-import { useSelector } from "react-redux";
 import CreateButton from "../CreateButton";
+import { useCategoryBody } from "../../util/useCategoryBody";
 
-function CategoryBody() {
-  const [isNewCategoryClicked, setNewCategoryClicked] = useState(false);
-  const [isDeleteClicked, setDeleteClicked] = useState(false);
-  const [isEditClicked, setEditClicked] = useState(false);
-  const [singleCategory, setSingleCategory] = useState({});
-  const [categories, setCategories] = useState({});
-  const [pageNum, setPageNum] = useState(1);
-  const roleAdmin = useSelector((state) => state.adminLogin.loggedInAdminData);
-
-  useEffect(() => {
-    (async () => {
-      const response = await getCategories(pageNum);
-      await setCategories({ ...response });
-    })();
-  }, [pageNum]);
+function CategoryBody({ admin }) {
+  const {
+    isNewCategoryClicked,
+    setNewCategoryClicked,
+    isDeleteClicked,
+    setDeleteClicked,
+    isEditClicked,
+    setEditClicked,
+    singleCategory,
+    setSingleCategory,
+    categories,
+    setCategories,
+    pageNum,
+    setPageNum,
+  } = useCategoryBody();
 
   return (
     <>
@@ -52,11 +51,11 @@ function CategoryBody() {
             setSingleCategory={setSingleCategory}
             setDeleteClicked={setDeleteClicked}
             setEditClicked={setEditClicked}
-            roleAdmin={roleAdmin}
+            roleAdmin={admin}
           />
         </div>
       </div>
-      <CreateButton admin={roleAdmin} setFunction={setNewCategoryClicked} text={"Category"} />
+      <CreateButton admin={admin} setFunction={setNewCategoryClicked} text={"Category"} />
       <div className="pagination-container">
         <AdminPagination setPageNum={setPageNum} pageNum={pageNum} totalPage={categories?.totalPage} />
       </div>

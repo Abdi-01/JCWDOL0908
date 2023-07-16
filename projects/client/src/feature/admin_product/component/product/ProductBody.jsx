@@ -1,69 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AdminPagination from "../../../../components/AdminPagination";
 import Filter from "../Filter";
 import AddDataModal from "./add_data/AddDataModal";
-import { getCategories, getProducts } from "../../";
 import RenderProducts from "./RenderProducts";
-import { useSelector } from "react-redux";
 import DeleteModal from "./delete_data/DeleteModal";
 import EditModal from "./edit_data/EditModal";
-import { useNavigate } from "react-router-dom";
 import NoData from "../../../../components/NoData";
+import { useProductBody } from "../../util/useProductBody";
 
 function ProductBody(props) {
   const { admin } = props;
-  const [totalPage, setTotalPate] = useState(null);
-  const [pageNum, setPageNum] = useState(1);
-  const [isNewProductClicked, setNewProductClicked] = useState(false);
-  const [isEditClicked, setEditClicked] = useState(false);
-  const [isDeleteClicked, setDeleteClicked] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [singleProduct, setSingleProduct] = useState({});
-  const [products, setProducts] = useState([]);
-  const navigate = useNavigate();
-  const roleAdmin = useSelector((state) => state.adminLogin.loggedInAdminData);
-  const OFFSET = 4;
-  const LIMIT = 4;
-
-  useEffect(() => {
-    (async () => {
-      const response = await getCategories();
-      setCategories([...response.categories]);
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const response = await getProducts(OFFSET, LIMIT, pageNum, selectedCategory);
-      setProducts([...response.result.productsList]);
-      setTotalPate(response.result.totalPage);
-    })();
-  }, [pageNum]);
-
-  useEffect(() => {
-    (async () => {
-      const response = await getProducts(OFFSET, LIMIT, 1, selectedCategory);
-      setProducts([...response.result.productsList]);
-      setTotalPate(response.result.totalPage);
-      setPageNum(1);
-    })();
-  }, [selectedCategory]);
-
-  const filterOnChangeHandle = async (event) => {
-    const id_category = parseInt(event.target.value);
-    setSelectedCategory(id_category);
-  };
-
-  const refetchedData = async () => {
-    const fetchedData = await getProducts(OFFSET, LIMIT, pageNum, selectedCategory);
-    setProducts([...fetchedData.result.productsList]);
-    setTotalPate(fetchedData.result.totalPage);
-  };
-
-  const isItNotSuperAdmin = () => {
-    return admin?.role_admin !== "super-admin";
-  };
+  const {
+    totalPage,
+    pageNum,
+    setPageNum,
+    isNewProductClicked,
+    setNewProductClicked,
+    isEditClicked,
+    setEditClicked,
+    isDeleteClicked,
+    setDeleteClicked,
+    categories,
+    singleProduct,
+    setSingleProduct,
+    products,
+    navigate,
+    isItNotSuperAdmin,
+    filterOnChangeHandle,
+    refetchedData,
+  } = useProductBody(admin);
 
   return (
     <>
@@ -94,7 +59,7 @@ function ProductBody(props) {
           {products.length > 0 ? (
             <RenderProducts
               products={products}
-              roleAdmin={roleAdmin}
+              roleAdmin={admin}
               setDeleteClicked={setDeleteClicked}
               setSingleProduct={setSingleProduct}
               setEditClicked={setEditClicked}

@@ -1,39 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AdminPagination from "../../../../components/AdminPagination";
 import RenderProduct from "./RenderProduct";
 import EditModal from "./edit_data/EditModal";
-import { getWarehouses } from "../../../admin_warehouse/";
-import { getStock } from "../../";
 import DeleteModal from "./delete_data/DeleteModal";
+import { useStockBody } from "../../util/useStockBody";
 
 function BodyStock(props) {
   const { productsList, totalPage, setPageNum, pageNum, userAdmin, refetchedData } = props;
-  const [warehouses, setWarehouses] = useState([]);
-  const [singleProduct, setProduct] = useState({});
-  const [isEditClicked, setEditClicked] = useState(false);
-  const [isDeleteClicked, setDeleteClicked] = useState(false);
-  const [productStock, setProductStock] = useState({});
-
-  const editBtnHndler = async (product) => {
-    const response = await getStock(product.id_product, userAdmin?.id_warehouse);
-    setProductStock({ ...response?.result });
-    setProduct({ ...product });
-    setEditClicked(true);
-  };
-
-  const deleteBtnHandler = async (product) => {
-    const response = await getStock(product.id_product, userAdmin?.id_warehouse);
-    setProductStock({ ...response?.result });
-    setProduct({ ...product });
-    setDeleteClicked(true);
-  };
-
-  useEffect(() => {
-    (async () => {
-      const response = await getWarehouses();
-      setWarehouses([...response?.result]);
-    })();
-  }, []);
+  const {
+    warehouses,
+    singleProduct,
+    isEditClicked,
+    setEditClicked,
+    isDeleteClicked,
+    setDeleteClicked,
+    productStock,
+    editBtnHndler,
+    deleteBtnHandler,
+  } = useStockBody(userAdmin);
 
   return (
     <>

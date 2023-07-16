@@ -297,7 +297,7 @@ const ifNoWarehouseProvideShortageFully = async (
         id_product,
         from_id_warehouse,
         5, // mutation-out id_journal
-        shortageStock,
+        stockToTransfer,
         stockAfterMutation,
         dbTransaction,
       );
