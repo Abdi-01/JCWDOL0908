@@ -77,7 +77,7 @@ function ProductBody(props) {
           disabled:border-primaryLight disabled:cursor-not-allowed disabled:text-slate-300"
           disabled={isItNotSuperAdmin()}
         >
-          <i className="uil uil-plus"></i> New Product
+          <i className="uil uil-plus"></i> Product
         </button>
         <button
           onClick={() => navigate("/admin/dashboard/product-management/stock")}
