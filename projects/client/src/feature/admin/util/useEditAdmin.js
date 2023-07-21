@@ -46,7 +46,7 @@ export const useEditAdmin = (setModal, page) => {
       const confirmBtn = document.getElementById("confirm-admin-btn");
       confirmBtn.disabled = true;
       const result = await updateAdminWarehouse({ id_user: singleData.id_user, ...values });
-      alert("success edit data");
+      alert(result.message);
       setConfirmationModal(false);
       await dispatch(getAllAdmin(page));
       confirmBtn.disabled = false;
