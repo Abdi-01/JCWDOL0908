@@ -32,6 +32,8 @@ export const useAddWarehouse = (setIsCreateBtnClicked, pageNum, setWarehouses) =
   });
 
   const onSubmit = async (values, action) => {
+    const addWarehouseBtn = document.getElementById("add-warehouse-btn");
+    addWarehouseBtn.disabled = true;
     let { id_province, id_city, warehouse_name } = values;
     const [idProvince, province] = id_province.split(":::");
     let [idCity, city] = id_city.split(":::");
@@ -42,6 +44,7 @@ export const useAddWarehouse = (setIsCreateBtnClicked, pageNum, setWarehouses) =
     const fetching = await getWarehouses(pageNum);
     setWarehouses([...fetching.result]);
     alert(response.data.message);
+    addWarehouseBtn.disabled = false;
     setIsCreateBtnClicked(false);
   };
 

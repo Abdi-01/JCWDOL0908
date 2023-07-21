@@ -13,7 +13,7 @@ function AdminHeaderPageLayout(props) {
         <button
           onClick={() => setFirstSubPage(true)}
           className="py-1 px-1 bg-primary text-white text-sm 
-      font-semibold hover:bg-slate-800 lg:text-lg"
+          font-semibold hover:bg-slate-800 lg:text-lg"
         >
           Warehouse <i className="uil uil-plus"></i>
         </button>
@@ -21,14 +21,20 @@ function AdminHeaderPageLayout(props) {
     );
   };
 
-  return (
-    <div className="w-full text-center row-span-2 grid grid-rows-4">
+  const HeaderPageTitle = () => {
+    return (
       <h1
         className="font-semibold text-2xl pt-8 row-span-2 
-       text-primary lg:text-3xl font-title"
+        text-primary lg:text-3xl font-title"
       >
         {firstSubPageClicked ? headerTitle[0] : headerTitle[1]} {forPage === "report" ? "" : "Management"}
       </h1>
+    );
+  };
+
+  return (
+    <div className="w-full text-center row-span-2 grid grid-rows-4">
+      <HeaderPageTitle />
       {isItForWarehousePage() ? (
         <RenderForWarehouseMgtPage />
       ) : (

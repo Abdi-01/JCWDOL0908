@@ -6,6 +6,7 @@ import DeleteModal from "./delete_category/DeleteModal";
 import EditModal from "./edit_category/EditModal";
 import CreateButton from "../CreateButton";
 import { useCategoryBody } from "../../util/useCategoryBody";
+import NoData from "../../../../components/NoData";
 
 function CategoryBody({ admin }) {
   const {
@@ -23,36 +24,52 @@ function CategoryBody({ admin }) {
     setPageNum,
   } = useCategoryBody();
 
+  const CategoryManagementModals = () => {
+    return (
+      <>
+        {isEditClicked ? (
+          <EditModal
+            setEditClicked={setEditClicked}
+            pageNum={pageNum}
+            setCategories={setCategories}
+            singleCategory={singleCategory}
+          />
+        ) : null}
+        {isNewCategoryClicked ? (
+          <AddNewCategory
+            setNewCategoryClicked={setNewCategoryClicked}
+            pageNum={pageNum}
+            setCategories={setCategories}
+          />
+        ) : null}
+        {isDeleteClicked ? (
+          <DeleteModal
+            setDeleteClicked={setDeleteClicked}
+            pageNum={pageNum}
+            singleCategory={singleCategory}
+            setCategories={setCategories}
+          />
+        ) : null}
+      </>
+    );
+  };
+
   return (
     <>
-      {isEditClicked ? (
-        <EditModal
-          setEditClicked={setEditClicked}
-          pageNum={pageNum}
-          setCategories={setCategories}
-          singleCategory={singleCategory}
-        />
-      ) : null}
-      {isNewCategoryClicked ? (
-        <AddNewCategory setNewCategoryClicked={setNewCategoryClicked} pageNum={pageNum} setCategories={setCategories} />
-      ) : null}
-      {isDeleteClicked ? (
-        <DeleteModal
-          setDeleteClicked={setDeleteClicked}
-          pageNum={pageNum}
-          singleCategory={singleCategory}
-          setCategories={setCategories}
-        />
-      ) : null}
+      <CategoryManagementModals />
       <div className="product-and-category-body-container">
         <div className="render-data-container ">
-          <RenderCategories
-            categories={categories?.categories}
-            setSingleCategory={setSingleCategory}
-            setDeleteClicked={setDeleteClicked}
-            setEditClicked={setEditClicked}
-            roleAdmin={admin}
-          />
+          {categories?.categories?.length > 0 ? (
+            <RenderCategories
+              categories={categories?.categories}
+              setSingleCategory={setSingleCategory}
+              setDeleteClicked={setDeleteClicked}
+              setEditClicked={setEditClicked}
+              roleAdmin={admin}
+            />
+          ) : (
+            <NoData text="data" />
+          )}
         </div>
       </div>
       <CreateButton admin={admin} setFunction={setNewCategoryClicked} text={"Category"} />

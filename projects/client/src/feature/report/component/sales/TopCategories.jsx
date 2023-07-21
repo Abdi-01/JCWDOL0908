@@ -32,7 +32,7 @@ function TopCategories(props) {
             className="text-primary text-sm py-[0.15rem] md:py-2
             md:text-base font-bold"
           >
-            Based on categories (top 2)
+            Top 2 Categories Sales
           </div>
           <RenderTopTwo />
           <button

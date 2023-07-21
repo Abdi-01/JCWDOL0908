@@ -38,6 +38,8 @@ export const useAddProduct = (setNewProductClicked, refetchedData) => {
     },
     validationSchema,
     onSubmit: async (values) => {
+      const addProductBtn = document.getElementById("add-product-btn");
+      addProductBtn.disabled = true;
       let price = currencyValue.replace(/[^0-9]/g, "");
       price = parseInt(price);
       const data = { ...values, price };
@@ -47,6 +49,7 @@ export const useAddProduct = (setNewProductClicked, refetchedData) => {
       const response = await postProduct(formData);
       alert(response.message);
       await refetchedData();
+      addProductBtn.disabled = false;
       setNewProductClicked(false);
     },
   });

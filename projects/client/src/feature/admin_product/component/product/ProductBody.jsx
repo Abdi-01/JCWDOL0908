@@ -30,27 +30,39 @@ function ProductBody(props) {
     refetchedData,
   } = useProductBody(admin);
 
+  const ProductManagementModals = () => {
+    return (
+      <>
+        {isNewProductClicked ? (
+          <AddDataModal
+            setNewProductClicked={setNewProductClicked}
+            categories={categories}
+            refetchedData={refetchedData}
+          />
+        ) : null}
+        {isEditClicked ? (
+          <EditModal
+            singleProduct={singleProduct}
+            setEditClicked={setEditClicked}
+            categories={categories}
+            refetchedData={refetchedData}
+            admin={admin}
+          />
+        ) : null}
+        {isDeleteClicked ? (
+          <DeleteModal
+            setDeleteClicked={setDeleteClicked}
+            singleProduct={singleProduct}
+            refetchedData={refetchedData}
+          />
+        ) : null}
+      </>
+    );
+  };
+
   return (
     <>
-      {isNewProductClicked ? (
-        <AddDataModal
-          setNewProductClicked={setNewProductClicked}
-          categories={categories}
-          refetchedData={refetchedData}
-        />
-      ) : null}
-      {isEditClicked ? (
-        <EditModal
-          singleProduct={singleProduct}
-          setEditClicked={setEditClicked}
-          categories={categories}
-          refetchedData={refetchedData}
-          admin={admin}
-        />
-      ) : null}
-      {isDeleteClicked ? (
-        <DeleteModal setDeleteClicked={setDeleteClicked} singleProduct={singleProduct} refetchedData={refetchedData} />
-      ) : null}
+      <ProductManagementModals />
       <div className="product-and-category-body-container grid grid-rows-10">
         <div className="row-span-1 flex items-end text-sm">
           <Filter categories={categories} filterOnChangeHandle={filterOnChangeHandle} />

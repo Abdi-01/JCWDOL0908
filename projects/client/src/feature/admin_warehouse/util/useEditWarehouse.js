@@ -33,6 +33,8 @@ export const useEditWarehouse = (setIsEditBtnClicked, warehouseData, setWarehous
   });
 
   const onSubmit = async (values, action) => {
+    const editWarehouseBtn = document.getElementById("edit-warehouse-btn");
+    editWarehouseBtn.disabled = true;
     let { id_province, id_city, warehouse_name } = values;
     const [idProvince, province] = id_province.split(":::");
     let [idCity, city] = id_city.split(":::");
@@ -49,6 +51,7 @@ export const useEditWarehouse = (setIsEditBtnClicked, warehouseData, setWarehous
     const fetching = await getWarehouses(pageNum);
     setWarehouses([...fetching.result]);
     alert(response.data.message);
+    editWarehouseBtn.disabled = false;
     setIsEditBtnClicked(false);
   };
 

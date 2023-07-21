@@ -33,7 +33,12 @@ function AddNewCategory(props) {
               ) : null}
             </div>
             <div className="grid grid-cols-3 gap-2 text-sm h-8">
-              <button type="submit" onClick={formik.handleSubmit} className="bg-primary text-white h-full">
+              <button
+                id="add-category-btn"
+                type="submit"
+                onClick={formik.handleSubmit}
+                className="bg-primary text-white h-full btn-disabled"
+              >
                 Submit
               </button>
             </div>

@@ -45,6 +45,8 @@ export const useEditProduct = (singleProduct, setEditClicked, refetchedData, adm
     },
     validationSchema,
     onSubmit: async (values) => {
+      const editProductBtn = document.getElementById("edit-product-btn");
+      editProductBtn.disabled = true;
       let price = currencyValue.replace(/[^0-9]/g, "");
       price = parseInt(price);
       const id_product = singleProduct.id_product;
@@ -55,6 +57,7 @@ export const useEditProduct = (singleProduct, setEditClicked, refetchedData, adm
       const editResponse = await editProduct(formData, id_product);
       alert(editResponse.message);
       await refetchedData();
+      editProductBtn.disabled = false;
       setEditClicked(false);
     },
   });

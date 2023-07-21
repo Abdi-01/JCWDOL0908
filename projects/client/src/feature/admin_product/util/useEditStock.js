@@ -32,10 +32,13 @@ export const useEditStock = (userAdmin, singleProduct, productStock, refetchedDa
   };
 
   const submitBtnHandler = async () => {
+    const editBtnStock = document.getElementById("edit-stock-btn");
+    editBtnStock.disabled = true;
     const response = await updateStock(singleProduct.id_product, selectedWarehouses, stockQty);
     if (!response.isSuccess) return setEditClicked(false);
     alert(response.message);
     await refetchedData();
+    editBtnStock.disabled = false;
     setEditClicked(false);
   };
 

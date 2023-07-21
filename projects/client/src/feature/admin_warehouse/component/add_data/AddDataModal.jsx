@@ -6,7 +6,7 @@ import RenderProvince from "./RenderProvince";
 import RenderCity from "./RenderCity";
 import ClosedBtnModal from "../../../../components/ClosedBtnModal";
 import { useAddWarehouse } from "../../util/useAddWarehouse";
-//hooks formik
+
 function AddDataModal(props) {
   const { setIsCreateBtnClicked, pageNum, setWarehouses } = props;
   const { provinceList, setSelectedProvince, cityList, createWarehouseSchema, onSubmit } = useAddWarehouse(
@@ -59,7 +59,7 @@ function AddDataModal(props) {
                   </CustomSelect>
                   <div className=" row-span-1 row-start-8">
                     <div className="grid grid-cols-2 gap-8 text-sm h-5/6 mt-4">
-                      <button className="bg-primary text-white" type="submit">
+                      <button id="add-warehouse-btn" className="bg-primary text-white btn-disabled" type="submit">
                         Create
                       </button>
                     </div>

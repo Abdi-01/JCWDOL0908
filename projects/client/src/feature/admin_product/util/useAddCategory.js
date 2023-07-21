@@ -31,6 +31,8 @@ export const useAddCategory = (setNewCategoryClicked, pageNum, setCategories) =>
     },
     validationSchema,
     onSubmit: async (values) => {
+      const addCategoryBtn = document.getElementById("add-category-btn");
+      addCategoryBtn.disabled = true;
       const formData = new FormData();
       formData.append("photo", preview);
       formData.append("data", JSON.stringify(values));
@@ -38,6 +40,7 @@ export const useAddCategory = (setNewCategoryClicked, pageNum, setCategories) =>
       alert(response.message);
       const refetchData = await getCategories(pageNum);
       await setCategories({ ...refetchData });
+      addCategoryBtn.disabled = false;
       setNewCategoryClicked(false);
     },
   });

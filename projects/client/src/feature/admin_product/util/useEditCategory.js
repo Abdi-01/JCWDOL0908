@@ -32,6 +32,8 @@ export const useEditCategory = (setEditClicked, pageNum, setCategories, singleCa
     },
     validationSchema,
     onSubmit: async (values) => {
+      const editCategoryBtn = document.getElementById("edit-category-btn");
+      editCategoryBtn.disabled = true;
       const formData = new FormData();
       formData.append("photo", preview);
       formData.append("data", JSON.stringify(values));
@@ -39,6 +41,7 @@ export const useEditCategory = (setEditClicked, pageNum, setCategories, singleCa
       alert(response.message);
       const refetchData = await getCategories(pageNum);
       await setCategories({ ...refetchData });
+      editCategoryBtn.disabled = false;
       setEditClicked(false);
     },
   });

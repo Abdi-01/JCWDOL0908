@@ -30,19 +30,26 @@ function StockMutationBody(props) {
     fetchingData,
   } = useStockMutationBody(admin);
 
-  return (
-    <>
-      {createNewRequest ? (
-        <AddModal fetchingData={fetchingData} admin={admin} warehouse={warehouses} setNewRequest={setNewRequest} />
-      ) : null}
-      {singleItemClicked ? (
-        <UpdateModal
-          setSingleItemClicked={setSingleItemClicked}
-          admin={admin}
-          singleData={singleData}
-          fetchingData={fetchingData}
-        />
-      ) : null}
+  const StockMutationModals = () => {
+    return (
+      <>
+        {createNewRequest ? (
+          <AddModal fetchingData={fetchingData} admin={admin} warehouse={warehouses} setNewRequest={setNewRequest} />
+        ) : null}
+        {singleItemClicked ? (
+          <UpdateModal
+            setSingleItemClicked={setSingleItemClicked}
+            admin={admin}
+            singleData={singleData}
+            fetchingData={fetchingData}
+          />
+        ) : null}
+      </>
+    );
+  };
+
+  const StockMutationFilters = () => {
+    return (
       <form className="grid grid-cols-3 gap-4 md:gap-4 md:grid-cols-4 lg:grid-cols-5 text-xs md:text-sm lg:text-base h-4/5">
         <SelectFilter
           text="warehouse"
@@ -63,6 +70,13 @@ function StockMutationBody(props) {
           <option value={"done"}>shipped</option>
         </SelectFilter>
       </form>
+    );
+  };
+
+  return (
+    <>
+      <StockMutationModals />
+      <StockMutationFilters />
       <div className="row-span-9 grid grid-rows-8 gap-2 lg:gap-2">
         {mutationList.length ? (
           <RenderBodyData>

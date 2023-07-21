@@ -5,7 +5,7 @@ function TopProducts(props) {
   const { topTwoProducts, currencyFormat, setAllProducts } = props;
 
   const cutString = (string) => {
-    const limit = 22;
+    const limit = 20;
     return string.length > limit ? string.slice(0, limit) + "..." : string;
   };
 
@@ -36,7 +36,7 @@ function TopProducts(props) {
             className="text-primary text-sm py-[0.15rem] md:py-2
           md:text-base font-bold"
           >
-            Based on categories (top 2)
+            Top 2 Product Sales
           </div>
           <RenderTopTwo />
           <button
