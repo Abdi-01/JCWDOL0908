@@ -38,6 +38,18 @@ function UpdateModal(props) {
             <FieldDataRender textLabel="quantity" value={singleData.quantity} />
             <FieldDataRender textLabel="status" value={statusMutation()} />
             <FieldDataRender textLabel="created by" value={singleData.creator} />
+            {singleData.approver && <FieldDataRender textLabel="approved by" value={singleData.approver} />}
+            {singleData.acceptor && <FieldDataRender textLabel="shipment received by" value={singleData.acceptor} />}
+            {singleData.rejector && <FieldDataRender textLabel="rejected by" value={singleData.rejector} />}
+            <FieldDataRender
+              textLabel="type"
+              value={
+                singleData?.approver?.includes("super-admin") && singleData?.creator?.includes("super-admin")
+                  ? "auto-mutation"
+                  : "manual-mutation"
+              }
+              // value 2 is super-admin's id_user
+            />
             <FieldDataRender textLabel="created at" value={dateFormatting(singleData.createdAt)} />
             <LastUpdatedBy />
             {admin.id_role === 1 || admin.id_warehouse === singleData.from_id_warehouse ? (

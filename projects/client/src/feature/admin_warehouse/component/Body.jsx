@@ -65,10 +65,16 @@ function Body(props) {
         <div className="row-span-1 flex text-center items-center">
           <h1 className="text-lg font-semibold lg:text-xl">Warehouse List</h1>
         </div>
-        {warehouses?.length > 0 ? <AllWarehouseDataBody /> : <NoData text="data" />}
-        <div className="pagination-container">
-          <AdminPagination pageNum={pageNum} setPageNum={setPageNum} totalPage={totalPageWarehouse} />
-        </div>
+        {warehouses?.length > 0 ? (
+          <>
+            <AllWarehouseDataBody />
+            <div className="pagination-container">
+              <AdminPagination pageNum={pageNum} setPageNum={setPageNum} totalPage={totalPageWarehouse} />
+            </div>
+          </>
+        ) : (
+          <NoData text="data" />
+        )}
       </div>
     </>
   );

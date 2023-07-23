@@ -75,7 +75,10 @@ export const useAddStockMutation = (setNewRequest, admin, fetchingData) => {
       setFromWarehouse([]);
     } else {
       const response = await getWarehouseWhichProvideProduct(e.target.value);
-      setFromWarehouse([...response.result]);
+      const warehouses = [...response.result].filter((warehouse) => {
+        return warehouse.id_warehouse !== parseInt(formik.values.to_id_warehouse);
+      });
+      setFromWarehouse([...warehouses]);
     }
     setQuantity(1);
     setMaxQty(0);

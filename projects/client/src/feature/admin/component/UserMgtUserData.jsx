@@ -30,10 +30,16 @@ function UserMgtUserData() {
     <>
       {isModalPop ? <SingleUserModal someFunction={setIsModalPop} /> : null}
       <div className="row-span-6 grid grid-rows-12">
-        {allUserData?.dataAll?.length > 0 ? <AllUserDataBody /> : <NoData text="data" />}
-        <div className="pagination-container">
-          <AdminPagination pageNum={pageNum} setPageNum={setPageNum} totalPage={totalPage} />
-        </div>
+        {allUserData?.dataAll?.length > 0 ? (
+          <>
+            <AllUserDataBody />
+            <div className="pagination-container">
+              <AdminPagination pageNum={pageNum} setPageNum={setPageNum} totalPage={totalPage} />
+            </div>
+          </>
+        ) : (
+          <NoData text="data" />
+        )}
       </div>
     </>
   );
