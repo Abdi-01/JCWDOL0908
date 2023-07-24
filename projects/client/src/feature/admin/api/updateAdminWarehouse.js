@@ -10,7 +10,6 @@ export const updateAdminWarehouse = async (data) => {
         headers: { Authorization: `Bearer ${TOKEN}` },
       },
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     return error.response.data;

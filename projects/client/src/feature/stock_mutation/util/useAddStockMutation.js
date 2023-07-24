@@ -43,7 +43,6 @@ export const useAddStockMutation = (setNewRequest, admin, fetchingData) => {
       id_product = parseInt(id_product);
       const id_user = admin?.id_user;
       const dataToSend = { id_user, id_product, quantity, from_id_warehouse, to_id_warehouse };
-      console.log(dataToSend);
       const response = await createNewMutationRequest(dataToSend);
       alert(response.message);
       await fetchingData();

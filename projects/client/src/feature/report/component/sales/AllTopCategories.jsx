@@ -16,11 +16,9 @@ function AllTopCategories(props) {
       if (filterState.year && filterState.month) {
         const currentMonth = selectingDate(filterState.month, filterState.year, 1);
         const topSales = await getTopCategories({ ...currentMonth, id_warehouse, limit: "" });
-        console.log(topSales);
         setSalesList([...topSales.result]);
       } else if (!(filterState.year && filterState.month)) {
         const topSales = await getTopCategories({ startDate: "", endDate: "", id_warehouse, limit: "" });
-        console.log(topSales);
         setSalesList([...topSales.result]);
       }
     })();
